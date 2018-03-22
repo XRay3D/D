@@ -44,7 +44,7 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
                 anchors.rightMargin: 30 * sc
-                source: "Settings_images/bt.png"
+                source: "images/bt.png"
                 width: 33* sc
                 height: 65* sc
                 fillMode: Image.PreserveAspectFit
@@ -162,11 +162,11 @@ Page {
     // radius: 32
     // }
 
-    Dialog{
-        id: about
-        width: window.width - 100 * sc
-        height: window.height - 1000 * sc
-        y: -10
-        x: (window.width - width)/2
-    }
+//    Dialog{
+//        id: about
+//        width: window.width - 100 * sc
+//        height: window.height - 1000 * sc
+//        y: -10
+//        x: (window.width - width) / 2
+//    }
 }

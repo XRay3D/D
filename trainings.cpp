@@ -3,9 +3,9 @@
 TrainingModel::TrainingModel(QObject* parent)
     : QAbstractListModel(parent)
 {
-//    for (int i = 0; i < 100; ++i) {
-//         m_data.append(Training());
-//    }
+    for (int i = 0; i < 100; ++i) {
+         m_data.append(Training());
+    }
 }
 
 void TrainingModel::addTraining(const Training& training)

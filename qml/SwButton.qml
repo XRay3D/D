@@ -43,10 +43,10 @@ T.Switch {
         }
         Image {
             anchors.fill: parent
-            source:"ListBox_images/frame.png"
+            source:"images/frame.png"
         }
         Image {
-            source:"SwButton_images/indicator.png"
+            source:"images/indicator.png"
             x: Math.max(6 * sc, Math.min(parent.width - width, control.visualPosition * parent.width - (width / 2))) - 3 * sc
             y: (parent.height - height) * 0.5 + 1 * sc
             width: 55 * sc

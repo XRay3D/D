@@ -1,4 +1,5 @@
 import QtQuick 2.9
+import QtQuick.Templates 2.2
 import QtQuick.Controls 2.2
 import QtGraphicalEffects 1.0
 
@@ -99,6 +100,21 @@ Control {
     property double cx: width / 2
     property double cy: radius + height / 5
 
+    Slider{
+        id: slider
+        width: w * 1.1
+        height: h * 1.6
+        x: (parent.width - width) / 2
+        y: h * 0.7
+        from: 0
+        to: 10
+        opacity: 0.0
+        onValueChanged: {
+            parent.value = value
+            arc.update()
+        }
+    }
+
     Canvas {
         anchors.fill: arc
         property int i: 0
@@ -144,9 +160,9 @@ Control {
             ctx.arc(cx, cy, radius, a4, a1, true)
             ctx.stroke()
 
-//            var gradient = ctx.createLinearGradient(0, 0, 100, 100);
-//            gradient.addColorStop(0.3, Qt.rgba(1, 0, 0, 1));
-//            gradient.addColorStop(0.7, 'rgba(0, 255, 255, 1');
+            //            var gradient = ctx.createLinearGradient(0, 0, 100, 100);
+            //            gradient.addColorStop(0.3, Qt.rgba(1, 0, 0, 1));
+            //            gradient.addColorStop(0.7, 'rgba(0, 255, 255, 1');
         }
     }
 
@@ -169,7 +185,16 @@ Control {
         width: 61 * sc
         height: 61 * sc
         source: 'images/handle.png'
+        states: State {
+            when: slider.pressed
+            PropertyChanges { target: handle; scale: 0.8}
+        }
+        transitions: Transition {
+            NumberAnimation { properties: "scale"; easing.type: Easing.InOutQuad }
+        }
     }
+
+
 
     // InnerShadow {
     // anchors.fill: arc

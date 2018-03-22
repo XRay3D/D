@@ -13,8 +13,22 @@ public:
         , timeWithoutStimulation(QTime::currentTime())
         , timePause(QTime::currentTime())
     {
-        type= qrand()>RAND_MAX/2;
+        type = qrand() > RAND_MAX / 2;
     }
+    //    enum {
+    //        type,
+    //        date,
+    //        timeWithStimulation,
+    //        timeWithoutStimulation,
+    //        timePause,
+    //        avgStimulationAmplitude,
+    //        avgStepLength,
+    //        avgStepFrequency,
+    //        avgSpeedWithoutStimulation,
+    //        avgSpeedWithStimulation,
+    //        totalDistance,
+    //        totalStimulationDistance
+    //    };
     int type = 0;
     QDateTime date;
     QTime timeWithStimulation;

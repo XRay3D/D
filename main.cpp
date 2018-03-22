@@ -1,23 +1,4 @@
-//#include <QGuiApplication>
-//#include <QKeyEvent>
-//#include <QQmlApplicationEngine>
 #include <QQuickStyle>
-
-//int main(int argc, char* argv[])
-//{
-// QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
-// QGuiApplication app(argc, argv);
-
-// QQuickStyle::setStyle("Material");
-
-// QQmlApplicationEngine engine;
-// engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-// if (engine.rootObjects().isEmpty())
-// return -1;
-
-// return app.exec();
-//}
 #include <QFont>
 #include <QFontDatabase>
 #include <QGuiApplication>
@@ -27,7 +8,6 @@
 #include "trainings.h"
 int main(int argc, char* argv[])
 {
-    // QGuiApplication app(argc, argv);
     GuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
     QFontDatabase::addApplicationFont("qrc:/fonts/HelveticaNeueCyr-Bold.ttf");
@@ -41,7 +21,7 @@ int main(int argc, char* argv[])
     QFont fon("HelveticaNeueCyr");
     app.setFont(fon);
 
-//    QQuickStyle::setStyle("Material");
+    //    QQuickStyle::setStyle("Material");
     QQmlContext* rootContext = engine.rootContext();
     rootContext->setContextProperty("GUI", &app);
     rootContext->setContextProperty("trainingModel", &model);

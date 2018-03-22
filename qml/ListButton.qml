@@ -82,6 +82,13 @@ T.ComboBox {
                 color: control.color
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
+                states: State {
+                    when: delegateMouseArea.pressed
+                    PropertyChanges { target: delegate; scale: 0.9}
+                }
+                transitions: Transition {
+                    NumberAnimation { properties: "scale"; easing.type: Easing.InOutQuad; duration: 150 }
+                }
                 MouseArea {
                     id: delegateMouseArea
                     anchors.fill: parent
@@ -90,23 +97,15 @@ T.ComboBox {
                         control.popup.close()
                     }
                 }
-                states: State {
-                    when: delegateMouseArea.pressed
-                    PropertyChanges { target: delegate; scale: 0.9}
+                Glow{
+                    cached : true
+                    opacity: delegateMouseArea.pressed? 1 : 0
+                    anchors.fill: contentItem.delegate
+                    radius: 8
+                    samples: 17
+                    color: "white"
+                    source: contentItem.delegate
                 }
-                transitions: Transition {
-                    NumberAnimation { properties: "scale"; easing.type: Easing.InOutQuad; duration: 150 }
-                }
-
-            }
-            Glow{
-                cached : true
-                opacity: delegateMouseArea.pressed? 1 : 0
-                anchors.fill: contentItem.delegate
-                radius: 8
-                samples: 17
-                color: "white"
-                source: contentItem.delegate
             }
         }
 
@@ -162,7 +161,7 @@ T.ComboBox {
         }
         Image {
             anchors.fill: parent
-            source:"ListBox_images/frame.png"
+            source:"images/frame.png"
         }
     }
     MouseArea {

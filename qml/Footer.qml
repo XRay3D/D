@@ -10,7 +10,6 @@ ToolBar{
         id: back
         color: '#252525'
     }
-
     RowLayout{
         id: row
         anchors.fill: parent
@@ -24,7 +23,7 @@ ToolBar{
                 Image{
                     id: image1
                     anchors.centerIn: parent
-                    source: trainingType ? "Footer_images/type2.png" : "Footer_images/type1.png"
+                    source: trainingType ? "images/type2.png" : "images/type1.png"
                     width:200 * sc
                     height:85 * sc
                     fillMode: Image.PreserveAspectFit
@@ -70,7 +69,7 @@ ToolBar{
                 Image{
                     id: image2
                     anchors.centerIn: parent
-                    source:"Footer_images/statictics.png"
+                    source:"images/statictics.png"
                     width:97 * sc
                     height:82 * sc
                 }
@@ -113,7 +112,7 @@ ToolBar{
                 Image{
                     id: image3
                     anchors.centerIn: parent
-                    source:"Footer_images/settings.png"
+                    source:"images/settings.png"
                     width:84 * sc
                     height:85 * sc
                 }
