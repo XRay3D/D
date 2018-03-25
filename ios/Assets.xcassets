@@ -1,0 +1,20 @@
+<key>CFBundleIcons</key>
+<dict>
+    <key>CFBundlePrimaryIcon</key>
+    <dict>
+        <key>CFBundleIconFiles</key>
+        <array>
+            <string>AppIcon.png</string>
+        </array>
+    </dict>
+</dict>
+<key>CFBundleIcons~ipad</key>
+<dict>
+    <key>CFBundlePrimaryIcon</key>
+    <dict>
+        <key>CFBundleIconFiles</key>
+        <array>
+            <string>AppIcon.png</string>
+        </array>
+    </dict>
+</dict>

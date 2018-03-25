@@ -8,7 +8,7 @@ TrainingModel::TrainingModel(QObject* parent)
     }
 }
 
-void TrainingModel::addTraining(const Training& training)
+void TrainingModel::addTraining(const Training& /*training*/)
 {
 }
 

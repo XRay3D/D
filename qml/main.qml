@@ -163,6 +163,8 @@ ApplicationWindow {
                 font.pixelSize: 36 * sc
                 height: 73 * sc
                 Image {
+                    width: 30 * sc
+                    height: 30 * sc
                     anchors.top: parent.top
                     anchors.right: parent.right
                     id: name

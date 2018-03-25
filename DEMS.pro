@@ -13,8 +13,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
- guiapplication.cpp \
-    trainings.cpp
+     guiapplication.cpp \
+     trainings.cpp
+
+HEADERS += \
+     guiapplication.h \
+     trainings.h
 
 RESOURCES += qml.qrc
 
@@ -29,17 +33,34 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-#DISTFILES += \
-# android/AndroidManifest.xml \
-# android/gradle/wrapper/gradle-wrapper.jar \
-# android/gradlew \
-# android/res/values/libs.xml \
-# android/build.gradle \
-# android/gradle/wrapper/gradle-wrapper.properties \
-# android/gradlew.bat
+android{
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+DISTFILES += \
+     android/AndroidManifest.xml \
+     android/gradle/wrapper/gradle-wrapper.jar \
+     android/gradlew \
+     android/res/values/libs.xml \
+     android/build.gradle \
+     android/gradle/wrapper/gradle-wrapper.properties \
+     android/gradlew.bat
+}
 
-ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+ios {
+    QMAKE_INFO_PLIST = ios/Info.plist
 
-HEADERS += \
- guiapplication.h \
-    trainings.h
+    fontFiles.files = $$files(fonts/*.ttf)
+    fontFiles.path = fonts
+    QMAKE_BUNDLE_DATA += fontFiles
+
+    app_launch_images.files = $$PWD/ios/LaunchScreen.xib $$files($$PWD/ios/LaunchImage*.png)
+    QMAKE_BUNDLE_DATA += app_launch_images
+
+
+    ios_icon.files = $$files($$PWD/ios/AppIcon*.png)
+    QMAKE_BUNDLE_DATA += ios_icon
+
+DISTFILES += \
+    ios/Assets.xcassets \
+    ios/Info.plist \
+    ios/LaunchScreen.xib
+}

@@ -356,9 +356,9 @@ Page {
                     }
                 }
 
-                ScrollBar.vertical: ScrollBar {
+               // ScrollBar.vertical: ScrollBar {
                     // id: scrollBar
-                     width:57 * sc
+                  //   width:57 * sc
                     // snapMode: ScrollBar.SnapAlways
                     // wheelEnabled: true
                     // background: Rectangle {
@@ -395,7 +395,7 @@ Page {
                     // source:"images/contentItem.png"
                     // }
                     // }
-                }
+             //   }
                 remove: Transition {
                     ParallelAnimation {
                         NumberAnimation { property: "opacity"; to: 0; duration: 1000 }
