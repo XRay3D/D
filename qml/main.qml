@@ -82,33 +82,57 @@ ApplicationWindow {
                 Journal { id: journal }
                 AppSettings { id: appSettings }
             }
-            Item {
+            Rectangle {
+                //splitter2
+                opacity: 0.3
+                x: 103 * sc;
+                y: swipeView.height
+                width: 544 * sc
+                height: 2
+            }
+            RowLayout{
+                //opacity: 0.3
                 anchors.fill: parent
                 anchors.topMargin: swipeView.height
-                Image {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    //battery
-                    opacity: 0.3
-                    width:456 * sc
-                    height:33 * sc
-                    source:"images/battery.png"
+                anchors.leftMargin: 103 * sc
+                anchors.rightMargin: 103 * sc
+                Label{
+                    Layout.minimumWidth: 140 * sc
+                    Layout.maximumWidth: 140 * sc
+                    Layout.fillHeight: true
+                    text: leftBattery.value + '%'
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    color: 'white'
+                    font.pixelSize: 24 * sc
+                }
+                Battery{
+                    id: leftBattery
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
                 }
                 Image {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    //bluetootch
-                    opacity: 0.3
-                    width:33 * sc
-                    height:65 * sc
+                    Layout.fillWidth: true
+                    Layout.minimumHeight: 65 * sc
+                    Layout.maximumHeight: 65 * sc
+                    fillMode: Image.PreserveAspectFit
                     source:"images/bluetootch.png"
                 }
-                Rectangle {
-                    //splitter2
-                    opacity: 0.3
-                    x:103 * sc;
-                    width: 544 * sc
-                    height: 2
+                Battery{
+                    id: rightBattery
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    rotation: 180
+                }
+                Label{
+                    Layout.minimumWidth: 140 * sc
+                    Layout.maximumWidth: 140 * sc
+                    Layout.fillHeight: true
+                    text: rightBattery.value + '%'
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    color: 'white'
+                    font.pixelSize: 24 * sc
                 }
             }
         }

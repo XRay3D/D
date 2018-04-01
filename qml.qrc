@@ -9,7 +9,6 @@
         <file>qml/Training/Selection.qml</file>
         <file>qml/Training/Stats.qml</file>
         <file>qml/Training/TrainingPage.qml</file>
-        <file>qml/images/battery.png</file>
         <file>qml/images/bluetootch.png</file>
         <file>qml/images/background.png</file>
         <file>qml/Training/images/-.png</file>
@@ -49,8 +48,7 @@
         <file>qml/images/Splash.png</file>
         <file>qml/images/Splash2.png</file>
         <file>qml/images/statictics.png</file>
-        <file>qml/images/type1 (2).png</file>
-        <file>qml/images/type2 (2).png</file>
         <file>qml/images/close.png</file>
+        <file>qml/Battery.qml</file>
     </qresource>
 </RCC>
