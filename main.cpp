@@ -4,8 +4,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <bt/connectionhandler.h>
+#include <bt/devicefinder.h>
+#include <bt/devicehandler.h>
 #include "guiapplication.h"
 #include "trainings.h"
+
 int main(int argc, char* argv[])
 {
     GuiApplication app(argc, argv);
@@ -27,6 +31,11 @@ int main(int argc, char* argv[])
     QFontDatabase::addApplicationFont("qrc:/fonts/HelveticaNeueCyr-Thin.ttf");
     //#endif
 
+    ConnectionHandler connectionHandler;
+    DeviceHandler deviceHandler;
+    DeviceFinder deviceFinder(&deviceHandler);
+    qmlRegisterUncreatableType<DeviceHandler>("Shared", 1, 0, "AddressType", "Enum is not a type");
+
     TrainingModel model;
     QFont fon("HelveticaNeueCyr");
     app.setFont(fon);
@@ -35,6 +44,10 @@ int main(int argc, char* argv[])
     QQmlContext* rootContext = engine.rootContext();
     rootContext->setContextProperty("GUI", &app);
     rootContext->setContextProperty("trainingModel", &model);
+
+    rootContext->setContextProperty("connectionHandler", &connectionHandler);
+    rootContext->setContextProperty("deviceFinder", &deviceFinder);
+    rootContext->setContextProperty("deviceHandler", &deviceHandler);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     return app.exec();

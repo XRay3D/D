@@ -279,22 +279,34 @@ Page {
         id: stack
         anchors.fill: parent
         Component.onCompleted: stackView = stack
-        initialItem: Item {
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                height: 85 * sc
+        initialItem: Page {
+            background: Item{}
+            header: Label{
+                height: 110 * sc
+                width: parent.width
                 color: 'white'
                 font.capitalization: Font.AllUppercase
                 font.pixelSize: 36 * sc
-                font.family: 'HelveticaNeueCyr'
-                font.bold: true
-                verticalAlignment: Text.AlignVCenter
+                font.weight: Font.Black
                 text: qsTr("Журнал тренировок")
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
             }
+            //            Text {
+            //                anchors.horizontalCenter: parent.horizontalCenter
+            //                height: 85 * sc
+            //                color: 'white'
+            //                font.capitalization: Font.AllUppercase
+            //                font.pixelSize: 36 * sc
+            //                font.family: 'HelveticaNeueCyr'
+            //                font.bold: true
+            //                verticalAlignment: Text.AlignVCenter
+            //                text: qsTr("Журнал тренировок")
+            //            }
             ListView {
                 id: listView
                 anchors.fill: parent
-                anchors.topMargin: 85 * sc
+                //anchors.topMargin: 85 * sc
                 anchors.leftMargin: 103 * sc
                 anchors.rightMargin: 103 * sc
                 clip: true
@@ -356,46 +368,46 @@ Page {
                     }
                 }
 
-               // ScrollBar.vertical: ScrollBar {
-                    // id: scrollBar
-                  //   width:57 * sc
-                    // snapMode: ScrollBar.SnapAlways
-                    // wheelEnabled: true
-                    // background: Rectangle {
-                    // anchors.horizontalCenter: parent.horizontalCenter
-                    // width: 23 * sc
-                    // height: parent.height
-                    // radius: 23/2
-                    // color: '#595959'
-                    // Rectangle {
-                    // id: inner
-                    // anchors.fill: parent
-                    // anchors.margins: 2
-                    // radius: width / 2 * sc
-                    // color: '#5e6367'
-                    // }
-                    //// InnerShadow{
-                    //// anchors.fill: inner
-                    //// radius: width / 2 * sc
-                    //// samples: 20
-                    //// horizontalOffset: 3 * sc
-                    //// verticalOffset: 3 * sc
-                    //// color: '#313435'
-                    //// source: inner
-                    //// }
-                    // }
-                    // contentItem:Item {
-                    // Image {
-                    // id: name
-                    // width: 55 * sc
-                    // height: 55 * sc
-                    // y: (parent.height - height - 40 * sc) * (scrollBar.position / (1 - scrollBar.size)) + 20 * sc
-                    // anchors.horizontalCenter: parent.horizontalCenter
-                    // fillMode: Image.PreserveAspectFit
-                    // source:"images/contentItem.png"
-                    // }
-                    // }
-             //   }
+                // ScrollBar.vertical: ScrollBar {
+                // id: scrollBar
+                //   width:57 * sc
+                // snapMode: ScrollBar.SnapAlways
+                // wheelEnabled: true
+                // background: Rectangle {
+                // anchors.horizontalCenter: parent.horizontalCenter
+                // width: 23 * sc
+                // height: parent.height
+                // radius: 23/2
+                // color: '#595959'
+                // Rectangle {
+                // id: inner
+                // anchors.fill: parent
+                // anchors.margins: 2
+                // radius: width / 2 * sc
+                // color: '#5e6367'
+                // }
+                //// InnerShadow{
+                //// anchors.fill: inner
+                //// radius: width / 2 * sc
+                //// samples: 20
+                //// horizontalOffset: 3 * sc
+                //// verticalOffset: 3 * sc
+                //// color: '#313435'
+                //// source: inner
+                //// }
+                // }
+                // contentItem:Item {
+                // Image {
+                // id: name
+                // width: 55 * sc
+                // height: 55 * sc
+                // y: (parent.height - height - 40 * sc) * (scrollBar.position / (1 - scrollBar.size)) + 20 * sc
+                // anchors.horizontalCenter: parent.horizontalCenter
+                // fillMode: Image.PreserveAspectFit
+                // source:"images/contentItem.png"
+                // }
+                // }
+                //   }
                 remove: Transition {
                     ParallelAnimation {
                         NumberAnimation { property: "opacity"; to: 0; duration: 1000 }

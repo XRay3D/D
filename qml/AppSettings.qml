@@ -14,24 +14,23 @@ Page {
     font.pixelSize: 36 * sc
     font.bold: true
 
-
-
-    Label {
-        anchors.horizontalCenter: parent.horizontalCenter
-        y:24
-        opacity: 0.3
+    header: Label{
+        height: 110 * sc
+        width: parent.width
         color: 'white'
         font.capitalization: Font.AllUppercase
         font.pixelSize: 36 * sc
-        font.bold: false
-        text: 'Настройки'
+        font.weight: Font.Black
+        text: qsTr("Настройки")
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
     }
 
     ColumnLayout{
         anchors.fill: parent
         anchors.leftMargin: 103 * sc
         anchors.rightMargin: 103 * sc
-        anchors.topMargin: 110 * sc
+        //        anchors.topMargin: 110 * sc
         anchors.bottomMargin: 55 * sc
         Label {
             Layout.fillHeight: true
@@ -162,11 +161,11 @@ Page {
     // radius: 32
     // }
 
-//    Dialog{
-//        id: about
-//        width: window.width - 100 * sc
-//        height: window.height - 1000 * sc
-//        y: -10
-//        x: (window.width - width) / 2
-//    }
+    //    Dialog{
+    //        id: about
+    //        width: window.width - 100 * sc
+    //        height: window.height - 1000 * sc
+    //        y: -10
+    //        x: (window.width - width) / 2
+    //    }
 }

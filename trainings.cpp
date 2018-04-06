@@ -4,7 +4,7 @@ TrainingModel::TrainingModel(QObject* parent)
     : QAbstractListModel(parent)
 {
     for (int i = 0; i < 100; ++i) {
-         m_data.append(Training());
+        m_data.append(Training());
     }
 }
 

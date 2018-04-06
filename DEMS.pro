@@ -1,4 +1,4 @@
-QT += quick quickcontrols2 location positioning
+QT += quick quickcontrols2 location positioning bluetooth
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -14,11 +14,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
      guiapplication.cpp \
-     trainings.cpp
+     trainings.cpp \
+    bt/bluetoothbaseclass.cpp \
+    bt/connectionhandler.cpp \
+    bt/devicefinder.cpp \
+    bt/devicehandler.cpp \
+    bt/deviceinfo.cpp
 
 HEADERS += \
      guiapplication.h \
-     trainings.h
+     trainings.h \
+    bt/bluetoothbaseclass.h \
+    bt/connectionhandler.h \
+    bt/devicefinder.h \
+    bt/devicehandler.h \
+    bt/deviceinfo.h
 
 RESOURCES += qml.qrc
 
@@ -45,22 +55,22 @@ DISTFILES += \
      android/gradlew.bat
 }
 
-ios {
-    QMAKE_INFO_PLIST = ios/Info.plist
+#ios {
+#    QMAKE_INFO_PLIST = ios/Info.plist
 
-    fontFiles.files = $$files(fonts/*.ttf)
-    fontFiles.path = fonts
-    QMAKE_BUNDLE_DATA += fontFiles
+#    fontFiles.files = $$files(fonts/*.ttf)
+#    fontFiles.path = fonts
+#    QMAKE_BUNDLE_DATA += fontFiles
 
-    app_launch_images.files = $$PWD/ios/LaunchScreen.xib $$files($$PWD/ios/LaunchImage*.png)
-    QMAKE_BUNDLE_DATA += app_launch_images
+#    app_launch_images.files = $$PWD/ios/LaunchScreen.xib $$files($$PWD/ios/LaunchImage*.png)
+#    QMAKE_BUNDLE_DATA += app_launch_images
 
 
-    ios_icon.files = $$files($$PWD/ios/AppIcon*.png)
-    QMAKE_BUNDLE_DATA += ios_icon
+#    ios_icon.files = $$files($$PWD/ios/AppIcon*.png)
+#    QMAKE_BUNDLE_DATA += ios_icon
 
-DISTFILES += \
-    ios/Assets.xcassets \
-    ios/Info.plist \
-    ios/LaunchScreen.xib
-}
+#DISTFILES += \
+#    ios/Assets.xcassets \
+#    ios/Info.plist \
+#    ios/LaunchScreen.xib
+#}

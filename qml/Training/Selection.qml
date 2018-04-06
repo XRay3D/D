@@ -9,13 +9,11 @@ Page {
     header: Label{
         height: 110 * sc
         width: parent.width
-
         color: 'white'
         font.capitalization: Font.AllUppercase
         font.pixelSize: 36 * sc
         font.weight: Font.Black
         text: qsTr("ВЫБОР СТИЛЯ")
-
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
