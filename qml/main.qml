@@ -5,10 +5,40 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import 'Training'
-
+import Shared 1.0 //?
 ApplicationWindow {
     visible: true
     id: window
+
+    /////////////////////////////////////////////////////////
+    property string errorMessage: deviceFinder.error
+    property string infoMessage: deviceFinder.info
+    property real messageHeight: msg.height
+    property bool hasError: errorMessage != ""
+    property bool hasInfo: infoMessage != ""
+
+    Rectangle {
+        id: msg
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: 100 * sc
+        color: hasError ? "#ba3f62" : "#3fba62"
+        visible: hasError || hasInfo
+
+        Text {
+            id: error
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            minimumPixelSize: 5
+            //font.pixelSize: GameSettings.smallFontSize
+            fontSizeMode: Text.Fit
+            color: "#ffffff"
+            text: hasError ? errorMessage : infoMessage
+        }
+    }
+    ////////////////////////////////////////////
 
     background:Rectangle { color: '#181f25' }
 
@@ -44,14 +74,14 @@ ApplicationWindow {
         property string style: "Material"
     }
 
-    Image {
-        anchors.fill: parent
-        source: 'images/Splash.png'
-        opacity: 1.0
-        OpacityAnimator on opacity{
-            from: 1; to: 0; running: true
-        }
-    }
+    //    Image {
+    //        anchors.fill: parent
+    //        source: 'images/Splash.png'
+    //        opacity: 1.0
+    //        OpacityAnimator on opacity{
+    //            from: 1; to: 0; running: true
+    //        }
+    //    }
     ColumnLayout{
         opacity: 0.0
         OpacityAnimator on opacity{
@@ -214,7 +244,7 @@ ApplicationWindow {
                 flickableDirection: Flickable.VerticalFlick
                 Label {
                     id: label
-                    //                anchors.fill: parent
+                    // anchors.fill: parent
                     width: parent.width
                     color: 'white'
                     wrapMode: Text.WordWrap
@@ -243,4 +273,275 @@ ApplicationWindow {
             }
         }
     }
+
+    Dialog{
+        id: btDialog
+        width: window.width
+        height:window.height
+        padding:  100 * sc
+        modal: true
+        standardButtons: Dialog.NoButton
+        onAccepted: console.log("Ok clicked")
+        onRejected: console.log("Cancel clicked")
+        footer: Item {}
+        contentItem: Item {}
+        Page{
+            id:btDialogPage
+            anchors.fill: parent
+            background: Item {}
+            header: Label{
+                text: qsTr('FOUND DEVICES')
+                color:'#28343e'
+                font.pixelSize: 36 * sc
+                height: 73 * sc
+                Image {
+                    width: 30 * sc
+                    height: 30 * sc
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    source: "images/close.png"
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: btDialog.reject()
+                }
+            }
+            Rectangle{
+                anchors.fill: parent
+                color:'#28343e'
+                radius: 10 * sc
+
+                Rectangle {
+                    id: viewContainer
+                    anchors.top: parent.top
+                    //                    anchors.bottom:
+                    // only BlueZ platform has address type selection
+                    //                        connectionHandler.requiresAddressType ? addressTypeButton.top : searchButton.top
+                    // anchors.topMargin: GameSettings.fieldMargin + messageHeight
+                    // anchors.bottomMargin: GameSettings.fieldMargin
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    // width: parent.width - GameSettings.fieldMargin*2
+                    // color: GameSettings.viewColor
+                    // radius: GameSettings.buttonRadius
+
+
+
+                    ListView {
+                        id: devices
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        //anchors.left: parent.left
+                        //anchors.right: parent.right
+                        //anchors.bottom: parent.bottom
+                        //anchors.top: title.bottom
+                        model: deviceFinder.devices
+                        clip: true
+                        delegate: Rectangle {
+                            id: box
+                            height: 100 * sc
+                            width: parent.width
+                            // color: index % 2 === 0 ? GameSettings.delegate1Color : GameSettings.delegate2Color
+
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    deviceFinder.connectToService(modelData.deviceAddress);
+                                    app.showPage("Measure.qml")
+                                }
+                            }
+
+                            Text {
+                                id: device
+                                // font.pixelSize: GameSettings.smallFontSize
+                                text: modelData.deviceName
+                                anchors.top: parent.top
+                                anchors.topMargin: parent.height * 0.1
+                                anchors.leftMargin: parent.height * 0.1
+                                anchors.left: parent.left
+                                // color: GameSettings.textColor
+                            }
+
+                            Text {
+                                id: deviceAddress
+                                // font.pixelSize: GameSettings.smallFontSize
+                                text: modelData.deviceAddress
+                                anchors.bottom: parent.bottom
+                                anchors.bottomMargin: parent.height * 0.1
+                                anchors.rightMargin: parent.height * 0.1
+                                anchors.right: parent.right
+                                // color: Qt.darker(GameSettings.textColor)
+                            }
+                        }
+                    }
+                }
+            }
+            footer: Button {
+                id: searchButton
+                Layout.fillWidth: true
+                //anchors.horizontalCenter: parent.horizontalCenter
+                //anchors.bottom: parent.bottom
+                // anchors.bottomMargin: GameSettings.fieldMargin
+                //width: viewContainer.width
+                // height: GameSettings.fieldHeight
+                enabled: !deviceFinder.scanning
+                onClicked: deviceFinder.startSearch()
+                text: qsTr("START SEARCH")
+            }
+        }
+        background: FastBlur{
+            anchors.fill: parent
+            transparentBorder: false
+            source: window.contentItem
+            radius: 32
+            Rectangle{
+                anchors.fill: parent
+                opacity: 0.7
+                color: "#dadada"
+            }
+        }
+    }
+
+    //    Dialog{
+    //        id: bt
+    //        width: window.width
+    //        height:window.height
+    //        padding:  100 * sc
+    //        modal: true
+    //        standardButtons: Dialog.NoButton
+    //        onAccepted: console.log("Ok clicked")
+    //        onRejected: console.log("Cancel clicked")
+    //        footer: Item {}
+    //        contentItem: Item {}
+
+    //        Rectangle {
+    //            id: viewContainer
+    //            anchors.top: parent.top
+    //            anchors.bottom:
+    //                // only BlueZ platform has address type selection
+    //                connectionHandler.requiresAddressType ? addressTypeButton.top : searchButton.top
+    //            // anchors.topMargin: GameSettings.fieldMargin + messageHeight
+    //            // anchors.bottomMargin: GameSettings.fieldMargin
+    //            anchors.horizontalCenter: parent.horizontalCenter
+    //            // width: parent.width - GameSettings.fieldMargin*2
+    //            // color: GameSettings.viewColor
+    //            // radius: GameSettings.buttonRadius
+
+
+    //            Text {
+    //                id: title
+    //                width: parent.width
+    //                // height: GameSettings.fieldHeight
+    //                horizontalAlignment: Text.AlignHCenter
+    //                verticalAlignment: Text.AlignVCenter
+    //                // color: GameSettings.textColor
+    //                // font.pixelSize: GameSettings.mediumFontSize
+    //                text: qsTr("FOUND DEVICES")
+
+    //                // BottomLine {
+    //                // height: 1;
+    //                // width: parent.width
+    //                // color: "#898989"
+    //                // }
+    //            }
+
+
+    //            ListView {
+    //                id: devices
+    //                anchors.left: parent.left
+    //                anchors.right: parent.right
+    //                anchors.bottom: parent.bottom
+    //                anchors.top: title.bottom
+    //                model: deviceFinder.devices
+    //                clip: true
+
+    //                delegate: Rectangle {
+    //                    id: box
+    //                    // height:GameSettings.fieldHeight * 1.2
+    //                    width: parent.width
+    //                    // color: index % 2 === 0 ? GameSettings.delegate1Color : GameSettings.delegate2Color
+
+    //                    MouseArea {
+    //                        anchors.fill: parent
+    //                        onClicked: {
+    //                            deviceFinder.connectToService(modelData.deviceAddress);
+    //                            app.showPage("Measure.qml")
+    //                        }
+    //                    }
+
+    //                    Text {
+    //                        id: device
+    //                        // font.pixelSize: GameSettings.smallFontSize
+    //                        text: modelData.deviceName
+    //                        anchors.top: parent.top
+    //                        anchors.topMargin: parent.height * 0.1
+    //                        anchors.leftMargin: parent.height * 0.1
+    //                        anchors.left: parent.left
+    //                        // color: GameSettings.textColor
+    //                    }
+
+    //                    Text {
+    //                        id: deviceAddress
+    //                        // font.pixelSize: GameSettings.smallFontSize
+    //                        text: modelData.deviceAddress
+    //                        anchors.bottom: parent.bottom
+    //                        anchors.bottomMargin: parent.height * 0.1
+    //                        anchors.rightMargin: parent.height * 0.1
+    //                        anchors.right: parent.right
+    //                        // color: Qt.darker(GameSettings.textColor)
+    //                    }
+    //                }
+    //            }
+    //        }
+
+    //        Button {
+
+    //            id: addressTypeButton
+    //            anchors.horizontalCenter: parent.horizontalCenter
+    //            anchors.bottom: searchButton.top
+    //            // anchors.bottomMargin: GameSettings.fieldMargin * 0.5
+    //            width: viewContainer.width
+    //            //height: GameSettings.fieldHeight
+    //            visible: connectionHandler.requiresAddressType // only required on BlueZ
+    //            state: "public"
+    //            onClicked: state == "public" ? state = "random" : state = "public"
+
+    //            states: [
+    //                State {
+    //                    name: "public"
+    //                    PropertyChanges { target: addressTypeText; text: qsTr("Public Address") }
+    //                    PropertyChanges { target: deviceHandler; addressType: AddressType.PublicAddress }
+    //                },
+    //                State {
+    //                    name: "random"
+    //                    PropertyChanges { target: addressTypeText; text: qsTr("Random Address") }
+    //                    PropertyChanges { target: deviceHandler; addressType: AddressType.RandomAddress }
+    //                }
+    //            ]
+
+    //            Text {
+    //                id: addressTypeText
+    //                anchors.centerIn: parent
+    //                // font.pixelSize: GameSettings.tinyFontSize
+    //                // color: GameSettings.textColor
+    //            }
+    //        }
+
+    //        Button {
+    //            id: searchButton
+    //            anchors.horizontalCenter: parent.horizontalCenter
+    //            anchors.bottom: parent.bottom
+    //            // anchors.bottomMargin: GameSettings.fieldMargin
+    //            width: viewContainer.width
+    //            // height: GameSettings.fieldHeight
+    //            enabled: !deviceFinder.scanning
+    //            onClicked: deviceFinder.startSearch()
+
+    //            Text {
+    //                anchors.centerIn: parent
+    //                // font.pixelSize: GameSettings.tinyFontSize
+    //                text: qsTr("START SEARCH")
+    //                // color: searchButton.enabled ? GameSettings.textColor : GameSettings.disabledTextColor
+    //            }
+    //        }
+    //    }
 }

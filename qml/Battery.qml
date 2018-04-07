@@ -24,7 +24,7 @@ Item {
         Rectangle{
             anchors.fill: parent
             color: '#161d23'
-            anchors.leftMargin: 12 * sc
+            anchors.leftMargin: 13 * sc
             anchors.rightMargin: 17 * sc
             anchors.topMargin: 4 * sc
             anchors.bottomMargin: 4 * sc
@@ -33,13 +33,13 @@ Item {
                 opacity: 0.9
                 anchors.fill: parent
                 anchors.leftMargin: parent.width * ((100 - value) / 100)
-                radius: 2
+                radius: parent.radius
                 color: value > 15 ? 'white' : 'red'
             }
         }
     }
     Timer{
-        interval: 50; running: true; repeat: true
-        onTriggered: value == 100 ? value = 0 : ++value
+        interval: 100; running: true; repeat: true
+        onTriggered: value == 100 ? value = 0 : value += 5
     }
 }

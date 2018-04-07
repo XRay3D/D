@@ -70,7 +70,7 @@ QString DeviceInfo::getName() const
 
 QString DeviceInfo::getAddress() const
 {
-#ifdef defined Q_OS_DARWIN
+#ifdef Q_OS_DARWIN
     // workaround for Core Bluetooth:
     return m_device.deviceUuid().toString();
 #else

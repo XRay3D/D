@@ -50,7 +50,7 @@ Page {
             }
             MouseArea{
                 anchors.fill: parent
-                onClicked: console.log(parent.text)
+                onClicked: btDialog.open()
             }
         }
         Rectangle{
