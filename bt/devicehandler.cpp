@@ -65,7 +65,7 @@ void DeviceHandler::setDevice(DeviceInfo* device)
             m_control->discoverServices();
         });
         connect(m_control, &QLowEnergyController::disconnected, this, [this]() {
-            setError("Контроллер LowEnergy отключен");
+            setError("Контроллер BLE отключен");
         });
 
         // Соединиться
@@ -140,7 +140,7 @@ void DeviceHandler::serviceStateChanged(QLowEnergyService::ServiceState state)
         if (m_notificationDesc.isValid())
             m_service->writeDescriptor(m_notificationDesc, QByteArray::fromHex("0100"));
 
-        //m_service->writeCharacteristic(characteristic, parcel(0x0D));
+        m_service->writeCharacteristic(characteristic, parcel(Ski::GET_DATE));
 
         break;
     }
@@ -160,13 +160,13 @@ void DeviceHandler::updateValue(const QLowEnergyCharacteristic& characteristic, 
 
     static QElapsedTimer t;
 
-    const SkiDate_t date = *reinterpret_cast<const SkiDate_t*>(reinterpret_cast<const Parcel_t*>(value.data())->data);
+    const Ski::Date_t date = *reinterpret_cast<const Ski::Date_t*>(reinterpret_cast<const Ski::Parcel_t*>(value.data())->data);
     QString str(QTime(date.hour, date.minute, date.second).toString("hh:mm:ss") + QString::number(t.elapsed()));
     setInfo(str);
     if (checkParcel(value))
         qDebug() << /*(QTime(date.hour, date.minute, date.second).toString("hh:mm:ss") + " / ms delay " + QString::number(t.elapsed())) <<*/ value.toHex().toUpper();
     t.start();
-    m_service->writeCharacteristic(characteristic, parcel(0x0D));
+    m_service->writeCharacteristic(characteristic, parcel(Ski::GET_DATE));
 }
 
 void DeviceHandler::confirmedDescriptorWrite(const QLowEnergyDescriptor& d, const QByteArray& value)

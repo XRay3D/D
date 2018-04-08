@@ -4,6 +4,7 @@
 #include <QByteArray>
 #include <stdint.h>
 
+namespace Ski {
 enum COMMAND {
     //Service functions
     PING, // return SOFTWARE_VERSION
@@ -44,14 +45,14 @@ enum {
     POWER_ON,
 };
 
-enum SKI_SETTINGS {
+enum SETTINGS {
     POWER,
     IMPULSE_AMPLITUDE, //1.2. Параметры импульса1.2.1. Установить амплитуду импульса (десятичное, Вольты)
     DURATION, //1.3. Продолжительность стимуляции 1.3.1. Целое число в мс от 100 до 300 мс
     LEAD_TIME, //1.4. Опережение включения/выключения момента стимуляции,//1.4.1. Знаковое целое, кол-во миллисекунд от -50 до 50 мс.
 };
 
-enum SKI_STATISTICAL {
+enum STATISTICAL {
     LEFT_BATTERY_CHARGE, //	2.1. Напряжение батареи 2 шт (левая и правая нога) (% заряда 0...100)
     RIGHT_BATTERY_CHARGE, //	2.1. Напряжение батареи 2 шт (левая и правая нога) (% заряда 0...100)
     SOFTWARE_VERSION, //	2.2. Версия ПО 1 шт. (строка)
@@ -64,19 +65,19 @@ enum SKI_STATISTICAL {
 };
 #pragma pack(push, 1)
 
-typedef struct SkiSettings_t { // считать состояния чипов, напряжения, версию прошивки
+typedef struct Settings_t { // считать состояния чипов, напряжения, версию прошивки
     uint8_t power;
     uint16_t impulseAmplitude;
     uint16_t duration;
     int16_t leadTime;
-} SkiSettings_t;
+} Settings_t;
 
-typedef struct SkiSettingsData_t {
+typedef struct SettingsData_t {
     uint8_t type; //SKI_SETTINGS or SKI_STATISTICAL
     int16_t value;
-} SkiSettingsData_t;
+} SettingsData_t;
 
-typedef struct SkiSysInfo_t { // считать состояния чипов, напряжения, версию прошивки
+typedef struct SysInfo_t { // считать состояния чипов, напряжения, версию прошивки
     uint8_t accelerometer;
     uint8_t gyroscope;
     uint8_t rf;
@@ -84,9 +85,9 @@ typedef struct SkiSysInfo_t { // считать состояния чипов, �
     uint8_t impulse_voltage;
     uint8_t master;
     uint8_t version;
-} SkiSysInfo_t;
+} SysInfo_t;
 
-typedef struct SkiAccGyr_t { // считать состояния чипов, напряжения, версию прошивки
+typedef struct AccGyr_t { // считать состояния чипов, напряжения, версию прошивки
     struct {
         int8_t x;
         int8_t y;
@@ -97,32 +98,32 @@ typedef struct SkiAccGyr_t { // считать состояния чипов, н
         int8_t y;
         int8_t z;
     } gyr;
-} SkiAccGyr_t;
+} AccGyr_t;
 
-typedef struct SkiRfSettings_t { // считать состояния чипов, напряжения, версию прошивки
+typedef struct RfSettings_t { // считать состояния чипов, напряжения, версию прошивки
     uint8_t freq0;
     uint8_t freq1;
     uint8_t freq2;
     uint8_t testb;
     uint8_t channel;
     uint8_t address;
-} SkiRfSettings_t;
+} RfSettings_t;
 
-typedef struct SkiDate_t { // считать состояния чипов, напряжения, версию прошивки
+typedef struct Date_t { // считать состояния чипов, напряжения, версию прошивки
     uint16_t year;
     uint8_t month;
     uint8_t dom;
     uint8_t hour;
     uint8_t minute;
     uint8_t second;
-} SkiDate_t;
+} Date_t;
 
-typedef struct SkiPwmDuration_t { // считать состояния чипов, напряжения, версию прошивки
+typedef struct PwmDuration_t { // считать состояния чипов, напряжения, версию прошивки
     uint8_t pwm;
     uint8_t duration;
-} SkiPwmDuration_t;
+} PwmDuration_t;
 
-typedef struct SkiStatistical_t { // считать состояния чипов, напряжения, версию прошивки
+typedef struct Statistical_t { // считать состояния чипов, напряжения, версию прошивки
     uint8_t leftBatteryCharge; //	2.1. Напряжение батареи 2 шт (левая и правая нога) (% заряда 0...100)
     uint8_t rightBatteryCharge; //	2.1. Напряжение батареи 2 шт (левая и правая нога) (% заряда 0...100)
     uint8_t softwareVersion; //	2.2. Версия ПО 1 шт. (строка)
@@ -132,7 +133,7 @@ typedef struct SkiStatistical_t { // считать состояния чипо�
     uint16_t totalTrainingTime; //	2.6. Общее время тренировки (секунды)
     uint16_t totalPauseTime; //	2.7. Общее время пауз (секунды)
     uint8_t averageFrequencyOfSteps; //	2.9. Средняя частота шагов при стимуляции ??? (если нетрудоёмко)
-} SkiStatistical_t;
+} Statistical_t;
 
 typedef struct Parcel_t {
 public:
@@ -150,7 +151,7 @@ enum {
     MIN_LEN = 5
 };
 
-class MyProtokol {
+class Protokol {
 public:
     template <typename T>
     QByteArray parcel(quint8 cmd, const T& value)
@@ -206,5 +207,6 @@ public:
 private:
     enum { POLYNOMIAL = 0x1D }; // x^8 + x^4 + x^3 + x^2 + 1
 };
+}
 
 #endif // MYPROTOKOL_H

@@ -1,4 +1,4 @@
-QT += quick quickcontrols2 location positioning bluetooth
+QT += quick quickcontrols2 location positioning bluetooth sql
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -13,23 +13,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
-     guiapplication.cpp \
-     trainings.cpp \
+    guiapplication.cpp \
+    trainings.cpp \
     bt/bluetoothbaseclass.cpp \
     bt/connectionhandler.cpp \
     bt/devicefinder.cpp \
     bt/devicehandler.cpp \
-    bt/deviceinfo.cpp
+    bt/deviceinfo.cpp \
+    db/database.cpp \
+    db/listmodel.cpp
 
 HEADERS += \
-     guiapplication.h \
-     trainings.h \
+    guiapplication.h \
+    trainings.h \
     bt/bluetoothbaseclass.h \
     bt/connectionhandler.h \
     bt/devicefinder.h \
     bt/devicehandler.h \
     bt/deviceinfo.h \
-    bt/myprotokol.h
+    bt/skiprotokol.h \
+    db/database.h \
+    db/listmodel.h
 
 RESOURCES += qml.qrc
 

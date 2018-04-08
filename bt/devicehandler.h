@@ -2,7 +2,7 @@
 #define DEVICEHANDLER_H
 
 #include "bluetoothbaseclass.h"
-#include "myprotokol.h"
+#include "skiprotokol.h"
 
 #include <QDateTime>
 #include <QVector>
@@ -12,7 +12,7 @@
 
 class DeviceInfo;
 
-class DeviceHandler : public BluetoothBaseClass, private MyProtokol {
+class DeviceHandler : public BluetoothBaseClass, private Ski::Protokol {
     Q_OBJECT
 
     Q_PROPERTY(int training READ training NOTIFY trainingChanged)

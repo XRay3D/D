@@ -73,7 +73,7 @@ Page {
                         y:35 * sc
                         color: 'white'
                         font.pixelSize: 90 * sc
-                        text: '01:20:39'
+                        text: timeWithStimulation_
                     }
                 }
                 Rectangle {//line
@@ -170,7 +170,7 @@ Page {
                         y:38 * sc
                         color: 'white'
                         font.pixelSize: 60 * sc
-                        text: '07:13'
+                        text: timeWithStimulation_
                     }
                 }
                 Rectangle {//line
@@ -274,7 +274,6 @@ Page {
             }
         }
     }
-
     StackView{
         id: stack
         anchors.fill: parent
@@ -299,21 +298,17 @@ Page {
                 anchors.leftMargin: 103 * sc
                 anchors.rightMargin: 103 * sc
                 clip: true
-                model: trainingModel
+                model: myModel//trainingModel
                 delegate: Item {
                     id: delegate
                     height: 93 * sc
                     width: parent.width
                     property var locale: Qt.locale()
                     property date currentDate: date
-                    Text {
+                    Label {
                         anchors.fill: parent
                         color: 'white'
-                        font.capitalization: Font.AllUppercase
                         font.pixelSize: 24 * sc
-                        font.family: 'HelveticaNeueCyr'
-                        font.weight: Font.Thin
-                        font.bold: true
                         verticalAlignment: Text.AlignVCenter
                         text: '№'+ (index + 1) + currentDate.toLocaleString(locale, ' — d.MM.yyyy — hh:mm')
                     }
@@ -335,9 +330,9 @@ Page {
                             listView.currentIndex = index
                             type_ = type
                             date_ = currentDate.toLocaleString(locale, 'd.MM.yyyy — hh:mm')
-                            timeWithStimulation_ = timeWithStimulation.toLocaleString(locale, 'hh:mm')
-                            timeWithoutStimulation_ = timeWithoutStimulation.toLocaleString(locale, 'hh:mm')
-                            timePause_ = timePause.toLocaleString(locale, 'hh:mm')
+                            timeWithStimulation_ = timeWithStimulation.toLocaleTimeString(locale, 'hh:mm')
+                            timeWithoutStimulation_ = timeWithoutStimulation.toLocaleTimeString(locale, 'hh:mm')
+                            timePause_ = timePause.toLocaleString(locale,'hh:mm')
                             avgStimulationAmplitude_ = avgStimulationAmplitude
                             avgStepLength_ = avgStepLength
                             avgStepFrequency_ = avgStepFrequency
@@ -356,9 +351,7 @@ Page {
                         NumberAnimation { properties: "scale"; easing.type: Easing.InOutQuad; duration: 150 }
                     }
                 }
-
                 ScrollBar.vertical: ScrollBar {}
-
                 remove: Transition {
                     ParallelAnimation {
                         NumberAnimation { property: "opacity"; to: 0; duration: 1000 }
@@ -372,4 +365,115 @@ Page {
         popEnter: Transition { PropertyAnimation { property: "opacity"; from: 0; to:1; duration: 200 } }
         popExit: Transition { PropertyAnimation { property: "opacity"; from: 1; to:0; duration: 200 } }
     }
+
+
+//    // Слой с TaxtField`ами и Button для занесения записей в базу данных
+//    ColumnLayout {
+//        id: rowLayout
+//        anchors.top: parent.top
+//        anchors.left: parent.left
+//        anchors.right: parent.right
+//        anchors.margins: 5
+
+//        spacing: 10
+
+//        Text {text: qsTr("Имя")}
+//        TextField {id: fnameField}
+//        Text {text: qsTr("Фамилия")}
+//        TextField { id: snameField}
+//        Text {text: qsTr("НИК")}
+//        TextField {id: nikField}
+
+//        Button {
+//            text: qsTr("Добавить")
+
+//            // Вносим новую запись в базу данных
+//            onClicked: {
+//                database.inserIntoTable(fnameField.text , snameField.text, nikField.text)
+//                myModel.updateModel() // И обновляем модель данных с новой записью
+//            }
+//        }
+//    }
+
+//    TableView {
+//        id: tableView
+//        anchors.top: rowLayout.bottom
+//        anchors.left: parent.left
+//        anchors.right: parent.right
+//        anchors.bottom: parent.bottom
+//        anchors.margins: 5
+
+//        TableViewColumn {
+//            role: "fname"
+//            title: "Имя"
+//        }
+//        TableViewColumn {
+//            role: "sname"
+//            title: "Фамилия"
+//        }
+//        TableViewColumn {
+//            role: "nik"
+//            title: "НИК"
+//        }
+
+//        model: myModel
+
+//        // Настройка строки в TableView для перехавата левого клика мыши
+//        rowDelegate: Rectangle {
+//            anchors.fill: parent
+//            color: styleData.selected ? 'skyblue' : (styleData.alternate ? 'whitesmoke' : 'white');
+//            MouseArea {
+//                anchors.fill: parent
+//                acceptedButtons: Qt.RightButton | Qt.LeftButton
+//                onClicked: {
+//                    tableView.selection.clear()
+//                    tableView.selection.select(styleData.row)
+//                    tableView.currentRow = styleData.row
+//                    tableView.focus = true
+
+//                    switch(mouse.button) {
+//                    case Qt.RightButton:
+//                        contextMenu.popup() // Вызываем контексткное меню
+//                        break
+//                    default:
+//                        break
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+//    // Контекстно меню предлагает удаление строки из базы данных
+//    Menu {
+//        id: contextMenu
+
+//        MenuItem {
+//            text: qsTr("Удалить")
+//            onTriggered: {
+//                /* Вызываем диалоговое окно,
+//                 * которое уточнит намерение удалить строку из базы данных
+//                 * */
+//                dialogDelete.open()
+//            }
+//        }
+//    }
+
+//    // Диалог подтверждения удаления строки из базы данных
+//    MessageDialog {
+//        id: dialogDelete
+//        title: qsTr("Удаление записи")
+//        text: qsTr("Подтвердите удаление записи из журнала")
+//        icon: StandardIcon.Warning
+//        standardButtons: StandardButton.Ok | StandardButton.Cancel
+
+//        // При положительном ответе ...
+//        onAccepted: {
+//            /* ... удаляем строку по id,
+//             * который забираем из модели данных
+//             * по номеру строки в представлении
+//             * */
+//            database.removeRecord(myModel.getId(tableView.currentRow))
+//            myModel.updateModel();  // Обновляем модель данных
+//        }
+//    }
 }

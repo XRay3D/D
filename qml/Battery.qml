@@ -17,11 +17,13 @@ Item {
             radius: 3 * sc
         }
         Rectangle{
+            id: body
             anchors.fill: parent
             anchors.leftMargin: 9 * sc
-            radius: 4 * sc
+            radius: 3 * sc
         }
         Rectangle{
+            id: hole
             anchors.fill: parent
             color: '#161d23'
             anchors.leftMargin: 13 * sc
@@ -29,13 +31,19 @@ Item {
             anchors.topMargin: 4 * sc
             anchors.bottomMargin: 4 * sc
             radius: 2
-            Rectangle{
-                opacity: 0.9
-                anchors.fill: parent
-                anchors.leftMargin: parent.width * ((100 - value) / 100)
-                radius: parent.radius
-                color: value > 15 ? 'white' : 'red'
-            }
+        }
+
+//        OpacityMask {
+//            anchors.fill: parent
+//            source: parent.contentItem
+//            maskSource: hole
+//        }
+        Rectangle{
+            opacity: 0.9
+            anchors.fill: hole
+            anchors.leftMargin: hole.width * ((100 - value) / 100)
+            radius: hole.radius
+            color: value > 15 ? 'white' : 'red'
         }
     }
     Timer{
