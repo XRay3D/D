@@ -68,6 +68,8 @@ Page {
             if(!isRuning){
                 isRuning = !isRuning
                 // trainingLoader.setSource('TrainingControl.qml')
+                if(!deviceHandler.alive)
+                    btDialog.open()
                 stackView.push('Control.qml')
             }else{
                 if(stackView.depth == 2)

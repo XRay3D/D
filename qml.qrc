@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/dems_qml.qmlproject</file>
         <file>qml/Footer.qml</file>
         <file>qml/Header.qml</file>
         <file>qml/main.qml</file>

@@ -28,7 +28,8 @@ HEADERS += \
     bt/connectionhandler.h \
     bt/devicefinder.h \
     bt/devicehandler.h \
-    bt/deviceinfo.h
+    bt/deviceinfo.h \
+    bt/myprotokol.h
 
 RESOURCES += qml.qrc
 
