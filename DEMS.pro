@@ -14,7 +14,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     guiapplication.cpp \
-    trainings.cpp \
     bt/bluetoothbaseclass.cpp \
     bt/connectionhandler.cpp \
     bt/devicefinder.cpp \
@@ -25,7 +24,6 @@ SOURCES += main.cpp \
 
 HEADERS += \
     guiapplication.h \
-    trainings.h \
     bt/bluetoothbaseclass.h \
     bt/connectionhandler.h \
     bt/devicefinder.h \

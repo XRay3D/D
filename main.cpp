@@ -11,7 +11,6 @@
 #include <db/listmodel.h>
 
 #include "guiapplication.h"
-#include "trainings.h"
 
 int main(int argc, char* argv[])
 {

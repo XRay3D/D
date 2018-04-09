@@ -290,6 +290,15 @@ Page {
                 text: qsTr("Журнал тренировок")
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+                MouseArea
+                {
+                    anchors.fill: parent
+                    // Вносим новую запись в базу данных
+                    onClicked: {
+                        database.inserIntoTable()
+                        myModel.updateModel() // И обновляем модель данных с новой записью
+                    }
+                }
             }
             ListView {
                 id: listView
@@ -326,21 +335,22 @@ Page {
                         anchors.fill: parent
                         hoverEnabled: true
                         onClicked: {
-                            console.log("onClicked", index)
-                            listView.currentIndex = index
-                            type_ = type
-                            date_ = currentDate.toLocaleString(locale, 'd.MM.yyyy — hh:mm')
-                            timeWithStimulation_ = timeWithStimulation.toLocaleTimeString(locale, 'hh:mm')
-                            timeWithoutStimulation_ = timeWithoutStimulation.toLocaleTimeString(locale, 'hh:mm')
-                            timePause_ = timePause.toLocaleString(locale,'hh:mm')
-                            avgStimulationAmplitude_ = avgStimulationAmplitude
-                            avgStepLength_ = avgStepLength
-                            avgStepFrequency_ = avgStepFrequency
-                            avgSpeedWithoutStimulation_ = avgSpeedWithoutStimulation
-                            avgSpeedWithStimulation_ = avgSpeedWithStimulation
-                            totalDistance_ = totalDistance
-                            totalStimulationDistance_ = totalStimulationDistance
-                            stack.push(contents)
+                            dialogDelete.open()
+                            //                            console.log("onClicked", index)
+                            //                            listView.currentIndex = index
+                            //                            type_ = type
+                            //                            date_ = currentDate.toLocaleString(locale, 'd.MM.yyyy — hh:mm')
+                            //                            timeWithStimulation_ = timeWithStimulation.toLocaleTimeString(locale, 'hh:mm')
+                            //                            timeWithoutStimulation_ = timeWithoutStimulation.toLocaleTimeString(locale, 'hh:mm')
+                            //                            timePause_ = timePause.toLocaleString(locale,'hh:mm')
+                            //                            avgStimulationAmplitude_ = avgStimulationAmplitude
+                            //                            avgStepLength_ = avgStepLength
+                            //                            avgStepFrequency_ = avgStepFrequency
+                            //                            avgSpeedWithoutStimulation_ = avgSpeedWithoutStimulation
+                            //                            avgSpeedWithStimulation_ = avgSpeedWithStimulation
+                            //                            totalDistance_ = totalDistance
+                            //                            totalStimulationDistance_ = totalStimulationDistance
+                            //                            stack.push(contents)
                         }
                     }
                     states: State {
@@ -367,113 +377,135 @@ Page {
     }
 
 
-//    // Слой с TaxtField`ами и Button для занесения записей в базу данных
-//    ColumnLayout {
-//        id: rowLayout
-//        anchors.top: parent.top
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        anchors.margins: 5
+    //    // Слой с TaxtField`ами и Button для занесения записей в базу данных
+    //    ColumnLayout {
+    //        id: rowLayout
+    //        anchors.top: parent.top
+    //        anchors.left: parent.left
+    //        anchors.right: parent.right
+    //        anchors.margins: 5
 
-//        spacing: 10
+    //        spacing: 10
 
-//        Text {text: qsTr("Имя")}
-//        TextField {id: fnameField}
-//        Text {text: qsTr("Фамилия")}
-//        TextField { id: snameField}
-//        Text {text: qsTr("НИК")}
-//        TextField {id: nikField}
+    //        Text {text: qsTr("Имя")}
+    //        TextField {id: fnameField}
+    //        Text {text: qsTr("Фамилия")}
+    //        TextField { id: snameField}
+    //        Text {text: qsTr("НИК")}
+    //        TextField {id: nikField}
 
-//        Button {
-//            text: qsTr("Добавить")
+    //        Button {
+    //            text: qsTr("Добавить")
 
-//            // Вносим новую запись в базу данных
-//            onClicked: {
-//                database.inserIntoTable(fnameField.text , snameField.text, nikField.text)
-//                myModel.updateModel() // И обновляем модель данных с новой записью
-//            }
-//        }
-//    }
+    //            // Вносим новую запись в базу данных
+    //            onClicked: {
+    //                database.inserIntoTable(fnameField.text , snameField.text, nikField.text)
+    //                myModel.updateModel() // И обновляем модель данных с новой записью
+    //            }
+    //        }
+    //    }
 
-//    TableView {
-//        id: tableView
-//        anchors.top: rowLayout.bottom
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        anchors.bottom: parent.bottom
-//        anchors.margins: 5
+    //    TableView {
+    //        id: tableView
+    //        anchors.top: rowLayout.bottom
+    //        anchors.left: parent.left
+    //        anchors.right: parent.right
+    //        anchors.bottom: parent.bottom
+    //        anchors.margins: 5
 
-//        TableViewColumn {
-//            role: "fname"
-//            title: "Имя"
-//        }
-//        TableViewColumn {
-//            role: "sname"
-//            title: "Фамилия"
-//        }
-//        TableViewColumn {
-//            role: "nik"
-//            title: "НИК"
-//        }
+    //        TableViewColumn {
+    //            role: "fname"
+    //            title: "Имя"
+    //        }
+    //        TableViewColumn {
+    //            role: "sname"
+    //            title: "Фамилия"
+    //        }
+    //        TableViewColumn {
+    //            role: "nik"
+    //            title: "НИК"
+    //        }
 
-//        model: myModel
+    //        model: myModel
 
-//        // Настройка строки в TableView для перехавата левого клика мыши
-//        rowDelegate: Rectangle {
-//            anchors.fill: parent
-//            color: styleData.selected ? 'skyblue' : (styleData.alternate ? 'whitesmoke' : 'white');
-//            MouseArea {
-//                anchors.fill: parent
-//                acceptedButtons: Qt.RightButton | Qt.LeftButton
-//                onClicked: {
-//                    tableView.selection.clear()
-//                    tableView.selection.select(styleData.row)
-//                    tableView.currentRow = styleData.row
-//                    tableView.focus = true
+    //        // Настройка строки в TableView для перехавата левого клика мыши
+    //        rowDelegate: Rectangle {
+    //            anchors.fill: parent
+    //            color: styleData.selected ? 'skyblue' : (styleData.alternate ? 'whitesmoke' : 'white');
+    //            MouseArea {
+    //                anchors.fill: parent
+    //                acceptedButtons: Qt.RightButton | Qt.LeftButton
+    //                onClicked: {
+    //                    tableView.selection.clear()
+    //                    tableView.selection.select(styleData.row)
+    //                    tableView.currentRow = styleData.row
+    //                    tableView.focus = true
 
-//                    switch(mouse.button) {
-//                    case Qt.RightButton:
-//                        contextMenu.popup() // Вызываем контексткное меню
-//                        break
-//                    default:
-//                        break
-//                    }
-//                }
-//            }
-//        }
-//    }
+    //                    switch(mouse.button) {
+    //                    case Qt.RightButton:
+    //                        contextMenu.popup() // Вызываем контексткное меню
+    //                        break
+    //                    default:
+    //                        break
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
 
-//    // Контекстно меню предлагает удаление строки из базы данных
-//    Menu {
-//        id: contextMenu
+    //    // Контекстно меню предлагает удаление строки из базы данных
+    //    Menu {
+    //        id: contextMenu
 
-//        MenuItem {
-//            text: qsTr("Удалить")
-//            onTriggered: {
-//                /* Вызываем диалоговое окно,
-//                 * которое уточнит намерение удалить строку из базы данных
-//                 * */
-//                dialogDelete.open()
-//            }
-//        }
-//    }
+    //        MenuItem {
+    //            text: qsTr("Удалить")
+    //            onTriggered: {
+    //                /* Вызываем диалоговое окно,
+    //                 * которое уточнит намерение удалить строку из базы данных
+    //                 * */
+    //                dialogDelete.open()
+    //            }
+    //        }
+    //    }
 
-//    // Диалог подтверждения удаления строки из базы данных
-//    MessageDialog {
-//        id: dialogDelete
-//        title: qsTr("Удаление записи")
-//        text: qsTr("Подтвердите удаление записи из журнала")
-//        icon: StandardIcon.Warning
-//        standardButtons: StandardButton.Ok | StandardButton.Cancel
+    // Диалог подтверждения удаления строки из базы данных
 
-//        // При положительном ответе ...
-//        onAccepted: {
-//            /* ... удаляем строку по id,
-//             * который забираем из модели данных
-//             * по номеру строки в представлении
-//             * */
-//            database.removeRecord(myModel.getId(tableView.currentRow))
-//            myModel.updateModel();  // Обновляем модель данных
-//        }
-//    }
+
+    Dialog {
+        id: dialogDelete
+        title: "Title"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        onRejected: console.log("Cancel clicked")
+        onAccepted: {
+            console.log("Ok clicked")
+            /* ... удаляем строку по id,
+                         * который забираем из модели данных
+                         * по номеру строки в представлении
+                         * */
+            database.removeRecord(myModel.getId(listView.currentIndex))
+            myModel.updateModel();  // Обновляем модель данных
+        }
+    }
+    //    Dialog {
+    //        id: dialogDelete
+    ////        width: window.width
+    ////        height:window.height / 2
+    //        modal: true
+    //        title: qsTr("Удаление записи")
+    //        Label{
+    //            anchors.fill: parent
+    //            text: qsTr("Подтвердите удаление записи из журнала")
+    //        }
+    //        standardButtons: StandardButton.Ok | StandardButton.Cancel
+    //        // При положительном ответе ...
+    //        onAccepted: {
+    //            /* ... удаляем строку по id,
+    //                 * который забираем из модели данных
+    //                 * по номеру строки в представлении
+    //                 * */
+    //            database.removeRecord(myModel.getId(listView.currentIndex))
+    //            myModel.updateModel();  // Обновляем модель данных
+    //        }
+    //    }
 }

@@ -183,6 +183,42 @@ bool DataBase::inserIntoTable(const Training& t)
     //    }
 }
 
+bool DataBase::inserIntoTable()
+{
+    // Запрос SQL формируется из QVariantList,
+    // в который передаются данные для вставки в таблицу.
+    QSqlQuery query;
+    // В начале SQL запрос формируется с ключами,
+    // которые потом связываются методом bindValue
+    // для подстановки данных из QVariantList
+    query.prepare("INSERT INTO " TABLE " ( " TYPE ", " DATE ", " TIME_WITH_STIMULATION ", " TIME_WITHOUT_STIMULATION ", " TIME_PAUSE ", " AVG_STIMULATION_AMPLITUDE ", " AVG_STEP_LENGTH ", " AVG_STEP_FREQUENCY ", " AVG_SPEED_WITHOUT_STIMULATION ", " AVG_SPEED_WITH_STIMULATION ", " TOTAL_DISTANCE ", " TOTAL_STIMULATION_DISTANCE
+                  " ) VALUES (:Val1, :Val2, :Val3, :Val4, :Val5, :Val6, :Val7, :Val8, :Val9, :Val10, :Val11, :Val12)");
+    Training t;
+    query.bindValue(":Val1", t.type);
+    query.bindValue(":Val2", t.date);
+    query.bindValue(":Val3", t.timeWithStimulation);
+    query.bindValue(":Val4", t.timeWithoutStimulation);
+    query.bindValue(":Val5", t.timePause);
+    query.bindValue(":Val6", t.avgStimulationAmplitude);
+    query.bindValue(":Val7", t.avgStepLength);
+    query.bindValue(":Val8", t.avgStepFrequency);
+    query.bindValue(":Val9", t.avgSpeedWithoutStimulation);
+    query.bindValue(":Val10", t.avgSpeedWithStimulation);
+    query.bindValue(":Val11", t.totalDistance);
+    query.bindValue(":Val12", t.totalStimulationDistance);
+
+    // После чего выполняется запросом методом exec()
+    if (!query.exec()) {
+        qDebug() << "error insert into " << TABLE;
+        qDebug() << query.lastError().text();
+        return false;
+    }
+    else {
+        return true;
+    }
+    return false;
+}
+
 // Метод для удаления записи из таблицы
 
 bool DataBase::removeRecord(const int id)

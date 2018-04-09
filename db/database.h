@@ -78,6 +78,7 @@ private:
 public slots:
     bool inserIntoTable(const QVariantList& data); // Добавление записей в таблицу
     bool inserIntoTable(const Training& t);
+    bool inserIntoTable();
     bool removeRecord(const int id); // Удаление записи из таблицы по её id
 };
 
