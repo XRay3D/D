@@ -9,14 +9,13 @@ T.ComboBox {
     id: control
 
     baselineOffset: contentItem.y + contentItem.baselineOffset
-
     implicitHeight: Math.max(contentItem.implicitHeight, indicator.implicitHeight) + topPadding + bottomPadding
     implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
 
     padding: 6
     spacing: 6
 
-    property string text: qsTr("Switch")
+    property string text: qsTr('Switch')
 
     property color color: 'white'
 
@@ -34,37 +33,26 @@ T.ComboBox {
     delegate: MenuItem {
         width: parent.width
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
-        //Material.foreground: control.currentIndex === index ? parent.Material.accent : parent.Material.foreground
         highlighted: control.highlightedIndex === index
         hoverEnabled: control.hoverEnabled
     }
 
-
-
     popup: T.Popup {
-//        width: window.width - 100 * sc
-//        height: window.height - 1000 * sc
-
-//        anchors.centerIn: window
         width: control.width
         height: Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin)
         transformOrigin: Item.Top
         topMargin: 12
         bottomMargin: 12
-
-        y: 0
-//        x: (window.width - width)/2
+        dim: true
 
         enter: Transition {
-            // grow_fade_in
-            NumberAnimation { property: "scale"; from: 0.9; to: 1.0; easing.type: Easing.OutQuint; duration: 220 }
-            NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; easing.type: Easing.OutCubic; duration: 150 }
+            NumberAnimation { property: 'scale'; from: 0.9; to: 1.0; easing.type: Easing.OutQuint; duration: 220 }
+            NumberAnimation { property: 'opacity'; from: 0.0; to: 1.0; easing.type: Easing.OutCubic; duration: 150 }
         }
 
         exit: Transition {
-            // shrink_fade_out
-            NumberAnimation { property: "scale"; from: 1.0; to: 0.9; easing.type: Easing.OutQuint; duration: 220 }
-            NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; easing.type: Easing.OutCubic; duration: 150 }
+            NumberAnimation { property: 'scale'; from: 1.0; to: 0.9; easing.type: Easing.OutQuint; duration: 220 }
+            NumberAnimation { property: 'opacity'; from: 1.0; to: 0.0; easing.type: Easing.OutCubic; duration: 150 }
         }
 
         contentItem: ListView {
@@ -87,7 +75,7 @@ T.ComboBox {
                     PropertyChanges { target: delegate; scale: 0.9}
                 }
                 transitions: Transition {
-                    NumberAnimation { properties: "scale"; easing.type: Easing.InOutQuad; duration: 150 }
+                    NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 }
                 }
                 MouseArea {
                     id: delegateMouseArea
@@ -103,7 +91,7 @@ T.ComboBox {
                     anchors.fill: contentItem.delegate
                     radius: 8
                     samples: 17
-                    color: "white"
+                    color: 'white'
                     source: contentItem.delegate
                 }
             }
@@ -113,10 +101,6 @@ T.ComboBox {
             id: back1
             radius: 10
             color: '#28343e'
-            //            layer.enabled: control.enabled
-            //                layer.effect: ElevationEffect {
-            //                    elevation: 8
-            //                }
         }
     }
 
@@ -128,6 +112,7 @@ T.ComboBox {
         height: 60 * sc
         Rectangle {
             id: back
+            color: control.enabled ? '#FFFFFF' : '#C0C0C0'
             anchors.margins: 1
             anchors.fill: parent
             radius: height / 2
@@ -161,7 +146,7 @@ T.ComboBox {
         }
         Image {
             anchors.fill: parent
-            source:"images/frame.png"
+            source:'images/frame.png'
         }
     }
     MouseArea {

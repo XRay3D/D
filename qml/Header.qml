@@ -11,7 +11,7 @@ ToolBar {
         anchors.verticalCenter: parent.verticalCenter
         height:48 * sc
         opacity: 0.74
-        source:"images/dems.png"
+        source:'images/dems.png'
         width:247 * sc
     }
     Image {
@@ -19,7 +19,7 @@ ToolBar {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         height:94 * sc
-        source:"images/roc.png"
+        source:'images/roc.png'
         width:161 * sc
     }
 }

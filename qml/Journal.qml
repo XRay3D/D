@@ -6,18 +6,36 @@ import QtQuick.Layouts 1.3
 
 Page {
     background: Item{}
-    property int type_
-    property string date_
-    property string timeWithStimulation_
-    property string timeWithoutStimulation_
-    property string timePause_
-    property int avgStimulationAmplitude_
-    property int avgStepLength_
-    property int avgStepFrequency_
-    property int avgSpeedWithoutStimulation_
-    property int avgSpeedWithStimulation_
-    property int totalDistance_
-    property int totalStimulationDistance_
+    //    property int type_
+    //    property string date_
+    //    property string timeWithStimulation_
+    //    property string timeWithoutStimulation_
+    //    property string timePause_
+    //    property int avgStimulationAmplitude_
+    //    property int avgStepLength_
+    //    property int avgStepFrequency_
+    //    property int avgSpeedWithoutStimulation_
+    //    property int avgSpeedWithStimulation_
+    //    property int totalDistance_
+    //    property int totalStimulationDistance_
+    function showLastTraining(){
+        //                            dialogDelete.open()
+        //        listView.currentIndex= listView.model.count - 1
+        console.log('onClicked', myModel.count())
+        //                            type_ = type
+        //                            date_ = currentDate.toLocaleString(locale, 'd.MM.yyyy — hh:mm')
+        //                            timeWithStimulation_ = timeWithStimulation.toLocaleTimeString(locale, 'hh:mm')
+        //                            timeWithoutStimulation_ = timeWithoutStimulation.toLocaleTimeString(locale, 'hh:mm')
+        //                            timePause_ = timePause.toLocaleString(locale,'hh:mm')
+        //                            avgStimulationAmplitude_ = avgStimulationAmplitude
+        //                            avgStepLength_ = avgStepLength
+        //                            avgStepFrequency_ = avgStepFrequency
+        //                            avgSpeedWithoutStimulation_ = avgSpeedWithoutStimulation
+        //                            avgSpeedWithStimulation_ = avgSpeedWithStimulation
+        //                            totalDistance_ = totalDistance
+        //                            totalStimulationDistance_ = totalStimulationDistance
+        stack.push(contents)
+    }
     Component {
         id: contents
         Item {
@@ -66,7 +84,7 @@ Page {
                         y:10 * sc
                         color: 'white'
                         font.pixelSize: 24 * sc
-                        text: type_ ? qsTr("Коньковый  ход") : qsTr("Классический ход")
+                        text: type_ ? qsTr('Коньковый  ход') : qsTr('Классический ход')
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -90,7 +108,7 @@ Page {
                         y: 8 * sc
                         color: 'white'
                         font.pixelSize: 24 * sc
-                        text: qsTr("Без стимуляции")
+                        text: qsTr('Без стимуляции')
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -114,7 +132,7 @@ Page {
                         y:8 * sc
                         color: 'white'
                         font.pixelSize: 24 * sc
-                        text: qsTr("Режим стимуляции")
+                        text: qsTr('Режим стимуляции')
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -139,7 +157,7 @@ Page {
                         y:8 * sc
                         color: 'white'
                         font.pixelSize: 24 * sc
-                        text: qsTr("Отдых")
+                        text: qsTr('Отдых')
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -163,7 +181,7 @@ Page {
                         y:8 * sc
                         color: 'white'
                         font.pixelSize: 24 * sc
-                        text: qsTr("Стимуляция")
+                        text: qsTr('Стимуляция')
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -287,7 +305,7 @@ Page {
                 font.capitalization: Font.AllUppercase
                 font.pixelSize: 36 * sc
                 font.weight: Font.Black
-                text: qsTr("Журнал тренировок")
+                text: qsTr('Журнал тренировок')
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 MouseArea
@@ -335,9 +353,9 @@ Page {
                         anchors.fill: parent
                         hoverEnabled: true
                         onClicked: {
-                            dialogDelete.open()
-                            //                            console.log("onClicked", index)
-                            //                            listView.currentIndex = index
+                            //                            dialogDelete.open()
+                            console.log('onClicked', index)
+                            listView.currentIndex = index
                             //                            type_ = type
                             //                            date_ = currentDate.toLocaleString(locale, 'd.MM.yyyy — hh:mm')
                             //                            timeWithStimulation_ = timeWithStimulation.toLocaleTimeString(locale, 'hh:mm')
@@ -350,7 +368,7 @@ Page {
                             //                            avgSpeedWithStimulation_ = avgSpeedWithStimulation
                             //                            totalDistance_ = totalDistance
                             //                            totalStimulationDistance_ = totalStimulationDistance
-                            //                            stack.push(contents)
+                            stack.push(contents)
                         }
                     }
                     states: State {
@@ -358,154 +376,35 @@ Page {
                         PropertyChanges { target: delegate; scale: 0.9}
                     }
                     transitions: Transition {
-                        NumberAnimation { properties: "scale"; easing.type: Easing.InOutQuad; duration: 150 }
+                        NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 }
                     }
                 }
                 ScrollBar.vertical: ScrollBar {}
                 remove: Transition {
                     ParallelAnimation {
-                        NumberAnimation { property: "opacity"; to: 0; duration: 1000 }
-                        NumberAnimation { properties: "x,y"; to: 100; duration: 1000 }
+                        NumberAnimation { property: 'opacity'; to: 0; duration: 1000 }
+                        NumberAnimation { properties: 'x,y'; to: 100; duration: 1000 }
                     }
                 }
             }
         }
-        pushEnter: Transition { PropertyAnimation { property: "opacity"; from: 0; to:1; duration: 200; } }
-        pushExit: Transition { PropertyAnimation { property: "opacity"; from: 1; to:0; duration: 200; } }
-        popEnter: Transition { PropertyAnimation { property: "opacity"; from: 0; to:1; duration: 200 } }
-        popExit: Transition { PropertyAnimation { property: "opacity"; from: 1; to:0; duration: 200 } }
+        pushEnter: Transition { PropertyAnimation { property: 'opacity'; from: 0; to:1; duration: 200; } }
+        pushExit: Transition { PropertyAnimation { property: 'opacity'; from: 1; to:0; duration: 200; } }
+        popEnter: Transition { PropertyAnimation { property: 'opacity'; from: 0; to:1; duration: 200 } }
+        popExit: Transition { PropertyAnimation { property: 'opacity'; from: 1; to:0; duration: 200 } }
     }
 
-
-    //    // Слой с TaxtField`ами и Button для занесения записей в базу данных
-    //    ColumnLayout {
-    //        id: rowLayout
-    //        anchors.top: parent.top
-    //        anchors.left: parent.left
-    //        anchors.right: parent.right
-    //        anchors.margins: 5
-
-    //        spacing: 10
-
-    //        Text {text: qsTr("Имя")}
-    //        TextField {id: fnameField}
-    //        Text {text: qsTr("Фамилия")}
-    //        TextField { id: snameField}
-    //        Text {text: qsTr("НИК")}
-    //        TextField {id: nikField}
-
-    //        Button {
-    //            text: qsTr("Добавить")
-
-    //            // Вносим новую запись в базу данных
-    //            onClicked: {
-    //                database.inserIntoTable(fnameField.text , snameField.text, nikField.text)
-    //                myModel.updateModel() // И обновляем модель данных с новой записью
-    //            }
-    //        }
-    //    }
-
-    //    TableView {
-    //        id: tableView
-    //        anchors.top: rowLayout.bottom
-    //        anchors.left: parent.left
-    //        anchors.right: parent.right
-    //        anchors.bottom: parent.bottom
-    //        anchors.margins: 5
-
-    //        TableViewColumn {
-    //            role: "fname"
-    //            title: "Имя"
-    //        }
-    //        TableViewColumn {
-    //            role: "sname"
-    //            title: "Фамилия"
-    //        }
-    //        TableViewColumn {
-    //            role: "nik"
-    //            title: "НИК"
-    //        }
-
-    //        model: myModel
-
-    //        // Настройка строки в TableView для перехавата левого клика мыши
-    //        rowDelegate: Rectangle {
-    //            anchors.fill: parent
-    //            color: styleData.selected ? 'skyblue' : (styleData.alternate ? 'whitesmoke' : 'white');
-    //            MouseArea {
-    //                anchors.fill: parent
-    //                acceptedButtons: Qt.RightButton | Qt.LeftButton
-    //                onClicked: {
-    //                    tableView.selection.clear()
-    //                    tableView.selection.select(styleData.row)
-    //                    tableView.currentRow = styleData.row
-    //                    tableView.focus = true
-
-    //                    switch(mouse.button) {
-    //                    case Qt.RightButton:
-    //                        contextMenu.popup() // Вызываем контексткное меню
-    //                        break
-    //                    default:
-    //                        break
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    // Контекстно меню предлагает удаление строки из базы данных
-    //    Menu {
-    //        id: contextMenu
-
-    //        MenuItem {
-    //            text: qsTr("Удалить")
-    //            onTriggered: {
-    //                /* Вызываем диалоговое окно,
-    //                 * которое уточнит намерение удалить строку из базы данных
-    //                 * */
-    //                dialogDelete.open()
-    //            }
-    //        }
-    //    }
-
     // Диалог подтверждения удаления строки из базы данных
-
-
     Dialog {
         id: dialogDelete
-        title: "Title"
+        title: 'Title'
         standardButtons: Dialog.Ok | Dialog.Cancel
 
-        onRejected: console.log("Cancel clicked")
+        onRejected: console.log('Cancel clicked')
         onAccepted: {
-            console.log("Ok clicked")
-            /* ... удаляем строку по id,
-                         * который забираем из модели данных
-                         * по номеру строки в представлении
-                         * */
+            console.log('Ok clicked')
             database.removeRecord(myModel.getId(listView.currentIndex))
             myModel.updateModel();  // Обновляем модель данных
         }
     }
-    //    Dialog {
-    //        id: dialogDelete
-    ////        width: window.width
-    ////        height:window.height / 2
-    //        modal: true
-    //        title: qsTr("Удаление записи")
-    //        Label{
-    //            anchors.fill: parent
-    //            text: qsTr("Подтвердите удаление записи из журнала")
-    //        }
-    //        standardButtons: StandardButton.Ok | StandardButton.Cancel
-    //        // При положительном ответе ...
-    //        onAccepted: {
-    //            /* ... удаляем строку по id,
-    //                 * который забираем из модели данных
-    //                 * по номеру строки в представлении
-    //                 * */
-    //            database.removeRecord(myModel.getId(listView.currentIndex))
-    //            myModel.updateModel();  // Обновляем модель данных
-    //        }
-    //    }
 }

@@ -4,24 +4,8 @@
         <file>qml/Header.qml</file>
         <file>qml/main.qml</file>
         <file>qml/Splash.qml</file>
-        <file>qml/Training/Control.qml</file>
-        <file>qml/Training/Selection.qml</file>
-        <file>qml/Training/Stats.qml</file>
-        <file>qml/Training/TrainingPage.qml</file>
         <file>qml/images/bluetootch.png</file>
         <file>qml/images/background.png</file>
-        <file>qml/Training/images/-.png</file>
-        <file>qml/Training/images/+.png</file>
-        <file>qml/Training/images/icon.png</file>
-        <file>qml/Training/images/icon2.png</file>
-        <file>qml/Training/images/left.png</file>
-        <file>qml/Training/images/mid.png</file>
-        <file>qml/Training/images/mid2.png</file>
-        <file>qml/Training/images/pause.png</file>
-        <file>qml/Training/images/play.png</file>
-        <file>qml/Training/images/pulse.png</file>
-        <file>qml/Training/images/right.png</file>
-        <file>qml/Training/images/stop.png</file>
         <file>qml/Journal.qml</file>
         <file>qml/images/contentItem.png</file>
         <file>qml/images/type1.png</file>
@@ -34,9 +18,6 @@
         <file>fonts/HelveticaNeueCyr-Medium.ttf</file>
         <file>fonts/HelveticaNeueCyr-Roman.ttf</file>
         <file>fonts/HelveticaNeueCyr-Thin.ttf</file>
-        <file>qml/Training/Arc.qml</file>
-        <file>qml/Training/Rb.qml</file>
-        <file>qml/Training/images/handle.png</file>
         <file>qml/ListButton.qml</file>
         <file>qml/images/bt.png</file>
         <file>qml/images/dems.png</file>
@@ -49,5 +30,26 @@
         <file>qml/images/statictics.png</file>
         <file>qml/images/close.png</file>
         <file>qml/Battery.qml</file>
+        <file>qml/MyDialog.qml</file>
+        <file>qml/Arc.qml</file>
+        <file>qml/Control.qml</file>
+        <file>qml/Rb.qml</file>
+        <file>qml/Selection.qml</file>
+        <file>qml/Stats.qml</file>
+        <file>qml/TrainingPage.qml</file>
+        <file>qml/images/handle.png</file>
+        <file>qml/images/icon.png</file>
+        <file>qml/images/icon2.png</file>
+        <file>qml/images/left.png</file>
+        <file>qml/images/mid.png</file>
+        <file>qml/images/mid2.png</file>
+        <file>qml/images/pause.png</file>
+        <file>qml/images/play.png</file>
+        <file>qml/images/pulse.png</file>
+        <file>qml/images/right.png</file>
+        <file>qml/images/stop.png</file>
+        <file>qml/images/type12.png</file>
+        <file>qml/images/minus.png</file>
+        <file>qml/images/plus.png</file>
     </qresource>
 </RCC>

@@ -16,7 +16,7 @@ T.Switch {
 
     property color color: 'white'
 
-    text: qsTr("Switch")
+    text: qsTr('Switch')
 
     contentItem: Text {
         text: control.text
@@ -35,7 +35,7 @@ T.Switch {
         height: 60 * sc
         Rectangle {
             id: back
-            color: control.checked ? "#ffffff" : "#697178"
+            color: control.checked ? (control.enabled ? '#FFFFFF' : '#C0C0C0') : '#707070'
             anchors.margins: 1
             anchors.fill: parent
             radius: height * 0.5
@@ -43,10 +43,10 @@ T.Switch {
         }
         Image {
             anchors.fill: parent
-            source:"images/frame.png"
+            source:'images/frame.png'
         }
         Image {
-            source:"images/indicator.png"
+            source:'images/indicator.png'
             x: Math.max(6 * sc, Math.min(parent.width - width, control.visualPosition * parent.width - (width / 2))) - 3 * sc
             y: (parent.height - height) * 0.5 + 1 * sc
             width: 55 * sc

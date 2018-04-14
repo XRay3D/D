@@ -10,7 +10,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 # disables all the APIs deprecated before Qt 6.0.0
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
     guiapplication.cpp \
@@ -20,7 +20,9 @@ SOURCES += main.cpp \
     bt/devicehandler.cpp \
     bt/deviceinfo.cpp \
     db/database.cpp \
-    db/listmodel.cpp
+    db/listmodel.cpp \
+    gps/gpstrack.cpp \
+    gps/gpstrackstat.cpp
 
 HEADERS += \
     guiapplication.h \
@@ -31,7 +33,9 @@ HEADERS += \
     bt/deviceinfo.h \
     bt/skiprotokol.h \
     db/database.h \
-    db/listmodel.h
+    db/listmodel.h \
+    gps/gpstrack.h \
+    gps/gpstrackstat.h
 
 RESOURCES += qml.qrc
 
@@ -58,22 +62,22 @@ DISTFILES += \
      android/gradlew.bat
 }
 
-#ios {
-#    QMAKE_INFO_PLIST = ios/Info.plist
+ios {
+    QMAKE_INFO_PLIST = ios/Info.plist
 
-#    fontFiles.files = $$files(fonts/*.ttf)
-#    fontFiles.path = fonts
-#    QMAKE_BUNDLE_DATA += fontFiles
+    fontFiles.files = $$files(fonts/*.ttf)
+    fontFiles.path = fonts
+    QMAKE_BUNDLE_DATA += fontFiles
 
-#    app_launch_images.files = $$PWD/ios/LaunchScreen.xib $$files($$PWD/ios/LaunchImage*.png)
-#    QMAKE_BUNDLE_DATA += app_launch_images
+    app_launch_images.files = $$PWD/ios/LaunchScreen.xib $$files($$PWD/ios/LaunchImage*.png)
+    QMAKE_BUNDLE_DATA += app_launch_images
 
 
-#    ios_icon.files = $$files($$PWD/ios/AppIcon*.png)
-#    QMAKE_BUNDLE_DATA += ios_icon
+    ios_icon.files = $$files($$PWD/ios/AppIcon*.png)
+    QMAKE_BUNDLE_DATA += ios_icon
 
-#DISTFILES += \
-#    ios/Assets.xcassets \
-#    ios/Info.plist \
-#    ios/LaunchScreen.xib
-#}
+DISTFILES += \
+    ios/Assets.xcassets \
+    ios/Info.plist \
+    ios/LaunchScreen.xib
+}

@@ -21,7 +21,7 @@ Page {
         font.capitalization: Font.AllUppercase
         font.pixelSize: 36 * sc
         font.weight: Font.Black
-        text: qsTr("Настройки")
+        text: qsTr('Настройки')
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
@@ -43,7 +43,7 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
                 anchors.rightMargin: 30 * sc
-                source: "images/bt.png"
+                source: 'images/bt.png'
                 width: 33* sc
                 height: 65* sc
                 fillMode: Image.PreserveAspectFit
@@ -66,10 +66,11 @@ Page {
             Component.onCompleted: {
                 var i = 0
                 for(i = 0; i < 11; ++i){
-                    model.append({"name": (i * 10) + qsTr('мс')});
+                    model.append({'name': (i * 10) + qsTr('мс')});
                 }
-                currentIndex = 1
+                currentIndex = 0
             }
+            enabled: false
         }
         Rectangle{
             Layout.fillWidth: true
@@ -81,6 +82,7 @@ Page {
             text: 'Пуш-уведомления'
             Layout.fillWidth: true
             Layout.fillHeight: true
+            enabled: false
         }
         Rectangle{
             Layout.fillWidth: true
@@ -92,6 +94,7 @@ Page {
             text: 'Звук'
             Layout.fillWidth: true
             Layout.fillHeight: true
+            enabled: false
         }
         Rectangle{
             Layout.fillWidth: true
@@ -103,6 +106,7 @@ Page {
             text: 'Вибрация'
             Layout.fillWidth: true
             Layout.fillHeight: true
+            enabled: false
         }
         Rectangle{
             Layout.fillWidth: true
@@ -114,6 +118,7 @@ Page {
             text: 'Голосовое управление'
             Layout.fillWidth: true
             Layout.fillHeight: true
+            enabled: false
         }
         Rectangle{
             Layout.fillWidth: true
@@ -126,9 +131,10 @@ Page {
             Layout.fillWidth: true
             Layout.fillHeight: true
             model: ListModel {
-                ListElement { name: "ENG" }
-                ListElement { name: "РУС" }
+                ListElement { name: 'РУС' }
+                ListElement { name: 'ENG' }
             }
+            enabled: false
         }
         Rectangle{
             Layout.fillWidth: true
@@ -154,18 +160,4 @@ Page {
             }
         }
     }
-
-    // FastBlur{
-    // anchors.fill: window
-    // source: window
-    // radius: 32
-    // }
-
-    //    Dialog{
-    //        id: about
-    //        width: window.width - 100 * sc
-    //        height: window.height - 1000 * sc
-    //        y: -10
-    //        x: (window.width - width) / 2
-    //    }
 }
