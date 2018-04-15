@@ -41,37 +41,9 @@ QVariant ListModel::data(const QModelIndex& index, int role) const
     }
 }
 
-QVariant ListModel::getData(int row, const QString &role)
+QVariant ListModel::getData(int row, const QString& role)
 {
-    // Определяем номер колонки, адрес так сказать, по номеру роли
-    // Создаём индекс с помощью новоиспечённого ID колонки
-    QModelIndex modelIndex = this->index(row, roleNames().key(role.toLocal8Bit()) - Qt::UserRole);
-
-    // И с помощью уже метода data() базового класса вытаскиваем данные для таблицы из модели
-    QVariant tmp(QSqlQueryModel::data(modelIndex, Qt::DisplayRole));
-
-    switch (roleNames().key(role.toLocal8Bit())) {
-    case idRole:
-    case typeRole:
-        return tmp.toInt();
-    case dateRole:
-        return QVariant(QDateTime::fromString(tmp.toString(), Qt::ISODate));
-    case timeWithStimulationRole:
-    case timeWithoutStimulationRole:
-    case timePauseRole:
-        return QVariant(QTime::fromString(tmp.toString(), Qt::ISODate));
-    case avgStimulationAmplitudeRole:
-    case avgStepLengthRole:
-    case avgStepFrequencyRole:
-    case avgSpeedWithoutStimulationRole:
-    case avgSpeedWithStimulationRole:
-    case totalDistanceRole:
-    case totalStimulationDistanceRole:
-        return tmp.toInt();
-    default:
-        return QVariant();
-        break;
-    }
+    return data(index(row, 0), roleNames().key(role.toLocal8Bit()));
 }
 
 // Метод для получения имен ролей через хешированную таблицу.

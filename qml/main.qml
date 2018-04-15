@@ -231,7 +231,7 @@ ApplicationWindow {
                     onClicked: {
                         deviceFinder.connectToService(modelData.deviceAddress);
                         console.log(modelData.deviceAddress)
-                        //app.showPage('Measure.qml')
+                        btDialog.accept()
                     }
                 }
                 Label {

@@ -162,7 +162,7 @@ void DeviceHandler::updateValue(const QLowEnergyCharacteristic& characteristic, 
 
     const Ski::Date_t date = *reinterpret_cast<const Ski::Date_t*>(reinterpret_cast<const Ski::Parcel_t*>(value.data())->data);
     QString str(QTime(date.hour, date.minute, date.second).toString("hh:mm:ss") + QString::number(t.elapsed()));
-    setInfo(str);
+    setInfo("str"+QTime::currentTime().toString());
     if (checkParcel(value))
         qDebug() << /*(QTime(date.hour, date.minute, date.second).toString("hh:mm:ss") + " / ms delay " + QString::number(t.elapsed())) <<*/ value.toHex().toUpper();
     t.start();

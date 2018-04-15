@@ -45,7 +45,7 @@ Page {
                 font.capitalization: Font.AllUppercase
                 font.pixelSize: 36 * sc
                 font.weight: Font.Black
-                text: qsTr('ТРЕНИРОВКА №') + (listView.currentIndex + 1)
+                text: qsTr('ТРЕНИРОВКА №') + (myModel.getId(listView.currentIndex))//listView.currentIndex + 1)
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }

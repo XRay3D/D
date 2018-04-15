@@ -66,7 +66,7 @@ Page {
                         color: 'white'
                         font.pixelSize: 24 * sc
                         verticalAlignment: Text.AlignVCenter
-                        text: '№'+ (index + 1) + currentDate.toLocaleString(locale, ' — d.MM.yyyy — hh:mm')
+                        text: '№'+ myModel.getId(index)/*(index + 1)*/+ currentDate.toLocaleString(locale, ' — d.MM.yyyy — hh:mm')
                     }
                     Image {
                         anchors.verticalCenter: parent.verticalCenter
