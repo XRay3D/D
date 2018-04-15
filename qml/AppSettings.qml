@@ -1,14 +1,11 @@
 import QtQuick 2.9
-import QtQuick.Window 2.3
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
-import QtQuick.Dialogs 1.2
 
 Page {
     id: page
-    background: Item{
-    }
+
+    background: Item{}
 
     font.family: 'HelveticaNeueCyr'
     font.pixelSize: 36 * sc
@@ -30,7 +27,6 @@ Page {
         anchors.fill: parent
         anchors.leftMargin: 103 * sc
         anchors.rightMargin: 103 * sc
-        //        anchors.topMargin: 110 * sc
         anchors.bottomMargin: 55 * sc
         Label {
             Layout.fillHeight: true
@@ -151,12 +147,7 @@ Page {
             verticalAlignment: Text.AlignVCenter
             MouseArea{
                 anchors.fill: parent
-                onClicked: {
-                    console.log(parent.text)
-                    //about.raise()
-                    //about.open()
-                    aboutDialog.open()
-                }
+                onClicked: aboutDialog.open()
             }
         }
     }

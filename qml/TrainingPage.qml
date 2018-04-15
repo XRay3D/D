@@ -9,6 +9,12 @@ Page {
     //property int type: 0
     background: Item{}
 
+    Component{
+        id: control
+        DemsControl{
+        }
+    }
+
     StackView{
         id: stackView
         width: parent.width
@@ -66,23 +72,24 @@ Page {
 
         onClicked: {
             if(!isRuning){
-                isRuning = !isRuning
                 // trainingLoader.setSource('TrainingControl.qml')
                 if(!deviceHandler.alive)
                     btDialog.open()
-                stackView.push('Control.qml')
+                stackView.push('DemsControl.qml')
             }else{
-                if(stackView.depth == 2){
-                    journal.showLastTraining()
-                    tabBar.selectTab(2)
-                    //stackView.push('Stats.qml')
-                }
-                else{
-                    stackView.pop(initialItem)
-                    isRuning = false
-                    btnPulse.opacity = 0.0
-                }
+                //                if(stackView.depth == 1){
+                //                    journal.showLastTraining()
+                //                    tabBar.selectTab(2)
+                //                    //stackView.push('Stats.qml')
+                //                }
+                //                else{
+                journal.showLastTraining()
+                tabBar.selectTab(2)
+                stackView.pop(initialItem)
+                btnPulse.opacity = 0.0
+                //                }
             }
+            isRuning = !isRuning
         }
 
         states: State {

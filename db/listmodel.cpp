@@ -41,6 +41,39 @@ QVariant ListModel::data(const QModelIndex& index, int role) const
     }
 }
 
+QVariant ListModel::getData(int row, const QString &role)
+{
+    // Определяем номер колонки, адрес так сказать, по номеру роли
+    // Создаём индекс с помощью новоиспечённого ID колонки
+    QModelIndex modelIndex = this->index(row, roleNames().key(role.toLocal8Bit()) - Qt::UserRole);
+
+    // И с помощью уже метода data() базового класса вытаскиваем данные для таблицы из модели
+    QVariant tmp(QSqlQueryModel::data(modelIndex, Qt::DisplayRole));
+
+    switch (roleNames().key(role.toLocal8Bit())) {
+    case idRole:
+    case typeRole:
+        return tmp.toInt();
+    case dateRole:
+        return QVariant(QDateTime::fromString(tmp.toString(), Qt::ISODate));
+    case timeWithStimulationRole:
+    case timeWithoutStimulationRole:
+    case timePauseRole:
+        return QVariant(QTime::fromString(tmp.toString(), Qt::ISODate));
+    case avgStimulationAmplitudeRole:
+    case avgStepLengthRole:
+    case avgStepFrequencyRole:
+    case avgSpeedWithoutStimulationRole:
+    case avgSpeedWithStimulationRole:
+    case totalDistanceRole:
+    case totalStimulationDistanceRole:
+        return tmp.toInt();
+    default:
+        return QVariant();
+        break;
+    }
+}
+
 // Метод для получения имен ролей через хешированную таблицу.
 QHash<int, QByteArray> ListModel::roleNames() const
 {
@@ -62,11 +95,9 @@ QHash<int, QByteArray> ListModel::roleNames() const
     return roles;
 }
 
-// Метод обновления таблицы в модели представления данных
-void ListModel::updateModel()
+int ListModel::count()
 {
-    // Обновление производится SQL-запросом к базе данных
-    this->setQuery("SELECT id, " TYPE ", " DATE ", " TIME_WITH_STIMULATION ", " TIME_WITHOUT_STIMULATION ", " TIME_PAUSE ", " AVG_STIMULATION_AMPLITUDE ", " AVG_STEP_LENGTH ", " AVG_STEP_FREQUENCY ", " AVG_SPEED_WITHOUT_STIMULATION ", " AVG_SPEED_WITH_STIMULATION ", " TOTAL_DISTANCE ", " TOTAL_STIMULATION_DISTANCE " FROM " TABLE);
+    return rowCount();
 }
 
 // Получение id из строки в модели представления данных
@@ -74,3 +105,15 @@ int ListModel::getId(int row)
 {
     return this->data(this->index(row, 0), idRole).toInt();
 }
+
+// Метод обновления таблицы в модели представления данных
+void ListModel::updateModel()
+{
+    // Обновление производится SQL-запросом к базе данных
+    this->setQuery("SELECT id, " TYPE ", " DATE ", " TIME_WITH_STIMULATION ", " TIME_WITHOUT_STIMULATION ", " TIME_PAUSE ", " AVG_STIMULATION_AMPLITUDE ", " AVG_STEP_LENGTH ", " AVG_STEP_FREQUENCY ", " AVG_SPEED_WITHOUT_STIMULATION ", " AVG_SPEED_WITH_STIMULATION ", " TOTAL_DISTANCE ", " TOTAL_STIMULATION_DISTANCE " FROM " TABLE);
+}
+
+//Training ListModel::getTraining(int row)
+//{
+//    return Training();
+//}

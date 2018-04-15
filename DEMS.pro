@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     db/database.cpp \
     db/listmodel.cpp \
     gps/gpstrack.cpp \
-    gps/gpstrackstat.cpp
+    gps/gpstrackstat.cpp \
+    db/training.cpp
 
 HEADERS += \
     guiapplication.h \
@@ -35,7 +36,8 @@ HEADERS += \
     db/database.h \
     db/listmodel.h \
     gps/gpstrack.h \
-    gps/gpstrackstat.h
+    gps/gpstrackstat.h \
+    db/training.h
 
 RESOURCES += qml.qrc
 

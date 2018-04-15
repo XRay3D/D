@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSqlQueryModel>
+#include "training.h"
 
 class ListModel : public QSqlQueryModel {
     Q_OBJECT
@@ -11,7 +12,7 @@ public:
     // Как видите, они должны лежать в памяти выше параметра Qt::UserRole
     // Связано с тем, что информация ниже этого адреса не для кастомизаций
     enum TrainingRoles {
-        idRole = Qt::UserRole , // id
+        idRole = Qt::UserRole, // id
         typeRole,
         dateRole,
         timeWithStimulationRole,
@@ -41,8 +42,11 @@ protected:
 signals:
 
 public slots:
-    void updateModel();
+    int count();
     int getId(int row);
+    void updateModel();
+    QVariant getData(int row, const QString& role);
+
 };
 
 #endif // LISTMODEL_H

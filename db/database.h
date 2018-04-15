@@ -1,6 +1,8 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
+#include "training.h"
+
 #include <QObject>
 #include <QSql>
 #include <QSqlQuery>
@@ -30,30 +32,6 @@
 #define TOTAL_STIMULATION_DISTANCE "TotalStimulationDistance"
 
 // Первая колонка содержит Autoincrement ID
-
-class Training {
-public:
-    Training()
-        : date(QDateTime::currentDateTime())
-        , timeWithStimulation(QTime::currentTime())
-        , timeWithoutStimulation(QTime::currentTime())
-        , timePause(QTime::currentTime())
-    {
-        type = qrand() > RAND_MAX / 2;
-    }
-    int type = 0;
-    QDateTime date;
-    QTime timeWithStimulation;
-    QTime timeWithoutStimulation;
-    QTime timePause;
-    int avgStimulationAmplitude = 1;
-    int avgStepLength = 2;
-    int avgStepFrequency = 3;
-    int avgSpeedWithoutStimulation = 4;
-    int avgSpeedWithStimulation = 5;
-    int totalDistance = 6;
-    int totalStimulationDistance = 7;
-};
 
 class DataBase : public QObject {
     Q_OBJECT

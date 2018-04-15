@@ -32,7 +32,6 @@
         <file>qml/Battery.qml</file>
         <file>qml/MyDialog.qml</file>
         <file>qml/Arc.qml</file>
-        <file>qml/Control.qml</file>
         <file>qml/Rb.qml</file>
         <file>qml/Selection.qml</file>
         <file>qml/Stats.qml</file>
@@ -51,5 +50,6 @@
         <file>qml/images/type12.png</file>
         <file>qml/images/minus.png</file>
         <file>qml/images/plus.png</file>
+        <file>qml/DemsControl.qml</file>
     </qresource>
 </RCC>

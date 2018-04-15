@@ -155,7 +155,7 @@ ApplicationWindow {
     }
 
     Shortcut {
-        sequence: 'Esc'
+        sequence: '1'
         context: Qt.ApplicationShortcut
         onActivated: Qt.quit()
     }
@@ -212,22 +212,9 @@ ApplicationWindow {
 
     }
 
-    DropShadow {
-        anchors.fill: aboutDialog
-        horizontalOffset: 1
-        verticalOffset: 1
-        radius: 8
-        samples: 10
-        source: aboutDialog
-        color: "black"
-        Behavior on radius { PropertyAnimation { duration: 100 } }
-    }
-
     MyDialog{
         id: btDialog
-
         caption: qsTr('Соединение')
-
         ListView {
             id: devices
             anchors.fill: parent
@@ -278,8 +265,44 @@ ApplicationWindow {
                 text: qsTr('START SEARCH')
             }
         }
+    }
 
-
+    // Диалог подтверждения удаления строки из базы данных
+    MyDialog {
+        id: dialogDelete
+        caption: 'Удаление'
+        Label{
+            anchors.fill: parent
+            anchors.margins: 50 * sc
+            height: 110 * sc
+            width: parent.width
+            color: 'white'
+            font.capitalization: Font.AllUppercase
+            font.pixelSize: 36 * sc
+            font.weight: Font.Black
+            wrapMode: Text.WordWrap
+            text: qsTr('Вы действительно хотите удалить тренировку?')
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+        footer: Item{
+            width: parent.width;
+            height: 100 * sc
+            Button {
+                anchors.fill: parent
+                anchors.margins: 20 * sc
+                height: 50 * sc
+                enabled: !deviceFinder.scanning
+                onClicked: dialogDelete.accept()
+                text: qsTr('Да')
+            }
+        }
+        onRejected: console.log('Cancel clicked')
+        onAccepted: {
+            console.log('Ok clicked')
+            database.removeRecord(myModel.getId(journal.listView.currentIndex))
+            myModel.updateModel();  // Обновляем модель данных
+        }
     }
 
     ////////////////////////////////////////////
