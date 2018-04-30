@@ -29,7 +29,7 @@ void BluetoothBaseClass::setInfo(const QString& info)
     if (m_info != info) {
         m_info = info;
         emit infoChanged();
-        QTimer::singleShot(1000, Qt::CoarseTimer, [this]() { m_info.clear(); emit errorChanged(); });
+        QTimer::singleShot(1000, Qt::CoarseTimer, [this]() { m_info.clear(); emit infoChanged(); });
     }
 }
 

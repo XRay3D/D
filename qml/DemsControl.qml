@@ -12,12 +12,7 @@ Item {
         property alias p: power.value
         property alias d: duration.value
     }
-    Component.onDestruction: {
-        console.log('onDestruction')
-    }
-    Component.onCompleted: {
-        console.log('onCompleted')
-    }
+
     Text {
         anchors.horizontalCenter: parent.horizontalCenter
         y:23 * sc
@@ -32,7 +27,7 @@ Item {
         y:55 * sc
         color: 'white'
         font.pixelSize: 90 * sc
-        text: '00:35:48'
+        text: training.totalTime //'00:35:48'
     }
 
     Rectangle {

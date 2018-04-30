@@ -1,25 +1,15 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
 
 Page{
-    id: training
+    id: trainingPage
     property bool isRuning: false
     property int k: 80 * sc
 
     background: Item{}
 
-//    Component{
-//        id: control
-//        DemsControl{
-//        }
-//    }
-
-    state: 'Stopped'
-    //'Start'
-    //'Pause'
-    //'Stop'
+    state: training.state //init state is 'Stopped'
 
     StackView{
         id: stackView
@@ -56,15 +46,14 @@ Page{
         states: State { when: btnPulseStop.pressed; PropertyChanges { target: btnPulseStop.background; scale: 0.8} }
         transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 } }
         onClicked: {
-            if(training.state == 'Stopped'){
+            if(trainingPage.state == 'Running'){
+                //add pulse call
             }
-            else if(training.state == 'Running'){
-            }
-            else if(training.state == 'Paused'){
+            else if(trainingPage.state == 'Paused'){
+                training.stop()
                 journal.showLastTraining()
                 tabBar.selectTab(2)
                 stackView.pop(initialItem)
-                training.state = 'Stopped'
             }
         }
     }
@@ -82,69 +71,42 @@ Page{
         states: State { when: btnStartPause.pressed; PropertyChanges { target: btnStartPause.background; scale: 0.8} }
         transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 } }
         onClicked: {
-            if(training.state == 'Stopped'){
-                training.state = 'Running'
-                if(!debug)//debug
-                    if(!deviceHandler.alive)
-                        btDialog.open()
-                stackView.push('DemsControl.qml')
+            if(trainingPage.state == 'Stopped'){
+                if(deviceHandler.alive)//! return
+                    btDialog.open()
+                else{
+                    stackView.push('DemsControl.qml')
+                    training.start()
+                }
             }
-            else if(training.state == 'Running'){
-                training.state = 'Paused'
+            else if(trainingPage.state == 'Running'){
+                training.pause()
             }
-            else if(training.state == 'Paused'){
-                training.state = 'Running'
+            else if(trainingPage.state == 'Paused'){
+                training.resume()
             }
-            //            if(!isRuning){
-            //                // trainingLoader.setSource('TrainingControl.qml')
-            //                if(!debug)//debug
-            //                    if(!deviceHandler.alive)
-            //                        btDialog.open()
-            //                stackView.push('DemsControl.qml')
-            //            }else{
-            //                // if(stackView.depth == 1){
-            //                // journal.showLastTraining()
-            //                // tabBar.selectTab(2)
-            //                // //stackView.push('Stats.qml')
-            //                // }
-            //                // else{
-            //                journal.showLastTraining()
-            //                tabBar.selectTab(2)
-            //                stackView.pop(initialItem)
-            //                btnPulseStop.opacity = 0.0
-            //                // }
-            //            }
-            //            isRuning = !isRuning
         }
     }
-
 
     states: [
         State {
             name: 'Stopped'
-            //PropertyChanges { target: btnPulseStop; opacity: 0.0}
             PropertyChanges { target: btnStartPauseImage; source: 'images/play.png' }
             PropertyChanges { target: btnPulseStopImage; source: 'images/pulse.png' }
-            onCompleted: console.log(name)
         },
         State {
             name: 'Running'
-            //PropertyChanges { target: btnPulseStop; opacity: 1.0}
             PropertyChanges { target: btnStartPauseImage; source: 'images/pause.png' }
             PropertyChanges { target: btnPulseStopImage; source: 'images/pulse.png' }
-            PropertyChanges { target: btnStartPause; x: training.width / 2 - btnStartPause.width - k }
-            PropertyChanges { target: btnPulseStop; x: training.width / 2 + k }
-            // PropertyChanges { target: btnPulseStopOpacityAnimator; running: true }
-            onCompleted: console.log(name)
+            PropertyChanges { target: btnStartPause; x: trainingPage.width / 2 - btnStartPause.width - k }
+            PropertyChanges { target: btnPulseStop; x: trainingPage.width / 2 + k }
         },
         State {
             name: 'Paused'
-            //PropertyChanges { target: btnPulseStop; opacity: 1.0}
             PropertyChanges { target: btnStartPauseImage; source: 'images/play.png' }
             PropertyChanges { target: btnPulseStopImage; source: 'images/stop.png' }
-            PropertyChanges { target: btnStartPause; x: training.width / 2 - btnStartPause.width - k }
-            PropertyChanges { target: btnPulseStop; x: training.width / 2 + k }
-            onCompleted: console.log(name)
+            PropertyChanges { target: btnStartPause; x: trainingPage.width / 2 - btnStartPause.width - k }
+            PropertyChanges { target: btnPulseStop; x: trainingPage.width / 2 + k }
         }
     ]
 

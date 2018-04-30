@@ -4,7 +4,7 @@
 ListModel::ListModel(QObject* parent)
     : QSqlQueryModel(parent)
 {
-    this->updateModel();
+    updateModel();
 }
 
 // Метод для получения данных из модели
@@ -16,34 +16,99 @@ QVariant ListModel::data(const QModelIndex& index, int role) const
     QModelIndex modelIndex = this->index(index.row(), columnId);
     // И с помощью уже метода data() базового класса вытаскиваем данные для таблицы из модели
     QVariant tmp(QSqlQueryModel::data(modelIndex, Qt::DisplayRole));
-    //qDebug() << columnId << tmp << QDateTime::fromString(tmp.toString(), Qt::ISODate);
-    switch (role) {
-    case idRole:
-    case typeRole:
-        return tmp.toInt();
-    case dateRole:
-        return QVariant(QDateTime::fromString(tmp.toString(), Qt::ISODate));
-    case timeWithStimulationRole:
-    case timeWithoutStimulationRole:
-    case timePauseRole:
-        return QVariant(QTime::fromString(tmp.toString(), Qt::ISODate));
-    case avgStimulationAmplitudeRole:
-    case avgStepLengthRole:
-    case avgStepFrequencyRole:
-    case avgSpeedWithoutStimulationRole:
-    case avgSpeedWithStimulationRole:
-    case totalDistanceRole:
-    case totalStimulationDistanceRole:
-        return tmp.toInt();
-    default:
-        return QVariant();
-        break;
-    }
+    return tmp;
+    //    switch (role) {
+    //    case idRole:
+    //    case typeRole:
+    //        return tmp.toInt();
+    //    case dateRole:
+    //        return QVariant(QDateTime::fromString(tmp.toString(), Qt::ISODate));
+    //    case timeWithStimulationRole:
+    //    case timeWithoutStimulationRole:
+    //    case timeStimulationRole:
+    //    case timeRestRole:
+    //    case avgStimulationAmplitudeRole:
+    //    case avgStepLengthRole:
+    //    case avgStepFrequencyRole:
+    //    case avgSpeedWithoutStimulationRole:
+    //    case avgSpeedWithStimulationRole:
+    //    case totalDistanceRole:
+    //    case totalStimulationDistanceRole:
+    //        return tmp.toInt();
+    //    default:
+    //        return QVariant();
+    //        break;
+    //    }
 }
 
-QVariant ListModel::getData(int row, const QString& role)
+QString ListModel::getType(int row)
 {
-    return data(index(row, 0), roleNames().key(role.toLocal8Bit()));
+    return data(index(row, 0), typeRole).toInt();
+}
+
+QString ListModel::getDate(int row)
+{
+    return QDateTime::fromString(data(index(row, 0), dateRole).toString(), Qt::ISODate).toString("dd.MM.yyyy — hh:mm");
+}
+
+QString ListModel::getTrainingTime(int row)
+{
+    return QTime::fromMSecsSinceStartOfDay(data(index(row, 0), timeWithStimulationRole).toInt() + data(index(row, 0), timeWithoutStimulationRole).toInt()).toString("hh:mm:ss");
+}
+
+QString ListModel::getTimeWithStimulation(int row)
+{
+    return QTime::fromMSecsSinceStartOfDay(data(index(row, 0), timeWithStimulationRole).toInt()).toString("hh:mm:ss");
+}
+
+QString ListModel::getTimeWithoutStimulation(int row)
+{
+    return QTime::fromMSecsSinceStartOfDay(data(index(row, 0), timeWithoutStimulationRole).toInt()).toString("hh:mm:ss");
+}
+
+QString ListModel::getTimeStimulation(int row)
+{
+    return QTime::fromMSecsSinceStartOfDay(data(index(row, 0), timeStimulationRole).toInt()).toString("hh:mm:ss");
+}
+
+QString ListModel::getTimeRest(int row)
+{
+    return QTime::fromMSecsSinceStartOfDay(data(index(row, 0), timeRestRole).toInt()).toString("hh:mm:ss");
+}
+
+QString ListModel::getAvgStimulationAmplitude(int row)
+{
+    return data(index(row, 0), avgStimulationAmplitudeRole).toString();
+}
+
+QString ListModel::getAvgStepLength(int row)
+{
+    return data(index(row, 0), avgStepLengthRole).toString();
+}
+
+QString ListModel::getAvgStepFrequency(int row)
+{
+    return data(index(row, 0), avgStepFrequencyRole).toString();
+}
+
+QString ListModel::getAvgSpeedWithoutStimulation(int row)
+{
+    return data(index(row, 0), avgSpeedWithoutStimulationRole).toString();
+}
+
+QString ListModel::getAvgSpeedWithStimulation(int row)
+{
+    return data(index(row, 0), avgSpeedWithStimulationRole).toString();
+}
+
+QString ListModel::getTotalDistance(int row)
+{
+    return data(index(row, 0), totalDistanceRole).toString();
+}
+
+QString ListModel::getTotalStimulationDistance(int row)
+{
+    return data(index(row, 0), totalStimulationDistanceRole).toString();
 }
 
 // Метод для получения имен ролей через хешированную таблицу.
@@ -56,7 +121,8 @@ QHash<int, QByteArray> ListModel::roleNames() const
     roles[dateRole] = "date";
     roles[timeWithStimulationRole] = "timeWithStimulation";
     roles[timeWithoutStimulationRole] = "timeWithoutStimulation";
-    roles[timePauseRole] = "timePause";
+    roles[timeStimulationRole] = "timeStimulation";
+    roles[timeRestRole] = "timeRest";
     roles[avgStimulationAmplitudeRole] = "avgStimulationAmplitude";
     roles[avgStepLengthRole] = "avgStepLength";
     roles[avgStepFrequencyRole] = "avgStepFrequency";
@@ -75,14 +141,28 @@ int ListModel::count()
 // Получение id из строки в модели представления данных
 int ListModel::getId(int row)
 {
-    return this->data(this->index(row, 0), idRole).toInt();
+    return data(this->index(row, 0), idRole).toInt();
 }
 
 // Метод обновления таблицы в модели представления данных
 void ListModel::updateModel()
 {
     // Обновление производится SQL-запросом к базе данных
-    this->setQuery("SELECT id, " TYPE ", " DATE ", " TIME_WITH_STIMULATION ", " TIME_WITHOUT_STIMULATION ", " TIME_PAUSE ", " AVG_STIMULATION_AMPLITUDE ", " AVG_STEP_LENGTH ", " AVG_STEP_FREQUENCY ", " AVG_SPEED_WITHOUT_STIMULATION ", " AVG_SPEED_WITH_STIMULATION ", " TOTAL_DISTANCE ", " TOTAL_STIMULATION_DISTANCE " FROM " TABLE);
+    setQuery("SELECT id, "
+             "" TYPE ", "
+             "" DATE ", "
+             "" TIME_WITH_STIMULATION ", "
+             "" TIME_WITHOUT_STIMULATION ", "
+             "" TIME_STIMULATION ", "
+             "" TIME_REST ", "
+             "" AVG_STIMULATION_AMPLITUDE ", "
+             "" AVG_STEP_LENGTH ", "
+             "" AVG_STEP_FREQUENCY ", "
+             "" AVG_SPEED_WITHOUT_STIMULATION ", "
+             "" AVG_SPEED_WITH_STIMULATION ", "
+             "" TOTAL_DISTANCE ", "
+             "" TOTAL_STIMULATION_DISTANCE ""
+             " FROM " TABLE);
 }
 
 //Training ListModel::getTraining(int row)

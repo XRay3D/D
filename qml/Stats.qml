@@ -5,19 +5,6 @@ import QtGraphicalEffects 1.0
 
 Page {
 
-    property int type: myModel.getData(listView.currentIndex,'type')
-    property string date: myModel.getData(listView.currentIndex,'date').toLocaleString(locale, 'd.MM.yyyy — hh:mm')
-    property string timeWithStimulation: myModel.getData(listView.currentIndex,'timeWithStimulation').toLocaleTimeString(locale, 'hh:mm')
-    property string timeWithoutStimulation: myModel.getData(listView.currentIndex,'timeWithoutStimulation').toLocaleTimeString(locale, 'hh:mm')
-    property string timePause: myModel.getData(listView.currentIndex,'timePause').toLocaleString(locale,'hh:mm')
-    property int avgStimulationAmplitude: myModel.getData(listView.currentIndex,'avgStimulationAmplitude')
-    property int avgStepLength: myModel.getData(listView.currentIndex,'avgStepLength')
-    property int avgStepFrequency: myModel.getData(listView.currentIndex,'avgStepFrequency')
-    property int avgSpeedWithoutStimulation: myModel.getData(listView.currentIndex,'avgSpeedWithoutStimulation')
-    property int avgSpeedWithStimulation: myModel.getData(listView.currentIndex,'avgSpeedWithStimulation')
-    property int totalDistance: myModel.getData(listView.currentIndex,'totalDistance')
-    property int totalStimulationDistance: myModel.getData(listView.currentIndex,'totalStimulationDistance')
-
     MouseArea{
         id: area
         anchors.fill: parent
@@ -54,7 +41,7 @@ Page {
                 y: 90 * sc
                 color: 'white'
                 font.pixelSize: 45 * sc
-                text: date
+                text: myModel.getDate(listView.currentIndex)
             }
         }
         Rectangle {//line
@@ -73,14 +60,14 @@ Page {
                 y:10 * sc
                 color: 'white'
                 font.pixelSize: 24 * sc
-                text: type ? qsTr('Коньковый  ход') : qsTr('Классический ход')
+                text: myModel.getType(listView.currentIndex) ? qsTr('Коньковый  ход') : qsTr('Классический ход')
             }
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 y:35 * sc
                 color: 'white'
                 font.pixelSize: 90 * sc
-                text: timeWithStimulation
+                text: myModel.getTrainingTime(listView.currentIndex)
             }
         }
         Rectangle {//line
@@ -104,7 +91,7 @@ Page {
                 y:38 * sc
                 color: 'white'
                 font.pixelSize: 60 * sc
-                text: timeWithoutStimulation
+                text: myModel.getTimeWithoutStimulation(listView.currentIndex)
             }
         }
         Rectangle {//line
@@ -120,14 +107,14 @@ Page {
                 y:8 * sc
                 color: 'white'
                 font.pixelSize: 24 * sc
-                text: qsTr('Режим стимуляции')
+                text: qsTr('C стимуляцией')
             }
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 y:38 * sc
                 color: 'white'
                 font.pixelSize: 60 * sc
-                text: timeWithStimulation
+                text: myModel.getTimeWithStimulation(listView.currentIndex)
             }
         }
         Rectangle {//line
@@ -151,7 +138,7 @@ Page {
                 y:38 * sc
                 color: 'white'
                 font.pixelSize: 60 * sc
-                text: timePause
+                text: myModel.getTimeRest(listView.currentIndex)
             }
         }
         Rectangle {//line
@@ -174,7 +161,7 @@ Page {
                 y:38 * sc
                 color: 'white'
                 font.pixelSize: 60 * sc
-                text: timeWithStimulation
+                text: myModel.getTimeStimulation(listView.currentIndex)
             }
         }
         Rectangle {//line
@@ -220,13 +207,13 @@ Page {
                     id: column1
                     Layout.fillHeight: true
                     property var values: [
-                        avgStimulationAmplitude,
-                        avgStepLength,
-                        avgStepFrequency,
-                        avgSpeedWithoutStimulation,
-                        avgSpeedWithStimulation,
-                        totalDistance,
-                        totalStimulationDistance
+                        myModel.getAvgStimulationAmplitude(listView.currentIndex),
+                        myModel.getAvgStepLength(listView.currentIndex),
+                        myModel.getAvgStepFrequency(listView.currentIndex),
+                        myModel.getAvgSpeedWithoutStimulation(listView.currentIndex),
+                        myModel.getAvgSpeedWithStimulation(listView.currentIndex),
+                        myModel.getTotalDistance(listView.currentIndex),
+                        myModel.getTotalStimulationDistance(listView.currentIndex)
                     ]
                     Repeater{
                         model: 7

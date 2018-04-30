@@ -59,7 +59,8 @@ void DeviceHandler::setDevice(DeviceInfo* device)
             this, [this](QLowEnergyController::Error error) {
                 Q_UNUSED(error);
                 setError("Не удается подключиться к удаленному устройству.");
-            });
+            }
+        );
         connect(m_control, &QLowEnergyController::connected, this, [this]() {
             setInfo("Контроллер подключен. Поиск услуг...");
             m_control->discoverServices();
@@ -162,9 +163,9 @@ void DeviceHandler::updateValue(const QLowEnergyCharacteristic& characteristic, 
 
     const Ski::Date_t date = *reinterpret_cast<const Ski::Date_t*>(reinterpret_cast<const Ski::Parcel_t*>(value.data())->data);
     QString str(QTime(date.hour, date.minute, date.second).toString("hh:mm:ss") + QString::number(t.elapsed()));
-    setInfo("str"+QTime::currentTime().toString());
+    setInfo(str);
     if (checkParcel(value))
-        qDebug() << /*(QTime(date.hour, date.minute, date.second).toString("hh:mm:ss") + " / ms delay " + QString::number(t.elapsed())) <<*/ value.toHex().toUpper();
+        qDebug() <<  value.toHex().toUpper();
     t.start();
     m_service->writeCharacteristic(characteristic, parcel(Ski::GET_DATE));
 }

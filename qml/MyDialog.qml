@@ -44,7 +44,7 @@ Dialog{
         anchors.fill: parent
         anchors.topMargin: header.height
         color:'#28343e'
-        radius: 20 * sc
+        radius: 30 * sc
     }
 
     enter: Transition {

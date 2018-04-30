@@ -14,11 +14,9 @@ Page {
     }
 
     function showLastTraining(){
-        if(!debug){//debug
-            stackView.pop(initialItem)
-            listView.currentIndex = 0
-            listView.currentIndex = myModel.count() - 1
-        }
+        stackView.pop(initialItem)
+        listView.currentIndex = 0
+        listView.currentIndex = myModel.count() - 1
         stack.push(contents)
     }
 
@@ -39,15 +37,15 @@ Page {
                 text: qsTr('Журнал тренировок')
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                MouseArea
-                {
-                    anchors.fill: parent
-                    // Вносим новую запись в базу данных
-                    onClicked: {
-                        database.inserIntoTable()
-                        myModel.updateModel() // И обновляем модель данных с новой записью
-                    }
-                }
+                //                MouseArea
+                //                {
+                //                    anchors.fill: parent
+                //                    // Вносим новую запись в базу данных
+                //                    onClicked: {
+                //                        database.inserIntoTable()
+                //                        myModel.updateModel() // И обновляем модель данных с новой записью
+                //                    }
+                //                }
             }
             ListView {
                 id: listView

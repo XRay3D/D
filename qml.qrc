@@ -51,5 +51,6 @@
         <file>qml/images/minus.png</file>
         <file>qml/images/plus.png</file>
         <file>qml/DemsControl.qml</file>
+        <file>qml/RoundedButton.qml</file>
     </qresource>
 </RCC>

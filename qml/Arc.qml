@@ -102,13 +102,16 @@ Control {
 
     Slider{
         id: slider
+        opacity: 0.0
+
         width: w * 1.1
         height: h * 1.6
         x: (parent.width - width) / 2
         y: h * 0.7
+
         from: 0
         to: 10
-        opacity: 0.0
+
         onValueChanged: {
             parent.value = value
             arc.update()
@@ -193,8 +196,6 @@ Control {
             NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad }
         }
     }
-
-
 
     // InnerShadow {
     // anchors.fill: arc

@@ -27,6 +27,9 @@ public:
     };
     Q_ENUM(AddressType)
 
+
+
+
     DeviceHandler(QObject* parent = 0);
 
     void setDevice(DeviceInfo* device);

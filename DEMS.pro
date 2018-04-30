@@ -13,7 +13,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
-    guiapplication.cpp \
     bt/bluetoothbaseclass.cpp \
     bt/connectionhandler.cpp \
     bt/devicefinder.cpp \
@@ -21,12 +20,12 @@ SOURCES += main.cpp \
     bt/deviceinfo.cpp \
     db/database.cpp \
     db/listmodel.cpp \
+    db/training.cpp \
     gps/gpstrack.cpp \
     gps/gpstrackstat.cpp \
-    db/training.cpp
+    guiapplication.cpp \
 
 HEADERS += \
-    guiapplication.h \
     bt/bluetoothbaseclass.h \
     bt/connectionhandler.h \
     bt/devicefinder.h \
@@ -35,9 +34,10 @@ HEADERS += \
     bt/skiprotokol.h \
     db/database.h \
     db/listmodel.h \
+    db/training.h \
     gps/gpstrack.h \
     gps/gpstrackstat.h \
-    db/training.h
+    guiapplication.h \
 
 RESOURCES += qml.qrc
 
@@ -48,21 +48,9 @@ QML_IMPORT_PATH =
 QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
-
-android{
-    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-DISTFILES += \
-     android/AndroidManifest.xml \
-     android/gradle/wrapper/gradle-wrapper.jar \
-     android/gradlew \
-     android/res/values/libs.xml \
-     android/build.gradle \
-     android/gradle/wrapper/gradle-wrapper.properties \
-     android/gradlew.bat
-}
+#qnx: target.path = /tmp/$${TARGET}/bin
+#else: unix:!android: target.path = /opt/$${TARGET}/bin
+#!isEmpty(target.path): INSTALLS += target
 
 ios {
     QMAKE_INFO_PLIST = ios/Info.plist
@@ -83,3 +71,5 @@ DISTFILES += \
     ios/Info.plist \
     ios/LaunchScreen.xib
 }
+
+

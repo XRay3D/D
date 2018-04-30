@@ -27,14 +27,12 @@ ApplicationWindow {
     /////////////////////////////////////////////////////////
 
     property string errorMessage: deviceFinder.error
-    property string infoMessage: deviceFinder.info
-    property real messageHeight: msg.height
     property bool hasError: errorMessage != ''
+    property string infoMessage: deviceFinder.info
     property bool hasInfo: infoMessage != ''
 
     /////////////////////////////////////////////////////////
 
-    property bool trainingType: false
     property int pageIndex: 0
     property StackView stackView
 
@@ -219,10 +217,19 @@ ApplicationWindow {
             anchors.bottomMargin: 100 * sc
             model: deviceFinder.devices
             clip: true
-            delegate: Rectangle {
+            delegate: BorderImage {
                 height: 100 * sc
                 width: parent.width
-                color: index % 2 === 0 ? '#100000' : '#200000'
+                source: 'images/frame.png'
+                border {
+                    left: 30
+                    right: 30
+                    top: 30
+                    bottom: 30
+                }
+                horizontalTileMode: BorderImage.Repeat
+                verticalTileMode: BorderImage.Stretch
+                //color: index % 2 === 0 ? '#100000' : '#200000'
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
@@ -251,11 +258,10 @@ ApplicationWindow {
         }
         footer: Item{
             width: parent.width;
-            height: 100 * sc
-            Button {
+            height: 150 * sc
+            RoundedButton {
                 anchors.fill: parent
                 anchors.margins: 20 * sc
-                id: searchButton
                 height: 50 * sc
                 enabled: !deviceFinder.scanning
                 onClicked: deviceFinder.startSearch()
@@ -295,6 +301,7 @@ ApplicationWindow {
         }
         onAccepted: {
             console.log('Ok clicked')
+            myModel.updateModel()
             database.removeRecord(myModel.getId(journal.listView.currentIndex))
             myModel.updateModel();  // Обновляем модель данных
         }

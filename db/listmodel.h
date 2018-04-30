@@ -17,7 +17,8 @@ public:
         dateRole,
         timeWithStimulationRole,
         timeWithoutStimulationRole,
-        timePauseRole,
+        timeStimulationRole,
+        timeRestRole,
         avgStimulationAmplitudeRole,
         avgStepLengthRole,
         avgStepFrequencyRole,
@@ -45,8 +46,21 @@ public slots:
     int count();
     int getId(int row);
     void updateModel();
-    QVariant getData(int row, const QString& role);
 
+    QString getType(int row);
+    QString getDate(int row);
+    QString getTrainingTime(int row);
+    QString getTimeWithStimulation(int row);
+    QString getTimeWithoutStimulation(int row);
+    QString getTimeStimulation(int row);
+    QString getTimeRest(int row);
+    QString getAvgStimulationAmplitude(int row);
+    QString getAvgStepLength(int row);
+    QString getAvgStepFrequency(int row);
+    QString getAvgSpeedWithoutStimulation(int row);
+    QString getAvgSpeedWithStimulation(int row);
+    QString getTotalDistance(int row);
+    QString getTotalStimulationDistance(int row);
 };
 
 #endif // LISTMODEL_H

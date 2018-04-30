@@ -28,7 +28,7 @@ Page {
         width:713 * sc
 
         opacity: 0.1
-        source: trainingType ? 'images/icon2.png' : 'images/icon.png'
+        source: training.type ? 'images/icon2.png' : 'images/icon.png'
         fillMode: Image.PreserveAspectFit
     }
 
@@ -40,7 +40,7 @@ Page {
         y: 454 * sc
 
         fillMode: Image.PreserveAspectFit
-        source: trainingType ? 'images/mid2.png' : 'images/mid.png'
+        source: training.type ? 'images/mid2.png' : 'images/mid.png'
         Label {
             id: typeName
             anchors.fill: parent
@@ -53,7 +53,7 @@ Page {
             font.weight: Font.Black
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            text: trainingType ? qsTr('Коньковый\nход') : qsTr('Классический\nход')
+            text: training.type ? qsTr('Коньковый\nход') : qsTr('Классический\nход')
         }
     }
 
@@ -75,7 +75,7 @@ Page {
         transitions: Transition {
             NumberAnimation { properties: 'x'; easing.type: Easing.InOutQuad; duration: 150 }
         }
-        onClicked: trainingType = !trainingType
+        onClicked: training.type = !training.type
     }
 
     Button {
@@ -96,6 +96,6 @@ Page {
         transitions: Transition {
             NumberAnimation { properties: 'x'; easing.type: Easing.InOutQuad; duration: 150 }
         }
-        onClicked: trainingType = !trainingType
+        onClicked: training.type = !training.type
     }
 }
