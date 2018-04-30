@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     // Объявляем и инициализируем модель данных
     ListModel* model = new ListModel();
 
-    //    QQuickStyle::setStyle("Material");
+    // QQuickStyle::setStyle("Material");
     QQmlContext* rootContext = engine.rootContext();
     rootContext->setContextProperty("GUI", &app);
     // rootContext->setContextProperty("trainingModel", &model);

@@ -1,11 +1,10 @@
 import QtQuick 2.9
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.2
-//import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 
-import Shared 1.0 //?
+//import Shared 1.0 //?
 
 ApplicationWindow {
     visible: true
@@ -16,6 +15,7 @@ ApplicationWindow {
     property Footer tabBar: tabBar
     property Journal journal: journal
     property FastBlur fastBlur: fastBlur
+    property bool debug: true
 
     FontLoader { id: font1; source: '../fonts/HelveticaNeueCyr-Bold.ttf' }
     FontLoader { id: font2; source: '../fonts/HelveticaNeueCyr-Heavy.ttf' }
@@ -92,8 +92,7 @@ ApplicationWindow {
                 Journal { id: journal }
                 AppSettings { id: appSettings }
             }
-            Rectangle {
-                //splitter2
+            Rectangle { //splitter2
                 opacity: 0.3
                 x: 103 * sc;
                 y: swipeView.height
@@ -179,6 +178,7 @@ ApplicationWindow {
         Behavior on opacity { NumberAnimation { duration: 200 } }
     }
 
+    // Диалог справки
     MyDialog {
         id: aboutDialog
         caption: qsTr('О продукте')
@@ -207,11 +207,8 @@ ApplicationWindow {
                 font.pixelSize: 24 * sc
             }
         }
-        onAccepted: console.log('aboutDialog Ok clicked')
-        onRejected: console.log('aboutDialog Cancel clicked')
-
     }
-
+    // Диалог установки соединения
     MyDialog{
         id: btDialog
         caption: qsTr('Соединение')
@@ -266,8 +263,7 @@ ApplicationWindow {
             }
         }
     }
-
-    // Диалог подтверждения удаления строки из базы данных
+    // Диалог подтверждения удаления тренировки из базы данных
     MyDialog {
         id: dialogDelete
         caption: 'Удаление'
@@ -297,15 +293,13 @@ ApplicationWindow {
                 text: qsTr('Да')
             }
         }
-        onRejected: console.log('Cancel clicked')
         onAccepted: {
             console.log('Ok clicked')
             database.removeRecord(myModel.getId(journal.listView.currentIndex))
             myModel.updateModel();  // Обновляем модель данных
         }
     }
-
-    ////////////////////////////////////////////
+    // Для отладки BT соединения
     Rectangle {
         id: msg
         anchors.top: parent.top
@@ -314,7 +308,6 @@ ApplicationWindow {
         height: 130 * sc
         color: hasError ? '#BA3F62' : '#3FBA62'
         visible: hasError || hasInfo
-
         Label {
             id: error
             anchors.fill: parent
@@ -325,5 +318,4 @@ ApplicationWindow {
             text: hasError ? errorMessage : infoMessage
         }
     }
-    ////////////////////////////////////////////
 }

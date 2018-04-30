@@ -14,9 +14,11 @@ Page {
     }
 
     function showLastTraining(){
-        stackView.pop(initialItem)
-        listView.currentIndex = 0
-        listView.currentIndex = myModel.count() - 1
+        if(!debug){//debug
+            stackView.pop(initialItem)
+            listView.currentIndex = 0
+            listView.currentIndex = myModel.count() - 1
+        }
         stack.push(contents)
     }
 

@@ -5,7 +5,9 @@ import '.'
 
 Page {
     id: trainingSelection
+
     background: Item{}
+
     header: Label{
         height: 110 * sc
         width: parent.width
@@ -96,9 +98,4 @@ Page {
         }
         onClicked: trainingType = !trainingType
     }
-
-    // Timer{
-    // interval: 500; running: true
-    // onTriggered: pageLoader.setSource('TrainingManagement.qml')
-    // }
 }
