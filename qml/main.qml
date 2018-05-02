@@ -15,7 +15,6 @@ ApplicationWindow {
     property Footer tabBar: tabBar
     property Journal journal: journal
     property FastBlur fastBlur: fastBlur
-    property bool debug: true
 
     FontLoader { id: font1; source: '../fonts/HelveticaNeueCyr-Bold.ttf' }
     FontLoader { id: font2; source: '../fonts/HelveticaNeueCyr-Heavy.ttf' }

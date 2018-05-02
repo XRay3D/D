@@ -4,13 +4,12 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 Page {
-    background: Item{}
+    background: Item {}
     property ListView listView: listView
 
     Component {
         id: contents
-        Stats{
-        }
+        Stats {}
     }
 
     function showLastTraining(){
@@ -37,15 +36,6 @@ Page {
                 text: qsTr('Журнал тренировок')
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                //                MouseArea
-                //                {
-                //                    anchors.fill: parent
-                //                    // Вносим новую запись в базу данных
-                //                    onClicked: {
-                //                        database.inserIntoTable()
-                //                        myModel.updateModel() // И обновляем модель данных с новой записью
-                //                    }
-                //                }
             }
             ListView {
                 id: listView
@@ -66,7 +56,7 @@ Page {
                         color: 'white'
                         font.pixelSize: 24 * sc
                         verticalAlignment: Text.AlignVCenter
-                        text: '№'+ myModel.getId(index)/*(index + 1)*/+ currentDate.toLocaleString(locale, ' — d.MM.yyyy — hh:mm')
+                        text: '№'+ myModel.getId(index) + currentDate.toLocaleString(locale, ' — d.MM.yyyy — hh:mm')
                     }
                     Image {
                         anchors.verticalCenter: parent.verticalCenter

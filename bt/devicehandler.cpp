@@ -59,8 +59,7 @@ void DeviceHandler::setDevice(DeviceInfo* device)
             this, [this](QLowEnergyController::Error error) {
                 Q_UNUSED(error);
                 setError("Не удается подключиться к удаленному устройству.");
-            }
-        );
+            });
         connect(m_control, &QLowEnergyController::connected, this, [this]() {
             setInfo("Контроллер подключен. Поиск услуг...");
             m_control->discoverServices();
@@ -141,7 +140,7 @@ void DeviceHandler::serviceStateChanged(QLowEnergyService::ServiceState state)
         if (m_notificationDesc.isValid())
             m_service->writeDescriptor(m_notificationDesc, QByteArray::fromHex("0100"));
 
-        m_service->writeCharacteristic(characteristic, parcel(Ski::GET_DATE));
+        m_service->writeCharacteristic(characteristic, parcel(Ski::SET_GET_DATE_TIME));
 
         break;
     }
@@ -152,7 +151,7 @@ void DeviceHandler::serviceStateChanged(QLowEnergyService::ServiceState state)
     emit aliveChanged();
 }
 
-void DeviceHandler::updateValue(const QLowEnergyCharacteristic& characteristic, const QByteArray& value)
+void DeviceHandler::updateValue(const QLowEnergyCharacteristic& characteristic, const QByteArray& data)
 {
     // игнорировать любые другие изменения характеристик.
     // на самом деле не должно произойти.
@@ -161,13 +160,13 @@ void DeviceHandler::updateValue(const QLowEnergyCharacteristic& characteristic, 
 
     static QElapsedTimer t;
 
-    const Ski::Date_t date = *reinterpret_cast<const Ski::Date_t*>(reinterpret_cast<const Ski::Parcel_t*>(value.data())->data);
+    const Ski::DateTime_t date = value<Ski::DateTime_t>(data);
     QString str(QTime(date.hour, date.minute, date.second).toString("hh:mm:ss") + QString::number(t.elapsed()));
     setInfo(str);
-    if (checkParcel(value))
-        qDebug() <<  value.toHex().toUpper();
+    if (checkParcel(data))
+        qDebug() << data.toHex().toUpper();
     t.start();
-    m_service->writeCharacteristic(characteristic, parcel(Ski::GET_DATE));
+    m_service->writeCharacteristic(characteristic, parcel(Ski::SET_GET_DATE_TIME));
 }
 
 void DeviceHandler::confirmedDescriptorWrite(const QLowEnergyDescriptor& d, const QByteArray& value)

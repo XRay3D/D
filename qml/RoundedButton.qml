@@ -9,7 +9,7 @@ import QtQuick.Controls 2.2
     background:Rectangle{
         anchors.fill: control
         color: enabled ? (control.pressed ? 'darkgray' : 'red') : 'gray'
-        radius: 30 + sc
+        radius: 10 * sc
     }
 
     //    //font: Theme.font

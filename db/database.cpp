@@ -3,6 +3,7 @@
 DataBase::DataBase(QObject* parent)
     : QObject(parent)
 {
+    connectToDataBase();
 }
 
 DataBase::~DataBase()

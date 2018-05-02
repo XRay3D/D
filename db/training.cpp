@@ -88,7 +88,6 @@ void Training::reset()
     m_avgStimulationAmplitude = 1;
     m_totalDistance = 6;
     m_totalStimulationDistance = 7;
-    m_type = 0;
 
     setTotalTime(QStringLiteral("00:00:00"));
 }

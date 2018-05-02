@@ -4,7 +4,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
-#include <bt/connectionhandler.h>
 #include <bt/devicefinder.h>
 #include <bt/devicehandler.h>
 #include <db/database.h>
@@ -25,7 +24,6 @@ int main(int argc, char* argv[])
     QFontDatabase::addApplicationFont("qrc:/fonts/HelveticaNeueCyr-Roman.ttf");
     QFontDatabase::addApplicationFont("qrc:/fonts/HelveticaNeueCyr-Thin.ttf");
 
-    //ConnectionHandler connectionHandler;
     DeviceHandler deviceHandler;
     DeviceFinder deviceFinder(&deviceHandler);
     Training training(&deviceHandler);
@@ -35,11 +33,8 @@ int main(int argc, char* argv[])
     QFont fon("HelveticaNeueCyr");
     app.setFont(fon);
 
-    // Подключаемся к базе данных
-    DataBase database;
-    database.connectToDataBase();
-    // Объявляем и инициализируем модель данных
-    ListModel model; // = new ListModel();
+    DataBase database; // Подключаемся к базе данных (в конструкторе)
+    ListModel model; // Объявляем и инициализируем модель данных
 
     app.connect(&training, &Training::addToDataBase, &database, &DataBase::inserIntoTable, Qt::DirectConnection);
     app.connect(&training, &Training::addToDataBase, [&]() { model.updateModel(); });
@@ -57,5 +52,6 @@ int main(int argc, char* argv[])
     rootContext->setContextProperty("training", &training);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+
     return app.exec();
 }

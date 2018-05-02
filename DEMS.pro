@@ -14,10 +14,10 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 # disables all the APIs depreca
 
 SOURCES += main.cpp \
     bt/bluetoothbaseclass.cpp \
-    bt/connectionhandler.cpp \
     bt/devicefinder.cpp \
     bt/devicehandler.cpp \
     bt/deviceinfo.cpp \
+    bt/skiprotokol.cpp \
     db/database.cpp \
     db/listmodel.cpp \
     db/training.cpp \
@@ -27,7 +27,6 @@ SOURCES += main.cpp \
 
 HEADERS += \
     bt/bluetoothbaseclass.h \
-    bt/connectionhandler.h \
     bt/devicefinder.h \
     bt/devicehandler.h \
     bt/deviceinfo.h \
@@ -72,4 +71,19 @@ DISTFILES += \
     ios/LaunchScreen.xib
 }
 
+android {
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
+DISTFILES += \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew \
+    android/gradlew.bat \
+    android/res/values/libs.xml \
+
+
+}
 

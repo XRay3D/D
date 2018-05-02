@@ -4,12 +4,13 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 
 Page {
+    id: contents
 
     MouseArea{
-        id: area
         anchors.fill: parent
         onClicked: {
-            if(stack.depth > 1) stack.pop()
+            if(stack.depth > 1)
+                stack.pop()
         }
     }
 
@@ -32,7 +33,7 @@ Page {
                 font.capitalization: Font.AllUppercase
                 font.pixelSize: 36 * sc
                 font.weight: Font.Black
-                text: qsTr('ТРЕНИРОВКА №') + (myModel.getId(listView.currentIndex))//listView.currentIndex + 1)
+                text: qsTr('ТРЕНИРОВКА №') + myModel.getId()
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }

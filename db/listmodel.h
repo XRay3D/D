@@ -34,10 +34,14 @@ public:
     // Переопределяем метод, который будет возвращать данные
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 
+private:
+    inline QVariant data2(const QModelIndex& index, int role = Qt::DisplayRole) const;
+
 protected:
     // хешированная таблица ролей для колонок.
     // Метод используется в дебрях базового класса QAbstractItemModel,
     // от которого наследован класс QSqlQueryModel
+    // Метод для получения имен ролей через хешированную таблицу.
     QHash<int, QByteArray> roleNames() const;
 
 signals:
@@ -47,7 +51,7 @@ public slots:
     int getId(int row);
     void updateModel();
 
-    QString getType(int row);
+    int getType(int row);
     QString getDate(int row);
     QString getTrainingTime(int row);
     QString getTimeWithStimulation(int row);

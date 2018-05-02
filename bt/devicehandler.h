@@ -59,7 +59,7 @@ private:
 
     // QLowEnergyService
     void serviceStateChanged(QLowEnergyService::ServiceState state);
-    void updateValue(const QLowEnergyCharacteristic& characteristic, const QByteArray& value);
+    void updateValue(const QLowEnergyCharacteristic& characteristic, const QByteArray& data);
     void confirmedDescriptorWrite(const QLowEnergyDescriptor& d, const QByteArray& value);
 
 private:
