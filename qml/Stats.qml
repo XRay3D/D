@@ -8,10 +8,7 @@ Page {
 
     MouseArea{
         anchors.fill: parent
-        onClicked: {
-            if(stack.depth > 1)
-                stack.pop()
-        }
+        onClicked: { if(stack.depth > 1) stack.pop() }
     }
 
     GridLayout{
@@ -33,7 +30,7 @@ Page {
                 font.capitalization: Font.AllUppercase
                 font.pixelSize: 36 * sc
                 font.weight: Font.Black
-                text: qsTr('ТРЕНИРОВКА №') + myModel.getId()
+                text: qsTr('ТРЕНИРОВКА №') + myModel.getId(listView.currentIndex)
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
@@ -172,50 +169,60 @@ Page {
             opacity: 0.3
         }
         Item {
+            id: rows
             Layout.fillWidth: true
             Layout.minimumHeight: 370 * sc
             Layout.maximumHeight: 370 * sc
             Layout.columnSpan: 3
+
+            property var names: [
+                qsTr('Средняя амплитуда стимуляции'),
+                qsTr('Средняя длина шага'),
+                qsTr('Средняя частота движений'),
+                qsTr('Средняя скорость без стимуляции'),
+                qsTr('Средняя скорость со стимуляцией'),
+                qsTr('Общая дистанция'),
+                qsTr('Дистанция в режиме стимуляции')
+            ]
+            property var values: [
+                myModel.getAvgStimulationAmplitude(listView.currentIndex),
+                myModel.getAvgStepLength(listView.currentIndex),
+                myModel.getAvgStepFrequency(listView.currentIndex),
+                myModel.getAvgSpeedWithoutStimulation(listView.currentIndex),
+                myModel.getAvgSpeedWithStimulation(listView.currentIndex),
+                myModel.getTotalDistance(listView.currentIndex),
+                myModel.getTotalStimulationDistance(listView.currentIndex)
+            ]
+            property var suffixes: [
+                qsTr('В'),
+                qsTr('м'),
+                qsTr('ш/с'),
+                qsTr('м/с'),
+                qsTr('м/с'),
+                qsTr('м'),
+                qsTr('м')
+            ]
+
             RowLayout{
                 anchors.fill: parent
                 anchors.topMargin: 20 * sc
                 anchors.bottomMargin: 20 * sc
                 ColumnLayout{
-                    id: column0
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    property var texts: [
-                        qsTr('Средняя амплитуда стимуляции'),
-                        qsTr('Средняя длина шага'),
-                        qsTr('Средняя частота движений'),
-                        qsTr('Средняя скорость без стимуляции'),
-                        qsTr('Средняя скорость со стимуляцией'),
-                        qsTr('Общая дистанция'),
-                        qsTr('Дистанция в режиме стимуляции')
-                    ]
                     Repeater{
                         model: 7
                         Text {
                             Layout.fillHeight: true
                             color: 'white'
                             font.pixelSize: 24 * sc
-                            text: column0.texts[index]
+                            text: rows.names[index]
                             verticalAlignment: Text.AlignVCenter
                         }
                     }
                 }
                 ColumnLayout{
-                    id: column1
                     Layout.fillHeight: true
-                    property var values: [
-                        myModel.getAvgStimulationAmplitude(listView.currentIndex),
-                        myModel.getAvgStepLength(listView.currentIndex),
-                        myModel.getAvgStepFrequency(listView.currentIndex),
-                        myModel.getAvgSpeedWithoutStimulation(listView.currentIndex),
-                        myModel.getAvgSpeedWithStimulation(listView.currentIndex),
-                        myModel.getTotalDistance(listView.currentIndex),
-                        myModel.getTotalStimulationDistance(listView.currentIndex)
-                    ]
                     Repeater{
                         model: 7
                         Text {
@@ -223,7 +230,7 @@ Page {
                             Layout.fillWidth: true
                             color: 'white'
                             font.pixelSize: 24 * sc
-                            text: column1.values[index]
+                            text: rows.values[index]
                             font.bold: true
                             horizontalAlignment: Text.AlignRight
                             verticalAlignment: Text.AlignVCenter
@@ -231,25 +238,15 @@ Page {
                     }
                 }
                 ColumnLayout{
-                    id: column2
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    property var texts: [
-                        qsTr('В'),
-                        qsTr('м'),
-                        qsTr('ш/с'),
-                        qsTr('м/с'),
-                        qsTr('м/с'),
-                        qsTr('м'),
-                        qsTr('м')
-                    ]
                     Repeater{
                         model: 7
                         Text {
                             Layout.fillHeight: true
                             color: 'white'
                             font.pixelSize: 24 * sc
-                            text: column2.texts[index]
+                            text: rows.suffixes[index]
                             verticalAlignment: Text.AlignVCenter
                         }
                     }

@@ -29,7 +29,7 @@ ApplicationWindow {
     property bool hasError: errorMessage != ''
     property string infoMessage: deviceFinder.info
     property bool hasInfo: infoMessage != ''
-
+    
     /////////////////////////////////////////////////////////
 
     property int pageIndex: 0
@@ -40,6 +40,7 @@ ApplicationWindow {
 
     background:Rectangle { color: '#181f25' }
 
+
     Connections {
         target: GUI
         onBack: {
@@ -48,11 +49,18 @@ ApplicationWindow {
                 stackView.pop()
         }
     }
+    
     Connections {
         target: deviceHandler
         onAliveChanged: {
             console.log('onAliveChanged')
         }
+    }
+
+    Shortcut {
+        sequence: 'F4'
+        context: Qt.ApplicationShortcut
+        onActivated: Qt.quit()
     }
 
     Settings {
@@ -97,7 +105,7 @@ ApplicationWindow {
                 height: 2
             }
             RowLayout{
-                opacity: deviceHandler.alive == true ? 1.0 : 0.3
+                opacity: deviceHandler.alive === true ? 1.0 : 0.3
                 anchors.fill: parent
                 anchors.topMargin: swipeView.height
                 anchors.leftMargin: 103 * sc
@@ -150,11 +158,6 @@ ApplicationWindow {
         }
     }
 
-    Shortcut {
-        sequence: '1'
-        context: Qt.ApplicationShortcut
-        onActivated: Qt.quit()
-    }
 
     overlay.modal: FastBlur{
         anchors.fill: parent
@@ -240,33 +243,37 @@ ApplicationWindow {
                 Label {
                     text: modelData.deviceName
                     anchors.top: parent.top
-                    anchors.topMargin: parent.height * 0.1
-                    anchors.leftMargin: parent.height * 0.1
+                    anchors.topMargin: 15 * sc
+                    anchors.leftMargin: 15 * sc
                     anchors.left: parent.left
                     color: 'white'
                 }
                 Label {
                     text: modelData.deviceAddress
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: parent.height * 0.1
-                    anchors.rightMargin: parent.height * 0.1
+                    anchors.bottomMargin: 15 * sc
+                    anchors.rightMargin: 15 * sc
                     anchors.right: parent.right
                     color: 'white'
                 }
             }
         }
-        footer: Item{
-            width: parent.width;
-            height: 150 * sc
-            RoundedButton {
-                anchors.fill: parent
-                anchors.margins: 20 * sc
-                height: 50 * sc
-                enabled: !deviceFinder.scanning
-                onClicked: deviceFinder.startSearch()
-                text: qsTr('START SEARCH')
-            }
+        onOpened: {
+            if(!deviceFinder.scanning)
+                deviceFinder.startSearch()
         }
+        //        footer: Item{
+        //            width: parent.width;
+        //            height: 150 * sc
+        //            RoundedButton {
+        //                anchors.fill: parent
+        //                anchors.margins: 20 * sc
+        //                height: 50 * sc
+        //                enabled: !deviceFinder.scanning
+        //                onClicked: deviceFinder.startSearch()
+        //                text: qsTr('START SEARCH')
+        //            }
+        //        }
     }
     // Диалог подтверждения удаления тренировки из базы данных
     MyDialog {

@@ -21,6 +21,8 @@ void Training::start()
         killTimer(m_timerId);
     m_timerId = startTimer(100);
 
+    m_deviceHandler->resetStatistics();
+
     m_state = QStringLiteral("Running");
     m_eState = Running;
     stateChanged();
@@ -51,6 +53,10 @@ void Training::stop()
 
     m_timeWithoutStimulation += m_pausedTimer.elapsed();
     m_timeWithStimulation = m_trainingTimer.elapsed() - m_timeWithoutStimulation;
+
+    m_deviceHandler->getPauseStatistics();
+    m_deviceHandler->getTrainingStatistics();
+
 
     m_state = QStringLiteral("Stopped");
     m_eState = Stopped;

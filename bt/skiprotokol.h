@@ -57,7 +57,7 @@ typedef struct StimulationSettings_t {
     //int16_t leadTime;
 } StimulationSettings_t;
 
-typedef struct AccGyr_t { // считать состояния чипов, напряжения, версию прошивки
+typedef struct AccGyr_t {
     struct {
         int8_t x;
         int8_t y;
@@ -70,12 +70,12 @@ typedef struct AccGyr_t { // считать состояния чипов, на�
     } gyr;
 } AccGyr_t;
 
-typedef struct GetStatistics_t { // считать состояния чипов, напряжения, версию прошивки
+typedef struct Statistics_t {
     uint32_t timePause;
     uint32_t timeStimulatiion;
     float averageAmplitude;
     uint16_t steps;
-} GetStatistics_t;
+} Statistics_t;
 
 typedef struct SysInfo_t { //STATUS// считать состояния чипов, напряжения, версию прошивки
     uint8_t acc;
@@ -87,7 +87,7 @@ typedef struct SysInfo_t { //STATUS// считать состояния чипо
     uint8_t version;
 } SysInfo_t;
 
-typedef struct DateTime_t { // считать состояния чипов, напряжения, версию прошивки
+typedef struct DateTime_t {
     uint16_t year;
     uint8_t month;
     uint8_t day;
@@ -144,7 +144,6 @@ private:
     enum { POLYNOMIAL = 0x1D }; // x^8 + x^4 + x^3 + x^2 + 1
     static const uint8_t array[0x100];
 };
-
 }
 
 #endif // MYPROTOKOL_H

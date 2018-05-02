@@ -5,6 +5,7 @@
 #include "skiprotokol.h"
 
 #include <QDateTime>
+#include <QGuiApplication>
 #include <QVector>
 #include <QTimer>
 #include <QLowEnergyController>
@@ -15,9 +16,7 @@ class DeviceInfo;
 class DeviceHandler : public BluetoothBaseClass, private Ski::Protokol {
     Q_OBJECT
 
-    Q_PROPERTY(int training READ training NOTIFY trainingChanged)
     Q_PROPERTY(bool alive READ alive NOTIFY aliveChanged)
-    Q_PROPERTY(int time READ time NOTIFY statsChanged)
     Q_PROPERTY(AddressType addressType READ addressType WRITE setAddressType)
 
 public:
@@ -27,34 +26,33 @@ public:
     };
     Q_ENUM(AddressType)
 
-
-
-
     DeviceHandler(QObject* parent = 0);
 
     void setDevice(DeviceInfo* device);
     void setAddressType(AddressType type);
     AddressType addressType() const;
 
-    bool training() const;
     bool alive() const;
 
-    // Statistics
-    int time() const;
-
 signals:
-    void trainingChanged();
-    void aliveChanged();
-    void statsChanged();
+    void aliveChanged(const QVariant&);
 
 public slots:
-    void startTraining();
-    void stopTraining();
     void disconnectService();
+
+    bool setVoltage(int voltage);
+    bool setDuration(int duration);
+    bool setDelay(int delay);
+    bool resetStatistics();
+    bool getTrainingStatistics();
+    bool getPauseStatistics();
+    bool getBatteryCharge();
+    bool impulse();
+    bool enableTraining(bool enabled);
 
 private:
     //  QLowEnergyController
-    void serviceDiscovered(const QBluetoothUuid&);
+    void serviceDiscovered(const QBluetoothUuid& gatt);
     void serviceScanDone();
 
     // QLowEnergyService
@@ -62,18 +60,49 @@ private:
     void updateValue(const QLowEnergyCharacteristic& characteristic, const QByteArray& data);
     void confirmedDescriptorWrite(const QLowEnergyDescriptor& d, const QByteArray& value);
 
-private:
+    typedef void (DeviceHandler::*func)(const QByteArray&);
+    QVector<func> m_func;
+
+    //Ski callbacks
+    void cbPing(const QByteArray& data);
+    //User functions
+    void cbSetGetStimulationSettings(const QByteArray& data);
+    void cbSetGetStatistics(const QByteArray& data);
+    void cbGetBattery(const QByteArray& data);
+    void cbImpulse(const QByteArray& /*data*/);
+    void cbOnOff(const QByteArray& data);
+    //Service functions
+    void cbBufferOverflow(const QByteArray& /*data*/);
+    void cbWrongCommand(const QByteArray& /*data*/);
+    void cbTextualParcel(const QByteArray& data);
+    void cbCrcError(const QByteArray& /*data*/);
+
+    Ski::StimulationSettings_t m_stimulationSettings;
+
     QLowEnergyController* m_control;
     QLowEnergyService* m_service;
     QLowEnergyDescriptor m_notificationDesc;
     DeviceInfo* m_currentDevice;
-
     bool m_foundService;
-    bool m_training;
+    bool m_success;
+    bool success()
+    {
+        QTime timer;
+        timer.start();
+        while (!m_success && timer.elapsed() < 1000) {
+            qDebug() << timer << timer.elapsed() << m_success;
+            qApp->processEvents();
+        }
+        qDebug() << timer << timer.elapsed() << m_success;
+        if (m_success)
+            setInfo("Ok!");
+        else
+            setError("Timeout!");
+        return m_success;
+    }
 
-    // Statistics
-    QDateTime m_start;
-    QDateTime m_stop;
+    QByteArray m_retData;
+    Ski::Statistics m_statisticsType;
 
     QVector<int> m_measurements;
     QLowEnergyController::RemoteAddressType m_addressType = QLowEnergyController::PublicAddress;

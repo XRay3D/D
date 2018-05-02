@@ -47,7 +47,7 @@ Page{
         transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 } }
         onClicked: {
             if(trainingPage.state == 'Running'){
-                //add pulse call
+                deviceHandler.impulse()
             }
             else if(trainingPage.state == 'Paused'){
                 training.stop()
@@ -72,7 +72,7 @@ Page{
         transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 } }
         onClicked: {
             if(trainingPage.state == 'Stopped'){
-                if(deviceHandler.alive)//! return
+                if(!deviceHandler.alive)//! return
                     btDialog.open()
                 else{
                     stackView.push('DemsControl.qml')

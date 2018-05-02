@@ -17,13 +17,7 @@ AbstractButton{//+
         source: plus ? 'images/plus.png' : 'images/minus.png'
     }
 
-    states: State {
-        when: pressed
-        PropertyChanges { target: background; scale: 0.8}
-    }
-    transitions: Transition {
-        NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad }
-    }
+    states: State { when: pressed; PropertyChanges { target: background; scale: 0.8} }
+    transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad } }
     contentItem: Item{}
 }
-

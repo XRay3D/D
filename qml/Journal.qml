@@ -73,11 +73,11 @@ Page {
                         anchors.fill: parent
                         hoverEnabled: true
                         onClicked: {
-                            if(skip){
+                            if(area.skip){
                                 listView.currentIndex = index
                                 stack.push(contents)
                             }
-                            skip = true
+                            area.skip = true
                         }
                         Timer{
                             id: timer

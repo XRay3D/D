@@ -1,4 +1,13 @@
 #include "skiprotokol.h"
+#include <QMetaType>
+
+int id1 = qRegisterMetaType<Ski::AccGyr_t>("AccGyr_t");
+int id2 = qRegisterMetaType<Ski::Battery_t>("Battery_t");
+int id3 = qRegisterMetaType<Ski::DateTime_t>("DateTime_t");
+int id4 = qRegisterMetaType<Ski::Statistics_t>("GetStatistics_t");
+int id5 = qRegisterMetaType<Ski::RfSettings_t>("RfSettings_t");
+int id6 = qRegisterMetaType<Ski::StimulationSettings_t>("StimulationSettings_t");
+int id7 = qRegisterMetaType<Ski::SysInfo_t>("SysInfo_t");
 
 const uint8_t Ski::Protokol::array[0x100] = {
     0x00, 0x1D, 0x3A, 0x27, 0x74, 0x69, 0x4E, 0x53,
@@ -66,9 +75,6 @@ quint8 Ski::Protokol::calcCrc(const QByteArray& data)
     for (uint16_t i = 0, len = data.size() - 1; i < len; ++i) {
         crc8 ^= data[i];
         crc8 = array[crc8];
-        //for (quint8 j = 0; j < 8; ++j) {
-        //    crc8 = (crc8 & 0x80) ? (crc8 << 1) ^ POLYNOMIAL : crc8 << 1;
-        //}
     }
     return crc8;
 }

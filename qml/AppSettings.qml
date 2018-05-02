@@ -48,6 +48,8 @@ Page {
                 anchors.fill: parent
                 onClicked: btDialog.open()
             }
+            enabled: trainingPage.state == 'Stopped'
+            opacity: enabled ? 1.0 : 0.3
         }
         Rectangle{
             Layout.fillWidth: true

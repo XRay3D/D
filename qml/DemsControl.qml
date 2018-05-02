@@ -66,6 +66,9 @@ Item {
             maxValue: 100
             suffix: '%'
             name: qsTr('Мощность')
+            onValueChanged: {
+                deviceHandler.setVoltage(value * 10)
+            }
         }
         Arc{
             id: duration
@@ -77,6 +80,9 @@ Item {
             maxValue: 500
             suffix: qsTr('мc')
             name: qsTr('Продолжительность')
+            onValueChanged: {
+                deviceHandler.setDuration(value * 50)
+            }
         }
     }
 }
