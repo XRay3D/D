@@ -13,8 +13,7 @@ GPSTrackStat::GPSTrackStat(QObject* parent)
     , m_isStarted(false)
 {
 
-    connect(m_timer, &QTimer::timeout,
-        this, &GPSTrackStat::onTick);
+    connect(m_timer, &QTimer::timeout, this, &GPSTrackStat::onTick);
 
     m_timer->setInterval(1000);
     m_timer->start();

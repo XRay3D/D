@@ -10,6 +10,15 @@ Training::Training(DeviceHandler* handler, QObject* parent)
     , m_state(QStringLiteral("Stopped"))
     , m_eState(Stopped)
 {
+    m_geoSource = QGeoPositionInfoSource::createDefaultSource(this);
+    if (m_geoSource) {
+        connect(m_geoSource, &QGeoPositionInfoSource::positionUpdated, this, &Training::positionUpdated);
+        m_geoSource->setUpdateInterval(1000);
+        m_geoSource->startUpdates();
+    }
+    else {
+        m_deviceHandler->setError("QGeoPositionInfoSource!");
+    }
 }
 
 void Training::start()
@@ -25,6 +34,9 @@ void Training::start()
 
     m_state = QStringLiteral("Running");
     m_eState = Running;
+
+    m_geoSource->startUpdates();
+
     stateChanged();
 }
 
@@ -46,6 +58,8 @@ void Training::resume()
 
 void Training::stop()
 {
+    m_geoSource->stopUpdates();
+
     if (m_timerId) {
         killTimer(m_timerId);
         m_timerId = 0;
@@ -57,10 +71,15 @@ void Training::stop()
     m_deviceHandler->getPauseStatistics();
     m_deviceHandler->getTrainingStatistics();
 
+    m_avgSpeedWithoutStimulation = m_distanceWithoutStimulation / (m_timeWithoutStimulation * 0.0036);
+    m_avgSpeedWithStimulation = m_distanceWithStimulation / (m_timeWithStimulation * 0.0036);
+    m_totalDistance = m_distanceWithoutStimulation + m_distanceWithStimulation;
+    m_totalStimulationDistance = m_distanceWithStimulation;
 
     m_state = QStringLiteral("Stopped");
     m_eState = Stopped;
     addToDataBase(this);
+
     stateChanged();
 }
 
@@ -95,7 +114,30 @@ void Training::reset()
     m_totalDistance = 6;
     m_totalStimulationDistance = 7;
 
+    m_distanceWithStimulation = 0.0;
+    m_distanceWithoutStimulation = 0.0;
+    m_speedWithStimulation = 0.0;
+    m_speedWithoutStimulation = 0.0;
+
     setTotalTime(QStringLiteral("00:00:00"));
+}
+
+void Training::positionUpdated(const QGeoPositionInfo& info)
+{
+    switch (m_eState) {
+    case Running:
+        if (m_lastPoint.isValid())
+            m_distanceWithStimulation = m_distanceWithStimulation + info.coordinate().distanceTo(m_lastPoint);
+        break;
+    case Paused:
+        if (m_lastPoint.isValid())
+            m_distanceWithoutStimulation = m_distanceWithoutStimulation + info.coordinate().distanceTo(m_lastPoint);
+        break;
+    default:
+        break;
+    }
+    m_lastPoint = info.coordinate();
+    m_deviceHandler->setInfo(info.coordinate().toString());
 }
 
 QString Training::totalTime() const

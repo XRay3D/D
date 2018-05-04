@@ -86,20 +86,7 @@ private:
     bool m_foundService;
     bool m_success;
     bool success()
-    {
-        QTime timer;
-        timer.start();
-        while (!m_success && timer.elapsed() < 1000) {
-            qDebug() << timer << timer.elapsed() << m_success;
-            qApp->processEvents();
-        }
-        qDebug() << timer << timer.elapsed() << m_success;
-        if (m_success)
-            setInfo("Ok!");
-        else
-            setError("Timeout!");
-        return m_success;
-    }
+;
 
     QByteArray m_retData;
     Ski::Statistics m_statisticsType;

@@ -418,3 +418,19 @@ void DeviceHandler::cbCrcError(const QByteArray&)
     qDebug("cbCrcError");
     m_success = true;
 }
+
+bool DeviceHandler::success()
+{
+    QTime timer;
+    timer.start();
+    while (!m_success && timer.elapsed() < 1000) {
+        //qDebug() << timer << timer.elapsed() << m_success;
+        qApp->processEvents();
+    }
+    //qDebug() << timer << timer.elapsed() << m_success;
+    if (m_success)
+        setInfo("Ok!");
+    else
+        setError("Timeout!");
+    return m_success;
+}

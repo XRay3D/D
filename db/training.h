@@ -3,7 +3,8 @@
 
 #include <QDateTime>
 #include <QObject>
-
+#include <QLocation>
+#include <QGeoPositionInfoSource>
 #include <bt/devicehandler.h>
 
 class Training : public QObject {
@@ -70,6 +71,14 @@ private:
     } State;
 
     inline void reset();
+
+    void positionUpdated(const QGeoPositionInfo& info);
+    QGeoPositionInfoSource* m_geoSource;
+    QGeoCoordinate m_lastPoint;
+    double m_distanceWithStimulation = 0.0;
+    double m_distanceWithoutStimulation = 0.0;
+    double m_speedWithStimulation = 0.0;
+    double m_speedWithoutStimulation = 0.0;
 
     State m_eState;
 
