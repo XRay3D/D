@@ -2,9 +2,9 @@
 #define TRAINING_H
 
 #include <QDateTime>
-#include <QObject>
-#include <QLocation>
 #include <QGeoPositionInfoSource>
+#include <QLocation>
+#include <QObject>
 #include <bt/devicehandler.h>
 
 class Training : public QObject {
@@ -31,11 +31,6 @@ public:
     int m_totalStimulationDistance = 7;
     int m_type = 0;
 
-    Q_INVOKABLE void start();
-    Q_INVOKABLE void pause();
-    Q_INVOKABLE void resume();
-    Q_INVOKABLE void stop();
-
     QString totalTime() const;
     void setTotalTime(const QString& totalTime);
 
@@ -43,6 +38,11 @@ public:
     void setType(int type);
 
     QString state() const;
+public slots:
+    void start();
+    void pause();
+    void resume();
+    void stop();
 
 signals:
     void typeChanged();
@@ -55,9 +55,6 @@ private:
 
     QString m_state;
     QString m_totalTime;
-
-    //int m_trainingTimeMs; //time in msecs
-    //int m_pausedTimeMs; //time in msecs
 
     QTime m_trainingTimer;
     QTime m_pausedTimer;

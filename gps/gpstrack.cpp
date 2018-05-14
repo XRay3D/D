@@ -91,10 +91,8 @@ void GPSTrack::saveAsGdx(const QString& file)
                 ist >> tp;
 
                 stream.writeStartElement("trkpt");
-                stream.writeAttribute("lat",
-                    QString::number(tp.coordinate.latitude()));
-                stream.writeAttribute("lon",
-                    QString::number(tp.coordinate.longitude()));
+                stream.writeAttribute("lat", QString::number(tp.coordinate.latitude()));
+                stream.writeAttribute("lon", QString::number(tp.coordinate.longitude()));
                 stream.writeTextElement("time", tp.dtime.toString(Qt::ISODate));
                 stream.writeEndElement(); //trkpt
             }

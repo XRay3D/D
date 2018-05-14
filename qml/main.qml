@@ -122,6 +122,7 @@ ApplicationWindow {
                 }
                 Battery{
                     id: leftBattery
+                    value: deviceHandler.batteryLeft
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                 }
@@ -134,6 +135,7 @@ ApplicationWindow {
                 }
                 Battery{
                     id: rightBattery
+                    value: deviceHandler.batteryRight
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     rotation: 180

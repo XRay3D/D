@@ -32,11 +32,11 @@ Item {
             radius: 2
         }
 
-//        OpacityMask {
-//            anchors.fill: parent
-//            source: parent.contentItem
-//            maskSource: hole
-//        }
+        //        OpacityMask {
+        //            anchors.fill: parent
+        //            source: parent.contentItem
+        //            maskSource: hole
+        //        }
         Rectangle{
             opacity: 0.9
             anchors.fill: hole
@@ -45,8 +45,8 @@ Item {
             color: value > 15 ? 'white' : 'red'
         }
     }
-    Timer{
-        interval: 1000; running: true; repeat: true
-        onTriggered: value == 100 ? value = 0 : value += 5
-    }
+    //    Timer{
+    //        interval: 1000; running: true; repeat: true
+    //        onTriggered: value == 100 ? value = 0 : value += 5
+    //    }
 }

@@ -41,60 +41,60 @@ enum Statistics {
 #pragma pack(push, 1)
 
 typedef struct RfSettings_t {
-    uint8_t channel;
-    uint8_t address;
+    uint8_t channel = 0;
+    uint8_t address = 0;
 } RfSettings_t;
 
 typedef struct Battery_t {
-    uint8_t left;
-    uint8_t right;
+    uint8_t left = 0;
+    uint8_t right = 0;
 } Battery_t;
 
 typedef struct StimulationSettings_t {
-    uint8_t voltage;
-    uint16_t duration;
-    uint16_t delay;
+    uint8_t voltage = 0;
+    uint16_t duration = 0;
+    uint16_t delay = 0;
     //int16_t leadTime;
 } StimulationSettings_t;
 
 typedef struct AccGyr_t {
     struct {
-        int8_t x;
-        int8_t y;
-        int8_t z;
+        int8_t x = 0;
+        int8_t y = 0;
+        int8_t z = 0;
     } acc;
     struct {
-        int8_t x;
-        int8_t y;
-        int8_t z;
+        int8_t x = 0;
+        int8_t y = 0;
+        int8_t z = 0;
     } gyr;
 } AccGyr_t;
 
 typedef struct Statistics_t {
-    uint32_t timePause;
-    uint32_t timeStimulatiion;
-    float averageAmplitude;
-    uint16_t steps;
+    uint32_t timePause = 0;
+    uint32_t timeStimulatiion = 0;
+    float averageAmplitude = 0;
+    uint16_t steps = 0;
 } Statistics_t;
 
 typedef struct SysInfo_t { //STATUS// считать состояния чипов, напряжения, версию прошивки
-    uint8_t acc;
-    uint8_t gyr;
-    uint8_t rf;
-    uint8_t battery_voltage;
-    uint8_t impulse_voltage;
-    uint8_t nLeft_right;
-    uint8_t version;
+    uint8_t acc = 0;
+    uint8_t gyr = 0;
+    uint8_t rf = 0;
+    uint8_t battery_voltage = 0;
+    uint8_t impulse_voltage = 0;
+    uint8_t nLeft_right = 0;
+    uint8_t version = 0;
 } SysInfo_t;
 
 typedef struct DateTime_t {
-    uint16_t year;
-    uint8_t month;
-    uint8_t day;
-    uint8_t hour;
-    uint8_t minute;
-    uint8_t second;
-    uint8_t dom;
+    uint16_t year = 0;
+    uint8_t month = 0;
+    uint8_t day = 0;
+    uint8_t hour = 0;
+    uint8_t minute = 0;
+    uint8_t second = 0;
+    uint8_t dom = 0;
 } DateTime_t;
 
 typedef struct Parcel_t {
@@ -122,7 +122,7 @@ public:
         Parcel_t* d = reinterpret_cast<Parcel_t*>(data.data());
         memcpy(d->data, &value, sizeof(T));
         d->start = TX;
-        d->len = data.size();
+        d->len = static_cast<quint8>(data.size());
         d->cmd = cmd;
         d->data[sizeof(T)] = calcCrc(data); //crc
         return data;

@@ -1,7 +1,7 @@
 #include "training.h"
 
-#include <QTimerEvent>
 #include <QDebug>
+#include <QTimerEvent>
 
 Training::Training(DeviceHandler* handler, QObject* parent)
     : QObject(parent)
@@ -10,13 +10,12 @@ Training::Training(DeviceHandler* handler, QObject* parent)
     , m_state(QStringLiteral("Stopped"))
     , m_eState(Stopped)
 {
-    m_geoSource = QGeoPositionInfoSource::createDefaultSource(this);
+    m_geoSource = QGeoPositionInfoSource::createDefaultSource(this /*nullptr*/);
     if (m_geoSource) {
         connect(m_geoSource, &QGeoPositionInfoSource::positionUpdated, this, &Training::positionUpdated);
         m_geoSource->setUpdateInterval(1000);
-        m_geoSource->startUpdates();
-    }
-    else {
+        //m_geoSource->startUpdates();
+    } else {
         m_deviceHandler->setError("QGeoPositionInfoSource!");
     }
 }
@@ -31,6 +30,7 @@ void Training::start()
     m_timerId = startTimer(100);
 
     m_deviceHandler->resetStatistics();
+    m_deviceHandler->enableTraining(true);
 
     m_state = QStringLiteral("Running");
     m_eState = Running;
@@ -43,6 +43,8 @@ void Training::start()
 void Training::pause()
 {
     m_pausedTimer.start();
+    m_deviceHandler->enableTraining(false);
+
     m_state = QStringLiteral("Paused");
     m_eState = Paused;
     stateChanged();
@@ -51,6 +53,7 @@ void Training::pause()
 void Training::resume()
 {
     m_timeWithoutStimulation += m_pausedTimer.elapsed();
+    m_deviceHandler->enableTraining(true);
     m_state = QStringLiteral("Running");
     m_eState = Running;
     stateChanged();
@@ -68,8 +71,12 @@ void Training::stop()
     m_timeWithoutStimulation += m_pausedTimer.elapsed();
     m_timeWithStimulation = m_trainingTimer.elapsed() - m_timeWithoutStimulation;
 
-    m_deviceHandler->getPauseStatistics();
-    m_deviceHandler->getTrainingStatistics();
+    Ski::Statistics_t st;
+    Ski::Statistics_t sp;
+
+    m_deviceHandler->getPauseStatistics(sp);
+    m_deviceHandler->getTrainingStatistics(st);
+    m_deviceHandler->enableTraining(false);
 
     m_avgSpeedWithoutStimulation = m_distanceWithoutStimulation / (m_timeWithoutStimulation * 0.0036);
     m_avgSpeedWithStimulation = m_distanceWithStimulation / (m_timeWithStimulation * 0.0036);
