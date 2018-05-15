@@ -94,21 +94,12 @@ bool DeviceHandler::alive() const
 
 int DeviceHandler::batteryLeft()
 {
-    if (m_battery.left >= 42)
-        return 100;
-    else if (m_battery.left < 30)
-        return 0;
-    else
-        return 100 * (m_battery.left - 30) / 12.;
+    return m_battery.left;
 }
+
 int DeviceHandler::batteryRight()
 {
-    if (m_battery.right >= 42)
-        return 100;
-    else if (m_battery.right < 30)
-        return 0;
-    else
-        return 100 * (m_battery.right - 30) / 12.;
+    return m_battery.right;
 }
 
 void DeviceHandler::disconnectService()
