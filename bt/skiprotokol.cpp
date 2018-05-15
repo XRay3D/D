@@ -46,13 +46,13 @@ const uint8_t Ski::Protokol::array[0x100] = {
 
 Ski::Protokol::Protokol() {}
 
-QByteArray Ski::Protokol::parcel(quint8 cmd)
+QByteArray Ski::Protokol::parcel(Cmmand cmd)
 {
     QByteArray data(MIN_LEN, 0);
     Parcel_t* d = reinterpret_cast<Parcel_t*>(data.data());
     d->start = TX;
     d->len = MIN_LEN;
-    d->cmd = cmd;
+    d->cmd = static_cast<quint8>(cmd);
     d->data[0] = calcCrc(data); //crc
     return data;
 }

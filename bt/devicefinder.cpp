@@ -25,7 +25,7 @@ DeviceFinder::~DeviceFinder()
 void DeviceFinder::startSearch()
 {
     clearMessages();
-    m_deviceHandler->setDevice(0);
+    m_deviceHandler->setDevice(nullptr);
     qDeleteAll(m_devices);
     m_devices.clear();
 
@@ -40,7 +40,7 @@ void DeviceFinder::startSearch()
 void DeviceFinder::addDevice(const QBluetoothDeviceInfo& device)
 {
     if (device.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration) {
-//        if (device.name().startsWith("Ski"))
+        if (device.name().startsWith("Ski"))
             m_devices.append(new DeviceInfo(device));
         setInfo(tr("Обнаружено устройство LowEnergy. Сканирование больше..."));
         emit devicesChanged();

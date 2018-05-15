@@ -72,10 +72,10 @@ private:
     void positionUpdated(const QGeoPositionInfo& info);
     QGeoPositionInfoSource* m_geoSource;
     QGeoCoordinate m_lastPoint;
-    double m_distanceWithStimulation = 0.0;
-    double m_distanceWithoutStimulation = 0.0;
-    double m_speedWithStimulation = 0.0;
-    double m_speedWithoutStimulation = 0.0;
+    int m_distanceWithStimulation = 0;
+    int m_distanceWithoutStimulation = 0;
+    int m_speedWithStimulation = 0;
+    int m_speedWithoutStimulation = 0;
 
     State m_eState;
 

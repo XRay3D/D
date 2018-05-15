@@ -6,7 +6,7 @@
 
 namespace Ski {
 
-enum COMMAND {
+enum class Cmmand {
     //Service functions
     PING, // return SOFTWARE_VERSION
     //User functions
@@ -116,14 +116,14 @@ class Protokol {
 public:
     explicit Protokol();
     template <typename T>
-    QByteArray parcel(quint8 cmd, const T& value)
+    QByteArray parcel(Cmmand cmd, const T& value)
     {
         QByteArray data(MIN_LEN + sizeof(T), 0);
         Parcel_t* d = reinterpret_cast<Parcel_t*>(data.data());
         memcpy(d->data, &value, sizeof(T));
         d->start = TX;
         d->len = static_cast<quint8>(data.size());
-        d->cmd = cmd;
+        d->cmd = static_cast<quint8>(cmd);
         d->data[sizeof(T)] = calcCrc(data); //crc
         return data;
     }
@@ -134,7 +134,7 @@ public:
     template <typename T>
     T pValue(const QByteArray& data) const { return reinterpret_cast<const T*>(data.constData() + 4); }
 
-    QByteArray parcel(quint8 cmd);
+    QByteArray parcel(Cmmand cmd);
 
     bool checkParcel(const QByteArray& data);
 

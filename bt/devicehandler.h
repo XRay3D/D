@@ -35,8 +35,8 @@ public:
     AddressType addressType() const;
 
     bool alive() const;
-    int batteryLeft() { return m_battery.left; }
-    int batteryRight() { return m_battery.right; }
+    int batteryLeft();
+    int batteryRight();
 
 signals:
     void aliveChanged(const QVariant&);
@@ -111,5 +111,7 @@ private:
 protected:
     void timerEvent(QTimerEvent* event) override;
 };
+
+
 
 #endif // DEVICEHANDLER_H

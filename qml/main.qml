@@ -221,6 +221,7 @@ ApplicationWindow {
             anchors.bottomMargin: 100 * sc
             model: deviceFinder.devices
             clip: true
+            spacing: 25* sc
             delegate: BorderImage {
                 height: 100 * sc
                 width: parent.width
