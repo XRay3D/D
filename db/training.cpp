@@ -29,6 +29,7 @@ void Training::start()
         killTimer(m_timerId);
     m_timerId = startTimer(100);
 
+    m_deviceHandler->selectTrainingType(m_type);
     m_deviceHandler->resetStatistics();
     m_deviceHandler->enableTraining(true);
 
@@ -78,17 +79,28 @@ void Training::stop()
     m_deviceHandler->getTrainingStatistics(st);
     m_deviceHandler->enableTraining(false);
 
-    try {
+    if ((st.steps + sp.steps) > 0) {
         m_avgStepFrequency = (m_timeWithoutStimulation + m_timeWithStimulation) / (st.steps + sp.steps);
         m_avgStepLength = m_totalDistance / (st.steps + sp.steps);
-        m_avgStimulationAmplitude = st.averageAmplitude;
-        m_avgSpeedWithoutStimulation = m_distanceWithoutStimulation / (m_timeWithoutStimulation / 1000);
-        m_avgSpeedWithStimulation = m_distanceWithStimulation / (m_timeWithStimulation / 1000);
-        m_totalDistance = m_distanceWithoutStimulation + m_distanceWithStimulation;
-        m_totalStimulationDistance = m_distanceWithStimulation;
-    } catch (...) {
-        qDebug("EEERRROOOORRR!!!");
+    } else {
+        m_avgStepFrequency = 0;
+        m_avgStepLength = 0;
     }
+
+    m_avgStimulationAmplitude = st.averageAmplitude;
+
+    if ((m_timeWithoutStimulation / 1000) > 0)
+        m_avgSpeedWithoutStimulation = m_distanceWithoutStimulation / (m_timeWithoutStimulation / 1000);
+    else
+        m_avgSpeedWithoutStimulation = 0;
+
+    if ((m_timeWithStimulation / 1000) > 0)
+        m_avgSpeedWithStimulation = m_distanceWithStimulation / (m_timeWithStimulation / 1000);
+    else
+        m_avgSpeedWithStimulation = 0;
+
+    m_totalDistance = m_distanceWithoutStimulation + m_distanceWithStimulation;
+    m_totalStimulationDistance = m_distanceWithStimulation;
 
     m_state = QStringLiteral("Stopped");
     m_eState = Stopped;

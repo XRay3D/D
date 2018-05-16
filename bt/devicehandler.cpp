@@ -242,6 +242,19 @@ bool DeviceHandler::enableTraining(bool enabled)
     return success();
 }
 
+bool DeviceHandler::selectTrainingType(int type)
+{
+    if (m_service == nullptr)
+        return m_success;
+    m_success = false;
+    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
+    if (characteristic.isValid())
+        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::TRAINING_TYPE, uint8_t(type)));
+    else
+        return m_success;
+    return success();
+}
+
 void DeviceHandler::serviceDiscovered(const QBluetoothUuid& gatt)
 {
     if (gatt == m_service_uuid) {
@@ -390,6 +403,15 @@ void DeviceHandler::cbOnOff(const QByteArray& data)
     if (parcel->len != Ski::MIN_LEN) {
     }
     qDebug("cbOnOff");
+    m_success = true;
+}
+
+void DeviceHandler::cbTrType(const QByteArray& data)
+{
+    const Ski::Parcel_t* parcel = reinterpret_cast<const Ski::Parcel_t*>(data.constData());
+    if (parcel->len != Ski::MIN_LEN) {
+    }
+    qDebug("cbTrType");
     m_success = true;
 }
 

@@ -19,6 +19,7 @@ enum class Cmmand {
     GET_STATUS,
     IMPULSE,
     ON_OFF,
+    TRAINING_TYPE,
     //Service functions
     BUFFER_OVERFLOW,
     WRONG_COMMAND,

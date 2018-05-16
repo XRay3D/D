@@ -54,6 +54,7 @@ public slots:
     bool getBatteryCharge();
     bool impulse();
     bool enableTraining(bool enabled);
+    bool selectTrainingType(int enabled);
 
 private:
     Ski::Statistics_t m_st;
@@ -80,6 +81,7 @@ private:
     void cbGetBattery(const QByteArray& data);
     void cbImpulse(const QByteArray& data);
     void cbOnOff(const QByteArray& data);
+    void cbTrType(const QByteArray& data);
     //Service functions
     void cbBufferOverflow(const QByteArray& data);
     void cbWrongCommand(const QByteArray& data);
