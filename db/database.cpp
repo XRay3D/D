@@ -1,5 +1,5 @@
 #include "database.h"
-
+#include <QStandardPaths>
 DataBase::DataBase(QObject* parent)
     : QObject(parent)
 {
@@ -15,7 +15,16 @@ void DataBase::connectToDataBase()
 {
     // Перед подключением к базе данных производим проверку на её существование.
     // В зависимости от результата производим открытие базы данных или её восстановление
-    if (QFile(DATABASE_NAME).exists())
+
+#if defined(Q_OS_IOS)
+    QStringList paths(QStandardPaths::standardLocations(QStandardPaths::DataLocation));
+    QString dbFile(paths.first() + DATABASE_NAME);
+    qDebug()<<paths;
+#elif defined(Q_OS_ANDROID)
+    QString dbFile(DATABASE_NAME);
+#endif
+
+    if (QFile(dbFile/*DATABASE_NAME*/).exists())
         openDataBase();
     else
         restoreDataBase();
@@ -40,7 +49,15 @@ bool DataBase::openDataBase()
     // и имени базы данных, если она существует
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setHostName(DATABASE_HOSTNAME);
+#if defined(Q_OS_IOS)
+    QStringList paths  (QStandardPaths::standardLocations(QStandardPaths::DataLocation));
+    QString dbFile(paths.first() + DATABASE_NAME);
+    db.setDatabaseName(dbFile);
+    qDebug() << db;
+#elif defined(Q_OS_ANDROID)
     db.setDatabaseName(DATABASE_NAME);
+#endif
+
     if (db.open())
         return true;
     return false;
@@ -89,19 +106,19 @@ bool DataBase::inserIntoTable(Training* t)
     // которые потом связываются методом bindValue
     // для подстановки данных из QVariantList
     query.prepare("INSERT INTO " TABLE " ("
-                  "" TYPE ", "
-                  "" DATE ", "
-                  "" TIME_WITH_STIMULATION ", "
-                  "" TIME_WITHOUT_STIMULATION ", "
-                  "" TIME_STIMULATION ", "
-                  "" TIME_REST ", "
-                  "" AVG_STIMULATION_AMPLITUDE ", "
-                  "" AVG_STEP_LENGTH ", "
-                  "" AVG_STEP_FREQUENCY ", "
-                  "" AVG_SPEED_WITHOUT_STIMULATION ", "
-                  "" AVG_SPEED_WITH_STIMULATION ", "
-                  "" TOTAL_DISTANCE ", "
-                  "" TOTAL_STIMULATION_DISTANCE
+                                       "" TYPE ", "
+                                               "" DATE ", "
+                                                       "" TIME_WITH_STIMULATION ", "
+                                                                                "" TIME_WITHOUT_STIMULATION ", "
+                                                                                                            "" TIME_STIMULATION ", "
+                                                                                                                                "" TIME_REST ", "
+                                                                                                                                             "" AVG_STIMULATION_AMPLITUDE ", "
+                                                                                                                                                                          "" AVG_STEP_LENGTH ", "
+                                                                                                                                                                                             "" AVG_STEP_FREQUENCY ", "
+                                                                                                                                                                                                                   "" AVG_SPEED_WITHOUT_STIMULATION ", "
+                                                                                                                                                                                                                                                    "" AVG_SPEED_WITH_STIMULATION ", "
+                                                                                                                                                                                                                                                                                  "" TOTAL_DISTANCE ", "
+                                                                                                                                                                                                                                                                                                    "" TOTAL_STIMULATION_DISTANCE
                   ") VALUES (:Val1, :Val2, :Val3, :Val4, :Val5, :Val6, :Val7, :Val8, :Val9, :Val10, :Val11, :Val12, :Val13)");
     query.bindValue(":Val1", t->m_type);
     query.bindValue(":Val2", t->m_date);

@@ -291,6 +291,8 @@ void DeviceHandler::serviceStateChanged(QLowEnergyService::ServiceState state)
         m_notificationDesc = characteristic.descriptor(QBluetoothUuid::ClientCharacteristicConfiguration);
         if (m_notificationDesc.isValid())
             m_service->writeDescriptor(m_notificationDesc, QByteArray::fromHex("0100"));
+        else
+            qErrnoWarning("m_notificationDesc.isValid()");
 
         //m_service->writeCharacteristic(characteristic, parcel(Ski::PING));
         if (getBatteryCharge())

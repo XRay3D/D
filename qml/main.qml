@@ -222,18 +222,21 @@ ApplicationWindow {
             model: deviceFinder.devices
             clip: true
             spacing: 25* sc
-            delegate: BorderImage {
+            delegate: Rectangle{ //BorderImage {
                 height: 100 * sc
                 width: parent.width
-                source: 'images/frame.png'
-                border {
-                    left: 30
-                    right: 30
-                    top: 30
-                    bottom: 30
-                }
-                horizontalTileMode: BorderImage.Repeat
-                verticalTileMode: BorderImage.Stretch
+                color: 'transparent'
+                border.color: 'gray'
+                radius: 20 * sc
+//                source: 'images/frame.png'
+//                border {
+//                    left: 30
+//                    right: 30
+//                    top: 30
+//                    bottom: 30
+//                }
+//                horizontalTileMode: BorderImage.Repeat
+//                verticalTileMode: BorderImage.Stretch
                 //color: index % 2 === 0 ? '#100000' : '#200000'
                 MouseArea {
                     anchors.fill: parent
@@ -257,6 +260,7 @@ ApplicationWindow {
                     anchors.bottomMargin: 15 * sc
                     anchors.rightMargin: 15 * sc
                     anchors.right: parent.right
+                    font.pixelSize: 15 * sc
                     color: 'white'
                 }
             }

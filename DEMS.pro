@@ -21,8 +21,6 @@ SOURCES += main.cpp \
     db/database.cpp \
     db/listmodel.cpp \
     db/training.cpp \
-    gps/gpstrack.cpp \
-    gps/gpstrackstat.cpp \
     guiapplication.cpp \
 
 HEADERS += \
@@ -34,8 +32,6 @@ HEADERS += \
     db/database.h \
     db/listmodel.h \
     db/training.h \
-    gps/gpstrack.h \
-    gps/gpstrackstat.h \
     guiapplication.h \
 
 RESOURCES += qml.qrc
@@ -46,13 +42,12 @@ QML_IMPORT_PATH =
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
 
-# Default rules for deployment.
-#qnx: target.path = /tmp/$${TARGET}/bin
-#else: unix:!android: target.path = /opt/$${TARGET}/bin
-#!isEmpty(target.path): INSTALLS += target
+
+#APP_FILES.files += Trainings.db
 
 ios {
     QMAKE_INFO_PLIST = ios/Info.plist
+#    QMAKE_BUNDLE_DATA += APP_FILES
 
     fontFiles.files = $$files(fonts/*.ttf)
     fontFiles.path = fonts
@@ -61,14 +56,14 @@ ios {
     app_launch_images.files = $$PWD/ios/LaunchScreen.xib $$files($$PWD/ios/LaunchImage*.png)
     QMAKE_BUNDLE_DATA += app_launch_images
 
-
-    ios_icon.files = $$files($$PWD/ios/AppIcon*.png)
-    QMAKE_BUNDLE_DATA += ios_icon
+    QMAKE_ASSET_CATALOGS += ios/Images.xcassets
 
 DISTFILES += \
     ios/Assets.xcassets \
     ios/Info.plist \
     ios/LaunchScreen.xib
+
+QTPLUGIN += qsqlite
 }
 
 android {

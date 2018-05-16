@@ -14,7 +14,7 @@
 
 /* Директивы имен таблицы, полей таблицы и базы данных */
 #define DATABASE_HOSTNAME "NameDataBase"
-#define DATABASE_NAME "Trainings.db"
+#define DATABASE_NAME "/Trainings.db"
 
 #define TABLE "TrainingTable" // Название таблицы
 

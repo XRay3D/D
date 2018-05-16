@@ -48,7 +48,7 @@ Page {
                 anchors.fill: parent
                 onClicked: btDialog.open()
             }
-            enabled: trainingPage.state == 'Stopped'
+            enabled: trainingPage.state == 'Stopped' || !deviceHandler.alive
             opacity: enabled ? 1.0 : 0.3
         }
         Rectangle{
