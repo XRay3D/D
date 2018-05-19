@@ -3,17 +3,18 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QQuickStyle>
+//#include <QQuickStyle>
 #include <QThread>
 #include <bt/devicefinder.h>
 #include <bt/devicehandler.h>
 #include <db/database.h>
 #include <db/listmodel.h>
-
+#include <QtPlugin>
 #include "guiapplication.h"
 
 int main(int argc, char* argv[])
 {
+    //Q_IMPORT_PLUGIN(qsqlite);
     GuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
@@ -25,15 +26,7 @@ int main(int argc, char* argv[])
     QFontDatabase::addApplicationFont("qrc:/fonts/HelveticaNeueCyr-Roman.ttf");
     QFontDatabase::addApplicationFont("qrc:/fonts/HelveticaNeueCyr-Thin.ttf");
 
-    DeviceHandler deviceHandler; // = new DeviceHandler();
-
-    //    QThread thread;
-    //    deviceHandler->moveToThread(&thread);
-    //    thread.connect(&thread, &QThread::finished, deviceHandler, &QObject::deleteLater);
-    //    app.connect(&engine, &QQmlApplicationEngine::quit, &thread, &QThread::quit);
-    //    app.connect(&engine, &QQmlApplicationEngine::quit, &thread, &QThread::quit);
-    //    thread.start();
-
+    DeviceHandler deviceHandler;
     DeviceFinder deviceFinder(&deviceHandler);
     Training training(&deviceHandler);
 
@@ -46,11 +39,10 @@ int main(int argc, char* argv[])
     ListModel model; // Объявляем и инициализируем модель данных
 
     app.connect(&training, &Training::addToDataBase, &database, &DataBase::inserIntoTable, Qt::DirectConnection);
-    app.connect(&training, &Training::addToDataBase, [&]() { model.updateModel(); });
+    app.connect(&training, &Training::addToDataBase, &model, &ListModel::updateModel);
 
     QQmlContext* rootContext = engine.rootContext();
     rootContext->setContextProperty("GUI", &app);
-    // rootContext->setContextProperty("trainingModel", &model);
     // Обеспечиваем доступ к модели и классу для работы с базой данных из QML
     rootContext->setContextProperty("myModel", &model);
     rootContext->setContextProperty("database", &database);

@@ -6,6 +6,8 @@ import QtGraphicalEffects 1.0
 Page {
     id: contents
 
+    background: Item{}
+
     MouseArea{
         anchors.fill: parent
         onClicked: { if(stack.depth > 1) stack.pop() }

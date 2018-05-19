@@ -1,8 +1,20 @@
 #include "database.h"
+#include <QDir>
 #include <QStandardPaths>
 DataBase::DataBase(QObject* parent)
     : QObject(parent)
 {
+#if defined(Q_OS_IOS)
+    QString path = QStandardPaths::standardLocations(QStandardPaths::DataLocation).value(0);
+    QDir dir(path);
+    if (!dir.exists())
+        dir.mkpath(path);
+    if (!path.isEmpty() && !path.endsWith("/"))
+        path += "/";
+    dbFile = path + DATABASE_NAME;
+#else//if defined(Q_OS_ANDROID)
+    dbFile = DATABASE_NAME;
+#endif
     connectToDataBase();
 }
 
@@ -15,16 +27,7 @@ void DataBase::connectToDataBase()
 {
     // Перед подключением к базе данных производим проверку на её существование.
     // В зависимости от результата производим открытие базы данных или её восстановление
-
-#if defined(Q_OS_IOS)
-    QStringList paths(QStandardPaths::standardLocations(QStandardPaths::DataLocation));
-    QString dbFile(paths.first().append("/") + DATABASE_NAME);
-    qDebug() << paths;
-#elif defined(Q_OS_ANDROID)
-    QString dbFile(DATABASE_NAME);
-#endif
-
-    if (QFile(dbFile /*DATABASE_NAME*/).exists())
+    if (QFile(dbFile).exists())
         openDataBase();
     else
         restoreDataBase();
@@ -36,7 +39,7 @@ bool DataBase::restoreDataBase()
     // Если база данных открылась ...
     if (openDataBase())
         // Производим восстановление базы данных
-        return (createTable()) ? true : false;
+        return createTable();
 
     qDebug() << "Не удалось восстановить базу данных";
     return false;
@@ -49,15 +52,7 @@ bool DataBase::openDataBase()
     // и имени базы данных, если она существует
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setHostName(DATABASE_HOSTNAME);
-#if defined(Q_OS_IOS)
-    QStringList paths(QStandardPaths::standardLocations(QStandardPaths::DataLocation));
-    QString dbFile(paths.first().append("/") + DATABASE_NAME);
     db.setDatabaseName(dbFile);
-    qDebug() << db;
-#elif defined(Q_OS_ANDROID)
-    db.setDatabaseName(DATABASE_NAME);
-#endif
-
     if (db.open())
         return true;
     return false;

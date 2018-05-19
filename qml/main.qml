@@ -9,8 +9,8 @@ import Qt.labs.settings 1.0
 ApplicationWindow {
     visible: true
     id: window
-    width: 750 * 0.7
-    height: (1334 - 36) * 0.7
+    width: 750 * 0.6
+    height: (1334 - 36) * 0.6
     property double sc: width / 750
     property Footer tabBar: tabBar
     property Journal journal: journal
@@ -197,15 +197,7 @@ ApplicationWindow {
                 width: parent.width
                 color: 'white'
                 wrapMode: Text.WordWrap
-                text: ':1234567890
-       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-       Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-       Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-       Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-       Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-       Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-       Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.'
+                text: 'Приложение для управления стимуляторами. Версия 1.0'
                 font.pixelSize: 24 * sc
             }
         }
@@ -221,7 +213,7 @@ ApplicationWindow {
             anchors.bottomMargin: 100 * sc
             model: deviceFinder.devices
             clip: true
-            spacing: 25* sc
+            spacing: 25 * sc
             delegate: Rectangle{ //BorderImage {
                 height: 100 * sc
                 width: parent.width
@@ -248,21 +240,19 @@ ApplicationWindow {
                 }
                 Label {
                     text: modelData.deviceName
-                    anchors.top: parent.top
-                    anchors.topMargin: 15 * sc
-                    anchors.leftMargin: 15 * sc
-                    anchors.left: parent.left
+                    anchors.centerIn: parent
                     color: 'white'
+                    font.pixelSize: 40 * sc
                 }
-                Label {
-                    text: modelData.deviceAddress
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 15 * sc
-                    anchors.rightMargin: 15 * sc
-                    anchors.right: parent.right
-                    font.pixelSize: 15 * sc
-                    color: 'white'
-                }
+//                Label {
+//                    text: modelData.deviceAddress
+//                    anchors.bottom: parent.bottom
+//                    anchors.bottomMargin: 15 * sc
+//                    anchors.rightMargin: 15 * sc
+//                    anchors.right: parent.right
+//                    font.pixelSize: 15 * sc
+//                    color: 'white'
+//                }
             }
         }
         onOpened: {

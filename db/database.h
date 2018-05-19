@@ -13,7 +13,7 @@
 #include <QDebug>
 
 /* Директивы имен таблицы, полей таблицы и базы данных */
-#define DATABASE_HOSTNAME "NameDataBase"
+#define DATABASE_HOSTNAME "TrainingsDataBase"
 #define DATABASE_NAME "Trainings.db"
 
 #define TABLE "TrainingTable" // Название таблицы
@@ -46,6 +46,7 @@ public:
 private:
     // Сам объект базы данных, с которым будет производиться работа
     QSqlDatabase db;
+    QString dbFile;
 
 private:
     // Внутренние методы для работы с базой данных

@@ -444,7 +444,7 @@ bool DeviceHandler::success()
     QTime timer;
     timer.start();
 
-    while (!m_success && timer.elapsed() < 1000)
+    while (!m_success && timer.elapsed() < 50)
         qApp->processEvents();
 
     if (m_success)
