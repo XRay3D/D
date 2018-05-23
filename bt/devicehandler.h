@@ -19,7 +19,6 @@ class DeviceHandler : public BluetoothBaseClass, private Ski::Protokol {
     Q_PROPERTY(bool alive READ alive NOTIFY aliveChanged)
     Q_PROPERTY(int batteryLeft READ batteryLeft NOTIFY batteryChanged)
     Q_PROPERTY(int batteryRight READ batteryRight NOTIFY batteryChanged)
-    Q_PROPERTY(AddressType addressType READ addressType WRITE setAddressType)
 
 public:
     enum class AddressType {
@@ -102,10 +101,11 @@ private:
     Ski::Statistics m_statisticsType;
 
     QVector<int> m_measurements;
-    QLowEnergyController::RemoteAddressType m_addressType = QLowEnergyController::PublicAddress;
 
     const QUuid m_characteristic_uuid;
     const QUuid m_service_uuid;
+
+    bool writeToSki(const QByteArray& data);
 
     int m_batTimerId = 0;
 
@@ -113,7 +113,5 @@ private:
 protected:
     void timerEvent(QTimerEvent* event) override;
 };
-
-
 
 #endif // DEVICEHANDLER_H

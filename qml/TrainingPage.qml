@@ -11,6 +11,12 @@ Page{
 
     state: training.state //init state is 'Stopped'
 
+    Component{
+        id: control
+        DemsControl{
+        }
+    }
+
     StackView{
         id: stackView
         width: parent.width
@@ -44,7 +50,7 @@ Page{
             anchors.fill: parent
         }
         states: State { when: btnPulseStop.pressed; PropertyChanges { target: btnPulseStop.background; scale: 0.8} }
-        transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 } }
+        transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         onClicked: {
             if(trainingPage.state == 'Running'){
                 deviceHandler.impulse()
@@ -69,13 +75,13 @@ Page{
             anchors.fill: parent
         }
         states: State { when: btnStartPause.pressed; PropertyChanges { target: btnStartPause.background; scale: 0.8} }
-        transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 } }
+        transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         onClicked: {
             if(trainingPage.state == 'Stopped'){
                 if(!deviceHandler.alive)//! return
                     btDialog.open()
                 else{
-                    stackView.push('DemsControl.qml')
+                    stackView.push(control)
                     training.start()
                 }
             }

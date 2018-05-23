@@ -80,8 +80,9 @@ void Training::stop()
     m_deviceHandler->enableTraining(false);
 
     if ((st.steps + sp.steps) > 0) {
-        m_avgStepFrequency = (m_timeWithoutStimulation + m_timeWithStimulation) / (st.steps + sp.steps);
-        m_avgStepLength = m_totalDistance / (st.steps + sp.steps);
+        m_avgStepFrequency = (st.steps + sp.steps) / ((m_timeWithoutStimulation + m_timeWithStimulation) / 1000.f);
+        m_avgStepLength = m_totalDistance;
+        m_avgStepLength /= (st.steps + sp.steps);
     } else {
         m_avgStepFrequency = 0;
         m_avgStepLength = 0;
@@ -89,13 +90,13 @@ void Training::stop()
 
     m_avgStimulationAmplitude = st.averageAmplitude;
 
-    if ((m_timeWithoutStimulation / 1000) > 0)
-        m_avgSpeedWithoutStimulation = m_distanceWithoutStimulation / (m_timeWithoutStimulation / 1000);
+    if (m_timeWithoutStimulation > 0)
+        m_avgSpeedWithoutStimulation = m_distanceWithoutStimulation / (m_timeWithoutStimulation / 1000.);
     else
         m_avgSpeedWithoutStimulation = 0;
 
-    if ((m_timeWithStimulation / 1000) > 0)
-        m_avgSpeedWithStimulation = m_distanceWithStimulation / (m_timeWithStimulation / 1000);
+    if (m_timeWithStimulation > 0)
+        m_avgSpeedWithStimulation = m_distanceWithStimulation / (m_timeWithStimulation / 1000.);
     else
         m_avgSpeedWithStimulation = 0;
 
@@ -105,8 +106,8 @@ void Training::stop()
     m_state = QStringLiteral("Stopped");
     m_eState = Stopped;
     addToDataBase(this);
-
     stateChanged();
+    showTraining();
 }
 
 int Training::type() const
@@ -164,6 +165,7 @@ void Training::positionUpdated(const QGeoPositionInfo& info)
     }
     m_lastPoint = info.coordinate();
     m_deviceHandler->setInfo(info.coordinate().toString());
+    qDebug() << info << info.coordinate().distanceTo(m_lastPoint);
 }
 
 QString Training::totalTime() const

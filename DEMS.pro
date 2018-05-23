@@ -1,7 +1,6 @@
 # 1.0 - 1.4
 
 QT += quick location positioning bluetooth sql
-#QT += quickcontrols2
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use

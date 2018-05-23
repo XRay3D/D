@@ -24,8 +24,8 @@ public:
     int m_timeRest = 0; //отдых - без движа
     int m_avgSpeedWithStimulation = 5;
     int m_avgSpeedWithoutStimulation = 4;
-    int m_avgStepFrequency = 3;
-    int m_avgStepLength = 2;
+    float m_avgStepFrequency = 3;
+    float m_avgStepLength = 2;
     int m_avgStimulationAmplitude = 1;
     int m_totalDistance = 6;
     int m_totalStimulationDistance = 7;
@@ -38,6 +38,7 @@ public:
     void setType(int type);
 
     QString state() const;
+
 public slots:
     void start();
     void pause();
@@ -49,6 +50,7 @@ signals:
     void stateChanged();
     void totalTimeChanged();
     void addToDataBase(Training*);
+    void showTraining();
 
 private:
     DeviceHandler* m_deviceHandler;

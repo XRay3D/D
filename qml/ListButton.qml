@@ -1,4 +1,4 @@
-import QtGraphicalEffects 1.0
+//import QtGraphicalEffects 1.0
 import QtQuick 2.9
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.2
@@ -16,8 +16,8 @@ T.ComboBox {
     spacing: 6
 
     property string text: qsTr('Switch')
-
     property color color: 'white'
+    property int value: 0
 
     model: ListModel {}
 
@@ -75,7 +75,7 @@ T.ComboBox {
                     PropertyChanges { target: delegate; scale: 0.9}
                 }
                 transitions: Transition {
-                    NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 }
+                    NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 }
                 }
                 MouseArea {
                     id: delegateMouseArea
@@ -83,17 +83,18 @@ T.ComboBox {
                     onClicked: {
                         control.currentIndex = index
                         control.popup.close()
+                        control.value = 10 * index
                     }
                 }
-                Glow{
-                    cached : true
-                    opacity: delegateMouseArea.pressed? 1 : 0
-                    anchors.fill: contentItem.delegate
-                    radius: 8
-                    samples: 17
-                    color: 'white'
-                    source: contentItem.delegate
-                }
+//                Glow{
+//                    cached : true
+//                    opacity: delegateMouseArea.pressed? 1 : 0
+//                    anchors.fill: contentItem.delegate
+//                    radius: 8
+//                    samples: 17
+//                    color: 'white'
+//                    source: contentItem.delegate
+//                }
             }
         }
 

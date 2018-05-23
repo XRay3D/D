@@ -35,7 +35,7 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 
 private:
-    inline QVariant data2(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    inline QVariant data2(int row, int role = Qt::DisplayRole) const;
 
 protected:
     // хешированная таблица ролей для колонок.

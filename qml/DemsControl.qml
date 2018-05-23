@@ -67,7 +67,8 @@ Item {
             suffix: '%'
             name: qsTr('Мощность')
             onValueChanged: {
-                deviceHandler.setVoltage(value * 10)
+                //deviceHandler.setVoltage(value * 10)
+                powerChanged(value * 10)
             }
         }
         Arc{
@@ -81,7 +82,8 @@ Item {
             suffix: qsTr('мc')
             name: qsTr('Продолжительность')
             onValueChanged: {
-                deviceHandler.setDuration(value * 50)
+                //deviceHandler.setDuration(value * 50)
+                durationChanged(value * 50)
             }
         }
     }

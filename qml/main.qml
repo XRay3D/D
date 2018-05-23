@@ -9,12 +9,25 @@ import Qt.labs.settings 1.0
 ApplicationWindow {
     visible: true
     id: window
-    width: 750 * 0.6
-    height: (1334 - 36) * 0.6
+    objectName: 'window'
+    width: 750 * 0.7
+    height: (1334 - 36) * 0.7
+
+
+    signal powerChanged(int value)
+    signal durationChanged(int value)
+    signal delayChanged(int value);
+
+    signal start()
+    signal pause()
+    signal resume()
+    signal stop()
+
+    signal impulse()
+
     property double sc: width / 750
     property Footer tabBar: tabBar
     property Journal journal: journal
-    property FastBlur fastBlur: fastBlur
 
     FontLoader { id: font1; source: '../fonts/HelveticaNeueCyr-Bold.ttf' }
     FontLoader { id: font2; source: '../fonts/HelveticaNeueCyr-Heavy.ttf' }
@@ -40,20 +53,12 @@ ApplicationWindow {
 
     background:Rectangle { color: '#181f25' }
 
-
     Connections {
         target: GUI
         onBack: {
             console.log('back')
             if(stackView.depth === 2)
                 stackView.pop()
-        }
-    }
-    
-    Connections {
-        target: deviceHandler
-        onAliveChanged: {
-            console.log('onAliveChanged')
         }
     }
 
@@ -172,6 +177,7 @@ ApplicationWindow {
         }
         Behavior on opacity { NumberAnimation { duration: 200 } }
     }
+
     overlay.modeless: FastBlur{
         anchors.fill: parent
         transparentBorder: false
@@ -197,7 +203,17 @@ ApplicationWindow {
                 width: parent.width
                 color: 'white'
                 wrapMode: Text.WordWrap
-                text: 'Приложение для управления стимуляторами. Версия 1.0'
+                text: 'АПЭК-APPSKI является аппаратно – программным электромиостимуляционным комплексом, предназначенным для проведения тренировки по методу «динамическая электромиостимуляция», регистрации основных параметров тренировки в режиме реального времени, сохранения, полученной информации и передаче ее по электронной связи.
+
+    Управление комплексом осуществляется оригинальным программным обеспечением с помощью смартфонов, или со смартчасов.
+
+    АПЭК-APPSKI состоит из следующих основных частей: «умных» шорт со специальными карманами, силиконовыми электродами, вшитыми в определенных местах, основными блоками, расположенными в карманах и проводами, передающими электрические импульсы, установленной амплитуды и продолжительности, поочередно на 4-хглавые мышцы бедер каждой ноги, точно, во время отталкивания при передвижении или на лыжах, или на лыжероллерах, по команде, момент подачи которой, определяется оригинальным программным обеспечением (ПО). ПО «зашивается» в микроконтроллеры, которые вместе с датчиками, радиомодулем, электростимуляторами, батареями, накопителем информации, разъемами и светодиодами расположены на основных блоках каждой ноги.
+
+    После включения основных блоков (команды включения и выключения могут быть выполнены вручную или, после установки соединения между основными блоками и смарт устройствами, поданы со смартчасов или смартфона) и сопряжения, светодиоды перестают мигать. Немигающий свет указывает на готовность к проведению тренировки по методу «динамическая электростимуляция».
+
+    После начала тренировки, электростимуляция, сбор и расчет показателей (на основе данных GPS)  тренировочной деятельности осуществляются автоматически.
+
+Приложение dEMS v1.0'
                 font.pixelSize: 24 * sc
             }
         }
@@ -213,23 +229,14 @@ ApplicationWindow {
             anchors.bottomMargin: 100 * sc
             model: deviceFinder.devices
             clip: true
-            spacing: 25 * sc
+            spacing: 25* sc
             delegate: Rectangle{ //BorderImage {
                 height: 100 * sc
                 width: parent.width
                 color: 'transparent'
                 border.color: 'gray'
+                border.width: sc < 1 ? 1 : sc
                 radius: 20 * sc
-//                source: 'images/frame.png'
-//                border {
-//                    left: 30
-//                    right: 30
-//                    top: 30
-//                    bottom: 30
-//                }
-//                horizontalTileMode: BorderImage.Repeat
-//                verticalTileMode: BorderImage.Stretch
-                //color: index % 2 === 0 ? '#100000' : '#200000'
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
@@ -244,33 +251,12 @@ ApplicationWindow {
                     color: 'white'
                     font.pixelSize: 40 * sc
                 }
-//                Label {
-//                    text: modelData.deviceAddress
-//                    anchors.bottom: parent.bottom
-//                    anchors.bottomMargin: 15 * sc
-//                    anchors.rightMargin: 15 * sc
-//                    anchors.right: parent.right
-//                    font.pixelSize: 15 * sc
-//                    color: 'white'
-//                }
             }
         }
         onOpened: {
             if(!deviceFinder.scanning)
                 deviceFinder.startSearch()
         }
-        //        footer: Item{
-        //            width: parent.width;
-        //            height: 150 * sc
-        //            RoundedButton {
-        //                anchors.fill: parent
-        //                anchors.margins: 20 * sc
-        //                height: 50 * sc
-        //                enabled: !deviceFinder.scanning
-        //                onClicked: deviceFinder.startSearch()
-        //                text: qsTr('START SEARCH')
-        //            }
-        //        }
     }
     // Диалог подтверждения удаления тренировки из базы данных
     MyDialog {
@@ -317,7 +303,7 @@ ApplicationWindow {
         anchors.right: parent.right
         height: 130 * sc
         color: hasError ? '#BA3F62' : '#3FBA62'
-        visible: hasError || hasInfo
+        visible: false //hasError || hasInfo
         Label {
             id: error
             anchors.fill: parent

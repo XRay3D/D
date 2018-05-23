@@ -43,7 +43,7 @@ void DeviceHandler::setDevice(DeviceInfo* device)
     if (m_currentDevice) {
         // Выполнение соединения
         m_control = new QLowEnergyController(m_currentDevice->getDevice(), this);
-        m_control->setRemoteAddressType(m_addressType);
+        m_control->setRemoteAddressType(QLowEnergyController::PublicAddress);
         connect(m_control, &QLowEnergyController::serviceDiscovered, this, &DeviceHandler::serviceDiscovered);
         connect(m_control, &QLowEnergyController::discoveryFinished, this, &DeviceHandler::serviceScanDone);
 
@@ -64,25 +64,6 @@ void DeviceHandler::setDevice(DeviceInfo* device)
         // Соединиться
         m_control->connectToDevice();
     }
-}
-
-void DeviceHandler::setAddressType(DeviceHandler::AddressType type)
-{
-    switch (type) {
-    case DeviceHandler::AddressType::PublicAddress:
-        m_addressType = QLowEnergyController::PublicAddress;
-        break;
-    case DeviceHandler::AddressType::RandomAddress:
-        m_addressType = QLowEnergyController::RandomAddress;
-        break;
-    }
-}
-
-DeviceHandler::AddressType DeviceHandler::addressType() const
-{
-    if (m_addressType == QLowEnergyController::RandomAddress)
-        return DeviceHandler::AddressType::RandomAddress;
-    return DeviceHandler::AddressType::PublicAddress;
 }
 
 bool DeviceHandler::alive() const
@@ -118,141 +99,109 @@ void DeviceHandler::disconnectService()
 
 bool DeviceHandler::setVoltage(int voltage)
 {
+    m_success = false;
     if (m_service == nullptr)
         return m_success;
-    m_success = false;
     m_stimSettings.voltage = static_cast<quint8>(voltage);
-    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
-    if (characteristic.isValid())
-        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings));
-    else
-        return m_success;
-    return success();
+    if (writeToSki(parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings)))
+        return success();
+    return m_success;
 }
 
 bool DeviceHandler::setDuration(int duration)
 {
+    m_success = false;
     if (m_service == nullptr)
         return m_success;
-    m_success = false;
     m_stimSettings.duration = static_cast<quint16>(duration);
-    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
-    if (characteristic.isValid())
-        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings));
-    else
-        return m_success;
-    return success();
+    if (writeToSki(parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings)))
+        return success();
+    return m_success;
 }
 
 bool DeviceHandler::setDelay(int delay)
 {
+    m_success = false;
     if (m_service == nullptr)
         return m_success;
-    m_success = false;
     m_stimSettings.delay = static_cast<quint16>(delay);
-    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
-    if (characteristic.isValid())
-        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings));
-    else
-        return m_success;
-    return success();
+    if (writeToSki(parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings)))
+        return success();
+    return m_success;
 }
 
 bool DeviceHandler::resetStatistics()
 {
+    m_success = false;
     if (m_service == nullptr)
         return m_success;
-    m_success = false;
-    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
-    if (characteristic.isValid())
-        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::RESET)));
-    else
-        return m_success;
-    return success();
+    if (writeToSki(parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::RESET))))
+        return success();
+    return m_success;
 }
 
 bool DeviceHandler::getTrainingStatistics(Ski::Statistics_t& s)
 {
+    m_success = false;
     if (m_service == nullptr)
         return m_success;
-    m_success = false;
     m_statisticsType = Ski::GET_TRAINING;
-    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
-    if (characteristic.isValid())
-        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::GET_TRAINING)));
-    else
-        return m_success;
-    if (success())
-        s = m_st;
+    if (writeToSki(parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::GET_TRAINING))))
+        if (success())
+            s = m_st;
     return m_success;
 }
 
 bool DeviceHandler::getPauseStatistics(Ski::Statistics_t& s)
 {
+    m_success = false;
     if (m_service == nullptr)
         return m_success;
-    m_success = false;
     m_statisticsType = Ski::GET_PAUSE;
-    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
-    if (characteristic.isValid())
-        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::GET_PAUSE)));
-    else
-        return m_success;
-    if (success())
-        s = m_sp;
+    if (writeToSki(parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::GET_PAUSE))))
+        if (success())
+            s = m_sp;
     return m_success;
 }
 
 bool DeviceHandler::getBatteryCharge()
 {
+    m_success = false;
     if (m_service == nullptr)
         return m_success;
-    m_success = false;
-    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
-    if (characteristic.isValid())
-        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::GET_BATTERY));
-    else
-        return m_success;
-    return success();
+    if (writeToSki(parcel(Ski::Cmmand::GET_BATTERY)))
+        return success();
+    return m_success;
 }
 
 bool DeviceHandler::impulse()
 {
+    m_success = false;
     if (m_service == nullptr)
         return m_success;
-    m_success = false;
-    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
-    if (characteristic.isValid())
-        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::IMPULSE));
-    else
-        return m_success;
-    return success();
+    if (writeToSki(parcel(Ski::Cmmand::IMPULSE)))
+        return success();
+    return m_success;
 }
 
 bool DeviceHandler::enableTraining(bool enabled)
 {
+    m_success = false;
     if (m_service == nullptr)
         return m_success;
-    m_success = false;
-    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
-    if (characteristic.isValid())
-        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::ON_OFF, uint8_t(enabled)));
-    else
-        return m_success;
-    return success();
+    if (writeToSki(parcel(Ski::Cmmand::ON_OFF, uint8_t(enabled))))
+        return success();
+    return m_success;
 }
 
 bool DeviceHandler::selectTrainingType(int type)
 {
+    m_success = false;
     if (m_service == nullptr)
         return m_success;
-    m_success = false;
-    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
-    if (characteristic.isValid())
-        m_service->writeCharacteristic(characteristic, parcel(Ski::Cmmand::TRAINING_TYPE, uint8_t(type)));
-    else
-        return m_success;
-    return success();
+    if (writeToSki(parcel(Ski::Cmmand::TRAINING_TYPE, uint8_t(type))))
+        return success();
+    return m_success;
 }
 
 void DeviceHandler::serviceDiscovered(const QBluetoothUuid& gatt)
@@ -307,7 +256,6 @@ void DeviceHandler::serviceStateChanged(QLowEnergyService::ServiceState state)
         else
             qErrnoWarning("m_notificationDesc.isValid()");
 
-        //m_service->writeCharacteristic(characteristic, parcel(Ski::PING));
         if (getBatteryCharge())
             m_batTimerId = startTimer(10000); //10 cek
         break;
@@ -444,7 +392,7 @@ bool DeviceHandler::success()
     QTime timer;
     timer.start();
 
-    while (!m_success && timer.elapsed() < 50)
+    while (!m_success && timer.elapsed() < 1000)
         qApp->processEvents();
 
     if (m_success)
@@ -453,6 +401,20 @@ bool DeviceHandler::success()
         setError("Timeout!");
 
     return m_success;
+}
+
+bool DeviceHandler::writeToSki(const QByteArray& data)
+{
+    const auto characteristic = m_service->characteristic(QBluetoothUuid(m_characteristic_uuid));
+    if (characteristic.isValid()) {
+#if defined(Q_OS_IOS)
+        m_service->writeCharacteristic(characteristic, data, QLowEnergyService::WriteWithoutResponse);
+#else
+        m_service->writeCharacteristic(characteristic, data);
+#endif
+        return true;
+    }
+    return false;
 }
 
 void DeviceHandler::timerEvent(QTimerEvent* event)

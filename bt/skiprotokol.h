@@ -74,7 +74,7 @@ typedef struct AccGyr_t {
 typedef struct Statistics_t {
     uint32_t timePause = 0;
     uint32_t timeStimulatiion = 0;
-    float averageAmplitude = 0;
+    uint8_t averageAmplitude = 0;
     uint16_t steps = 0;
 } Statistics_t;
 

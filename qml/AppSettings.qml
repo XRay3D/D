@@ -68,7 +68,8 @@ Page {
                 }
                 currentIndex = 0
             }
-            enabled: false
+            onValueChanged: delayChanged(value)
+            //enabled: false
         }
         Rectangle{
             Layout.fillWidth: true

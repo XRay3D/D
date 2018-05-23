@@ -43,12 +43,12 @@ QVariant ListModel::data(const QModelIndex& index, int role) const
 }
 
 // Метод для получения данных из модели
-QVariant ListModel::data2(const QModelIndex& index, int role) const
+QVariant ListModel::data2(int row, int role) const
 {
     // Определяем номер колонки, адрес так сказать, по номеру роли
     int columnId = role - Qt::UserRole;
     // Создаём индекс с помощью новоиспечённого ID колонки
-    QModelIndex modelIndex = this->index(index.row(), columnId);
+    QModelIndex modelIndex = this->index(row, columnId);
     // И с помощью уже метода data() базового класса вытаскиваем данные для таблицы из модели
     return QVariant(QSqlQueryModel::data(modelIndex, Qt::DisplayRole));
 }
@@ -82,7 +82,7 @@ int ListModel::count()
 // Получение id из строки в модели представления данных
 int ListModel::getId(int row)
 {
-    return data(this->index(row, 0), idRole).toInt();
+    return data(index(row, 0), idRole).toInt();
 }
 
 // Метод обновления таблицы в модели представления данных
@@ -108,70 +108,70 @@ void ListModel::updateModel()
 
 int ListModel::getType(int row)
 {
-    return data2(index(row, 0), typeRole).toInt();
+    return data2(row, typeRole).toInt();
 }
 
 QString ListModel::getDate(int row)
 {
-    return QDateTime::fromString(data2(index(row, 0), dateRole).toString(), Qt::ISODate).toString("dd.MM.yyyy — hh:mm");
+    return QDateTime::fromString(data2(row, dateRole).toString(), Qt::ISODate).toString("dd.MM.yyyy — hh:mm");
 }
 
 QString ListModel::getTrainingTime(int row)
 {
-    return QTime::fromMSecsSinceStartOfDay(data2(index(row, 0), timeWithStimulationRole).toInt() + data(index(row, 0), timeWithoutStimulationRole).toInt()).toString("hh:mm:ss");
+    return QTime::fromMSecsSinceStartOfDay(data2(row, timeWithStimulationRole).toInt() + data2(row, timeWithoutStimulationRole).toInt()).toString("hh:mm:ss");
 }
 
 QString ListModel::getTimeWithStimulation(int row)
 {
-    return QTime::fromMSecsSinceStartOfDay(data2(index(row, 0), timeWithStimulationRole).toInt()).toString("hh:mm:ss");
+    return QTime::fromMSecsSinceStartOfDay(data2(row, timeWithStimulationRole).toInt()).toString("hh:mm:ss");
 }
 
 QString ListModel::getTimeWithoutStimulation(int row)
 {
-    return QTime::fromMSecsSinceStartOfDay(data2(index(row, 0), timeWithoutStimulationRole).toInt()).toString("hh:mm:ss");
+    return QTime::fromMSecsSinceStartOfDay(data2(row, timeWithoutStimulationRole).toInt()).toString("hh:mm:ss");
 }
 
 QString ListModel::getTimeStimulation(int row)
 {
-    return QTime::fromMSecsSinceStartOfDay(data2(index(row, 0), timeStimulationRole).toInt()).toString("hh:mm:ss");
+    return QTime::fromMSecsSinceStartOfDay(data2(row, timeStimulationRole).toInt()).toString("hh:mm:ss");
 }
 
 QString ListModel::getTimeRest(int row)
 {
-    return QTime::fromMSecsSinceStartOfDay(data2(index(row, 0), timeRestRole).toInt()).toString("hh:mm:ss");
+    return QTime::fromMSecsSinceStartOfDay(data2(row, timeRestRole).toInt()).toString("hh:mm:ss");
 }
 
 QString ListModel::getAvgStimulationAmplitude(int row)
 {
-    return data2(index(row, 0), avgStimulationAmplitudeRole).toString();
+    return data2(row, avgStimulationAmplitudeRole).toString();
 }
 
 QString ListModel::getAvgStepLength(int row)
 {
-    return data2(index(row, 0), avgStepLengthRole).toString();
+    return QString::number( data2(row, avgStepLengthRole).toFloat());
 }
 
 QString ListModel::getAvgStepFrequency(int row)
 {
-    return data2(index(row, 0), avgStepFrequencyRole).toString();
+    return QString::number(data2(row, avgStepFrequencyRole).toFloat());
 }
 
 QString ListModel::getAvgSpeedWithoutStimulation(int row)
 {
-    return data2(index(row, 0), avgSpeedWithoutStimulationRole).toString();
+    return data2(row, avgSpeedWithoutStimulationRole).toString();
 }
 
 QString ListModel::getAvgSpeedWithStimulation(int row)
 {
-    return data2(index(row, 0), avgSpeedWithStimulationRole).toString();
+    return data2(row, avgSpeedWithStimulationRole).toString();
 }
 
 QString ListModel::getTotalDistance(int row)
 {
-    return data2(index(row, 0), totalDistanceRole).toString();
+    return data2(row, totalDistanceRole).toString();
 }
 
 QString ListModel::getTotalStimulationDistance(int row)
 {
-    return data2(index(row, 0), totalStimulationDistanceRole).toString();
+    return data2(row, totalStimulationDistanceRole).toString();
 }
