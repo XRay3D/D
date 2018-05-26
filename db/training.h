@@ -63,11 +63,11 @@ private:
 
     int m_timerId = 0;
 
-    typedef enum {
+    enum class State {
         Stopped,
         Running,
         Paused
-    } State;
+    };
 
     inline void reset();
 

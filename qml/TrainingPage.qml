@@ -17,6 +17,18 @@ Page{
         }
     }
 
+    function tStart() {
+        stackView.push(control)
+        start()
+    }
+
+    function tStop() {
+        stop()
+        journal.showLastTraining()
+        tabBar.selectTab(2)
+        stackView.pop(initialItem)
+    }
+
     StackView{
         id: stackView
         width: parent.width
@@ -53,10 +65,10 @@ Page{
         transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         onClicked: {
             if(trainingPage.state == 'Running'){
-                deviceHandler.impulse()
+                impulse()
             }
             else if(trainingPage.state == 'Paused'){
-                training.stop()
+                stop()
                 journal.showLastTraining()
                 tabBar.selectTab(2)
                 stackView.pop(initialItem)
@@ -82,14 +94,14 @@ Page{
                     btDialog.open()
                 else{
                     stackView.push(control)
-                    training.start()
+                    start()
                 }
             }
             else if(trainingPage.state == 'Running'){
-                training.pause()
+                pause()
             }
             else if(trainingPage.state == 'Paused'){
-                training.resume()
+                resume()
             }
         }
     }

@@ -3,13 +3,14 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QThread>
+#include <QTimer>
 #include <bt/devicefinder.h>
 #include <bt/devicehandler.h>
 #include <db/database.h>
 #include <db/listmodel.h>
 
 #include "guiapplication.h"
+#include "networkcontroller.h"
 
 int main(int argc, char* argv[])
 {
@@ -43,6 +44,7 @@ int main(int argc, char* argv[])
 
     DataBase database; // Подключаемся к базе данных (в конструкторе)
     ListModel model; // Объявляем и инициализируем модель данных
+    NetworkController networkController;
 
     app.connect(&training, &Training::addToDataBase, &database, &DataBase::inserIntoTable, Qt::DirectConnection);
     app.connect(&training, &Training::addToDataBase, [&]() { model.updateModel(); });
@@ -56,18 +58,25 @@ int main(int argc, char* argv[])
     rootContext->setContextProperty("deviceFinder", &deviceFinder);
     rootContext->setContextProperty("deviceHandler", &deviceHandler);
     rootContext->setContextProperty("training", &training);
+    rootContext->setContextProperty("networkController", &networkController);
 
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, [&deviceHandler](QObject* object, const QUrl& url) {
-        qDebug() << object, url;
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, [&deviceHandler, &training](QObject* object, const QUrl& url) {
+        qDebug() << object << url;
         if (object->objectName() == "window") {
             qDebug() << QObject::connect(object, SIGNAL(powerChanged(int)), &deviceHandler, SLOT(setVoltage(int)), Qt::QueuedConnection);
             qDebug() << QObject::connect(object, SIGNAL(durationChanged(int)), &deviceHandler, SLOT(setDuration(int)), Qt::QueuedConnection);
             qDebug() << QObject::connect(object, SIGNAL(impulse()), &deviceHandler, SLOT(impulse()), Qt::QueuedConnection);
             qDebug() << QObject::connect(object, SIGNAL(delayChanged(int)), &deviceHandler, SLOT(setDelay(int)), Qt::QueuedConnection);
+
+            qDebug() << QObject::connect(object, SIGNAL(start()), &training, SLOT(start()), Qt::QueuedConnection);
+            qDebug() << QObject::connect(object, SIGNAL(pause()), &training, SLOT(pause()), Qt::QueuedConnection);
+            qDebug() << QObject::connect(object, SIGNAL(resume()), &training, SLOT(resume()), Qt::QueuedConnection);
+            qDebug() << QObject::connect(object, SIGNAL(stop()), &training, SLOT(stop()), Qt::DirectConnection);
         }
     });
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
+    //QTimer::singleShot(100,[&engine](){engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));});
     return app.exec();
 }

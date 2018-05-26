@@ -8,7 +8,7 @@ Training::Training(DeviceHandler* handler, QObject* parent)
     , m_date(QDateTime::currentDateTime())
     , m_deviceHandler(handler)
     , m_state(QStringLiteral("Stopped"))
-    , m_eState(Stopped)
+    , m_eState(State::Stopped)
 {
     m_geoSource = QGeoPositionInfoSource::createDefaultSource(this /*nullptr*/);
     if (m_geoSource) {
@@ -22,6 +22,12 @@ Training::Training(DeviceHandler* handler, QObject* parent)
 
 void Training::start()
 {
+    if (m_eState != State::Stopped)
+        return;
+    m_eState = State::Running;
+    m_state = QStringLiteral("Running");
+    stateChanged();
+
     reset();
     m_trainingTimer.start();
 
@@ -33,35 +39,45 @@ void Training::start()
     m_deviceHandler->resetStatistics();
     m_deviceHandler->enableTraining(true);
 
-    m_state = QStringLiteral("Running");
-    m_eState = Running;
-
     m_geoSource->startUpdates();
-
-    stateChanged();
 }
 
 void Training::pause()
 {
+    if (m_eState != State::Running)
+        return;
+    m_eState = State::Paused;
+    m_state = QStringLiteral("Paused");
+    stateChanged();
+
     m_pausedTimer.start();
     m_deviceHandler->enableTraining(false);
-
-    m_state = QStringLiteral("Paused");
-    m_eState = Paused;
-    stateChanged();
 }
 
 void Training::resume()
 {
+    if (m_eState != State::Paused)
+        return;
+    m_eState = State::Running;
+    m_state = QStringLiteral("Running");
+    stateChanged();
+
     m_timeWithoutStimulation += m_pausedTimer.elapsed();
     m_deviceHandler->enableTraining(true);
-    m_state = QStringLiteral("Running");
-    m_eState = Running;
-    stateChanged();
 }
 
 void Training::stop()
 {
+    if (m_eState == State::Stopped)
+        return;
+
+    if (m_eState == State::Paused)
+        m_timeWithoutStimulation += m_pausedTimer.elapsed();
+
+    m_eState = State::Stopped;
+    m_state = QStringLiteral("Stopped");
+    stateChanged();
+
     m_geoSource->stopUpdates();
 
     if (m_timerId) {
@@ -69,7 +85,6 @@ void Training::stop()
         m_timerId = 0;
     }
 
-    m_timeWithoutStimulation += m_pausedTimer.elapsed();
     m_timeWithStimulation = m_trainingTimer.elapsed() - m_timeWithoutStimulation;
 
     Ski::Statistics_t st;
@@ -103,10 +118,7 @@ void Training::stop()
     m_totalDistance = m_distanceWithoutStimulation + m_distanceWithStimulation;
     m_totalStimulationDistance = m_distanceWithStimulation;
 
-    m_state = QStringLiteral("Stopped");
-    m_eState = Stopped;
     addToDataBase(this);
-    stateChanged();
     showTraining();
 }
 
@@ -152,11 +164,11 @@ void Training::reset()
 void Training::positionUpdated(const QGeoPositionInfo& info)
 {
     switch (m_eState) {
-    case Running:
+    case State::Running:
         if (m_lastPoint.isValid())
             m_distanceWithStimulation = m_distanceWithStimulation + info.coordinate().distanceTo(m_lastPoint);
         break;
-    case Paused:
+    case State::Paused:
         if (m_lastPoint.isValid())
             m_distanceWithoutStimulation = m_distanceWithoutStimulation + info.coordinate().distanceTo(m_lastPoint);
         break;

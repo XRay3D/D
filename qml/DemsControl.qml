@@ -3,10 +3,23 @@ import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 
 Item {
+    id: demsControl
     opacity: 0.0
     OpacityAnimator on opacity{
         from: 0; to: 1; running: true
     }
+
+    function setPower(value) {
+        power.value = value
+        power.update()
+    }
+
+    function setDuration(value) {
+        duration.value = value
+        duration.update()
+    }
+
+    Component.onCompleted: window.demsControl = demsControl
 
     Settings{
         property alias p: power.value

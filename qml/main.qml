@@ -10,8 +10,8 @@ ApplicationWindow {
     visible: true
     id: window
     objectName: 'window'
-    width: 750 * 0.7
-    height: (1334 - 36) * 0.7
+    //width: 750 * 0.7
+    //height: (1334 - 36) * 0.7
 
 
     signal powerChanged(int value)
@@ -28,6 +28,8 @@ ApplicationWindow {
     property double sc: width / 750
     property Footer tabBar: tabBar
     property Journal journal: journal
+    property DemsControl demsControl
+    property TrainingPage trainingPage: trainingPage
 
     FontLoader { id: font1; source: '../fonts/HelveticaNeueCyr-Bold.ttf' }
     FontLoader { id: font2; source: '../fonts/HelveticaNeueCyr-Heavy.ttf' }
@@ -59,6 +61,47 @@ ApplicationWindow {
             console.log('back')
             if(stackView.depth === 2)
                 stackView.pop()
+        }
+    }
+
+    Connections {
+        target: networkController
+
+        onCommandAccepted: {
+            var focusedItem = window.activeFocusItem
+            if (focusedItem && focusedItem.panningEnabled) {
+                focusedItem.panningEnabled = false
+            }
+
+            switch (command) {
+            case "power":
+                demsControl.setPower(value);
+                //powerChanged(value * 10)
+                break
+            case "duration":
+                demsControl.setDuration(value);
+                //durationChanged(value * 50)
+                break
+            case "delay":
+                break
+            case "start":
+                if(trainingPage.state == 'Stopped')
+                    trainingPage.tStart()
+                break
+            case "pause":
+                pause()
+                break
+            case "resume":
+                resume()
+                break
+            case "stop":
+                if(trainingPage.state == 'Paused' || trainingPage.state == 'Running')
+                    trainingPage.tStop()
+                break
+            case "impulse":
+                impulse()
+                break
+            }
         }
     }
 
@@ -257,6 +300,28 @@ ApplicationWindow {
             if(!deviceFinder.scanning)
                 deviceFinder.startSearch()
         }
+        //        Rectangle {
+        //            id: startSearch
+        //            visible: !devices.model.count && !deviceFinder.scanning
+        //            height: 100 * sc
+        //            width: parent.width
+        //            anchors.margins: 50 * sc
+        //            anchors.centerIn: parent
+        //            color: transparent
+        //            border.color: 'gray'
+        //            border.width: sc < 1 ? 1 : sc
+        //            radius: 20 * sc
+        //            MouseArea {
+        //                anchors.fill: parent
+        //                onClicked: deviceFinder.startSearch()
+        //            }
+        //            Label {
+        //                text: 'Повторить поиск'
+        //                anchors.centerIn: parent
+        //                color: 'white'
+        //                font.pixelSize: 40 * sc
+        //            }
+        //        }
     }
     // Диалог подтверждения удаления тренировки из базы данных
     MyDialog {
@@ -296,22 +361,22 @@ ApplicationWindow {
         }
     }
     // Для отладки BT соединения
-    Rectangle {
-        id: msg
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: 130 * sc
-        color: hasError ? '#BA3F62' : '#3FBA62'
-        visible: false //hasError || hasInfo
-        Label {
-            id: error
-            anchors.fill: parent
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            fontSizeMode: Text.Fit
-            color: '#ffffff'
-            text: hasError ? errorMessage : infoMessage
-        }
-    }
+    //    Rectangle {
+    //        id: msg
+    //        anchors.top: parent.top
+    //        anchors.left: parent.left
+    //        anchors.right: parent.right
+    //        height: 130 * sc
+    //        color: hasError ? '#BA3F62' : '#3FBA62'
+    //        visible: hasError || hasInfo
+    //        Label {
+    //            id: error
+    //            anchors.fill: parent
+    //            horizontalAlignment: Text.AlignHCenter
+    //            verticalAlignment: Text.AlignVCenter
+    //            fontSizeMode: Text.Fit
+    //            color: '#ffffff'
+    //            text: hasError ? errorMessage : infoMessage
+    //        }
+    //    }
 }

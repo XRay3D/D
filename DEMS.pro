@@ -1,17 +1,11 @@
 # 1.0 - 1.4
 
-QT += quick location positioning bluetooth sql
+QT += quick location positioning bluetooth sql network
+
 CONFIG += c++11
 
-# The following define makes your compiler emit warnings if you use
-# any feature of Qt which as been marked deprecated (the exact warnings
-# depend on your compiler). Please consult the documentation of the
-# deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
-# You can also make your code fail to compile if you use deprecated APIs.
-# In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
@@ -23,7 +17,8 @@ SOURCES += main.cpp \
     db/database.cpp \
     db/listmodel.cpp \
     db/training.cpp \
-    guiapplication.cpp
+    guiapplication.cpp \
+    networkcontroller.cpp
 
 HEADERS += \
     bt/bluetoothbaseclass.h \
@@ -34,7 +29,8 @@ HEADERS += \
     db/database.h \
     db/listmodel.h \
     db/training.h \
-    guiapplication.h
+    guiapplication.h \
+    networkcontroller.h
 
 RESOURCES += qml.qrc
 
@@ -53,6 +49,9 @@ ios {
 DISTFILES += \
     ios/Images.xcassets \
     ios/Info.plist
+
+#    HEADERS += ios/IntentHandler.h
+#    OBJECTIVE_SOURCES += ios/IntentHandler.m
 }
 
 android {
@@ -67,6 +66,7 @@ DISTFILES += \
     android/gradlew \
     android/gradlew.bat \
     android/res/values/libs.xml \
-
-
 }
+
+OTHER_FILES += \
+    qml/*.qml \
