@@ -18,7 +18,9 @@ SOURCES += main.cpp \
     db/listmodel.cpp \
     db/training.cpp \
     guiapplication.cpp \
-    networkcontroller.cpp
+    networkcontroller.cpp \
+    notificationclient.cpp \
+
 
 HEADERS += \
     bt/bluetoothbaseclass.h \
@@ -30,11 +32,13 @@ HEADERS += \
     db/listmodel.h \
     db/training.h \
     guiapplication.h \
-    networkcontroller.h
+    networkcontroller.h \
+    notificationclient.h \
 
 RESOURCES += qml.qrc
 
 ios {
+
     QMAKE_INFO_PLIST = ios/Info.plist
 
     fontFiles.files = $$files(fonts/*.ttf)
@@ -50,22 +54,30 @@ DISTFILES += \
     ios/Images.xcassets \
     ios/Info.plist
 
+
 #    HEADERS += ios/IntentHandler.h
 #    OBJECTIVE_SOURCES += ios/IntentHandler.m
 }
 
+
 android {
+    QT += androidextras
 
-ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
-DISTFILES += \
-    android/AndroidManifest.xml \
-    android/build.gradle \
-    android/gradle/wrapper/gradle-wrapper.jar \
-    android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew \
-    android/gradlew.bat \
-    android/res/values/libs.xml \
+    DISTFILES += \
+        android/AndroidManifest.xml \
+        android/build.gradle \
+        android/gradle/wrapper/gradle-wrapper.jar \
+        android/gradle/wrapper/gradle-wrapper.properties \
+        android/gradlew \
+        android/gradlew.bat \
+        android/res/values/libs.xml \
+
+    OTHER_FILES += \
+        android/src/ru/roc/dems/NotificationClient.java \
+
+
 }
 
 OTHER_FILES += \

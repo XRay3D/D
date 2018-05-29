@@ -45,7 +45,7 @@ Page{
         anchors.horizontalCenter: parent.horizontalCenter
         opacity: 0.3
         y: 768 * sc
-        width: 544 * sc
+        width: parent.width - 206 * sc//2//544 * sc
         height: 2
     }
 
@@ -90,7 +90,7 @@ Page{
         transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         onClicked: {
             if(trainingPage.state == 'Stopped'){
-                if(!deviceHandler.alive)//! return
+                if(/*!*/deviceHandler.alive)//! return
                     btDialog.open()
                 else{
                     stackView.push(control)

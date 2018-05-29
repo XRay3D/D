@@ -10,8 +10,8 @@ ApplicationWindow {
     visible: true
     id: window
     objectName: 'window'
-    //width: 750 * 0.7
-    //height: (1334 - 36) * 0.7
+    width: 750 * 0.7
+    height: (1334 - 36) * 0.7
 
 
     signal powerChanged(int value)
@@ -25,7 +25,7 @@ ApplicationWindow {
 
     signal impulse()
 
-    property double sc: width / 750
+    property double sc: height / (1334 - 36) //width / 750
     property Footer tabBar: tabBar
     property Journal journal: journal
     property DemsControl demsControl
@@ -145,11 +145,11 @@ ApplicationWindow {
                 Journal { id: journal }
                 AppSettings { id: appSettings }
             }
-            Rectangle { //splitter2
+            Rectangle { // splitter2
                 opacity: 0.3
                 x: 103 * sc;
                 y: swipeView.height
-                width: 544 * sc
+                width: parent.width - x * 2
                 height: 2
             }
             RowLayout{

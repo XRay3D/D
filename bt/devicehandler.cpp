@@ -2,6 +2,7 @@
 #include "deviceinfo.h"
 #include <QElapsedTimer>
 #include <QtEndian>
+#include <notificationclient.h>
 
 DeviceHandler::DeviceHandler(QObject* parent)
     : BluetoothBaseClass(parent)
@@ -334,6 +335,9 @@ void DeviceHandler::cbSetGetStatistics(const QByteArray& data)
 void DeviceHandler::cbGetBattery(const QByteArray& data)
 {
     m_battery = value<Ski::Battery_t>(data);
+    if (m_battery.right < 20 || m_battery.left < 20)
+        NotificationClient::self()->setNotification("Критический заряд батареи!\n" + QString::number(m_battery.right) + QString::number(m_battery.left));
+
     batteryChanged();
     qDebug("cbGetBattery");
     m_success = true;

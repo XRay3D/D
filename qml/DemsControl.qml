@@ -47,7 +47,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         opacity: 0.3
         y: 175 * sc
-        width: 544 * sc
+        width: parent.width - 206 * sc
         height: 2
     }
 

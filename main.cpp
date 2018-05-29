@@ -11,6 +11,7 @@
 
 #include "guiapplication.h"
 #include "networkcontroller.h"
+#include "notificationclient.h"
 
 int main(int argc, char* argv[])
 {
@@ -45,6 +46,10 @@ int main(int argc, char* argv[])
     DataBase database; // Подключаемся к базе данных (в конструкторе)
     ListModel model; // Объявляем и инициализируем модель данных
     NetworkController networkController;
+
+    //    NotificationClient notificationClient;
+
+    NotificationClient* notificationClient = new NotificationClient(&engine);
 
     app.connect(&training, &Training::addToDataBase, &database, &DataBase::inserIntoTable, Qt::DirectConnection);
     app.connect(&training, &Training::addToDataBase, [&]() { model.updateModel(); });
