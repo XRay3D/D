@@ -196,25 +196,4 @@ Control {
             NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad }
         }
     }
-
-    // InnerShadow {
-    // anchors.fill: arc
-    // radius: 1.5 * sc
-    // samples: 4
-    //// horizontalOffset: -3 * sc
-    // verticalOffset: -3 * sc
-    // color: '#1F0000'
-    // source: mycanvas
-    // }
-
-    // InnerShadow {
-    // opacity: 0.4
-    // anchors.fill: arc
-    // radius: 1.5 * sc
-    // samples: 4
-    //// horizontalOffset: 3 * sc
-    // verticalOffset: 3 * sc
-    // color: 'white'
-    // source: mycanvas
-    // }
 }

@@ -59,6 +59,7 @@ Page {
         }
         ListButton{
             text: 'Задержка импульса'
+            enabled: deviceHandler.alive
             Layout.fillWidth: true
             Layout.fillHeight: true
             Component.onCompleted: {
@@ -71,59 +72,65 @@ Page {
             onValueChanged: delayChanged(value)
             //enabled: false
         }
+
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2
             Layout.minimumHeight: 2
-            opacity: 0.3
+            opacity: 0.0//0.3
         }
         SwButton{
             text: 'Пуш-уведомления'
             Layout.fillWidth: true
             Layout.fillHeight: true
             enabled: false
+            opacity: 0.0
+
         }
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2
             Layout.minimumHeight: 2
-            opacity: 0.3
+            opacity: 0.0//0.3
         }
         SwButton{
             text: 'Звук'
             Layout.fillWidth: true
             Layout.fillHeight: true
             enabled: false
+            opacity: 0.0
         }
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2
             Layout.minimumHeight: 2
-            opacity: 0.3
+            opacity: 0.0//0.3
         }
         SwButton{
             text: 'Вибрация'
             Layout.fillWidth: true
             Layout.fillHeight: true
             enabled: false
+            opacity: 0.0
         }
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2
             Layout.minimumHeight: 2
-            opacity: 0.3
+            opacity: 0.0//0.3
         }
         SwButton{
             text: 'Голосовое управление'
             Layout.fillWidth: true
             Layout.fillHeight: true
             enabled: false
+            opacity: 0.0
         }
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2
             Layout.minimumHeight: 2
-            opacity: 0.3
+            opacity: 0.0//0.3
         }
         ListButton{
             text: 'Язык'
@@ -134,6 +141,7 @@ Page {
                 ListElement { name: 'ENG' }
             }
             enabled: false
+            opacity: 0.0
         }
         Rectangle{
             Layout.fillWidth: true

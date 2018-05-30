@@ -86,15 +86,6 @@ T.ComboBox {
                         control.value = 10 * index
                     }
                 }
-//                Glow{
-//                    cached : true
-//                    opacity: delegateMouseArea.pressed? 1 : 0
-//                    anchors.fill: contentItem.delegate
-//                    radius: 8
-//                    samples: 17
-//                    color: 'white'
-//                    source: contentItem.delegate
-//                }
             }
         }
 

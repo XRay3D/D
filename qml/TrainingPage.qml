@@ -90,7 +90,7 @@ Page{
         transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         onClicked: {
             if(trainingPage.state == 'Stopped'){
-                if(/*!*/deviceHandler.alive)//! return
+                if(!deviceHandler.alive)//! return
                     btDialog.open()
                 else{
                     stackView.push(control)

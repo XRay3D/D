@@ -4,14 +4,12 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 
-//import Shared 1.0 //?
-
 ApplicationWindow {
     visible: true
     id: window
     objectName: 'window'
-    width: 750 * 0.7
-    height: (1334 - 36) * 0.7
+//    width: 750 * 0.7
+//    height: (1334 - 36) * 0.7
 
 
     signal powerChanged(int value)
@@ -37,15 +35,6 @@ ApplicationWindow {
     FontLoader { id: font4; source: '../fonts/HelveticaNeueCyr-Medium.ttf' }
     FontLoader { id: font5; source: '../fonts/HelveticaNeueCyr-Roman.ttf' }
     FontLoader { id: font6; source: '../fonts/HelveticaNeueCyr-Thin.ttf' }
-
-    /////////////////////////////////////////////////////////
-
-    property string errorMessage: deviceFinder.error
-    property bool hasError: errorMessage != ''
-    property string infoMessage: deviceFinder.info
-    property bool hasInfo: infoMessage != ''
-    
-    /////////////////////////////////////////////////////////
 
     property int pageIndex: 0
     property StackView stackView
@@ -360,23 +349,4 @@ ApplicationWindow {
             myModel.updateModel();  // Обновляем модель данных
         }
     }
-    // Для отладки BT соединения
-    //    Rectangle {
-    //        id: msg
-    //        anchors.top: parent.top
-    //        anchors.left: parent.left
-    //        anchors.right: parent.right
-    //        height: 130 * sc
-    //        color: hasError ? '#BA3F62' : '#3FBA62'
-    //        visible: hasError || hasInfo
-    //        Label {
-    //            id: error
-    //            anchors.fill: parent
-    //            horizontalAlignment: Text.AlignHCenter
-    //            verticalAlignment: Text.AlignVCenter
-    //            fontSizeMode: Text.Fit
-    //            color: '#ffffff'
-    //            text: hasError ? errorMessage : infoMessage
-    //        }
-    //    }
 }

@@ -63,10 +63,6 @@ Page {
         width:200 * sc
         x: 0
         y: 454 * sc
-        //        height: 97 * sc
-        //        width: 48 * sc
-        //        x: 75 * sc
-        //        y: 481 * sc
         contentItem: Item {}
         background: Image {
             anchors.centerIn: parent
@@ -77,14 +73,6 @@ Page {
             //            states: State { when: left.pressed; PropertyChanges { target: background; scale: 0.8} }
             //            transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         }
-
-        //        states: State {
-        //            name: 'moved'; when: left.pressed
-        //            PropertyChanges { target: left; x: (75 - 30) * sc }
-        //        }
-        //        transitions: Transition {
-        //            NumberAnimation { properties: 'x'; easing.type: Easing.InOutQuad; duration: 150 }
-        //        }
         onClicked: training.type = !training.type
     }
 
@@ -94,10 +82,6 @@ Page {
         width:200 * sc
         x: parent.width - width
         y: 454 * sc
-        //        height:97 * sc
-        //        width:48 * sc
-        //        x: 620 * sc
-        //        y: 481 * sc
         contentItem: Item {}
         background: Image {
             anchors.centerIn: parent
@@ -108,14 +92,6 @@ Page {
             //            states: State { when: right.pressed; PropertyChanges { target: background; scale: 0.8} }
             //            transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         }
-
-        //        states: State {
-        //            name: 'moved'; when: right.pressed
-        //            PropertyChanges { target: right; x: (620 + 30) * sc }
-        //        }
-        //        transitions: Transition {
-        //            NumberAnimation { properties: 'x'; easing.type: Easing.InOutQuad; duration: 150 }
-        //        }
         onClicked: training.type = !training.type
     }
 }
