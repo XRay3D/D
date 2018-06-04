@@ -2,6 +2,11 @@
 #define VIBRATIONCLIENT_H
 
 #include <QObject>
+#if defined(Q_OS_IOS)
+#include <AudioToolbox/AudioServices.h>
+#elif defined(Q_OS_ANDROID)
+#include <QtAndroidExtras/QAndroidJniObject>
+#endif
 
 class VibrationClient : public QObject {
     Q_OBJECT

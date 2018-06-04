@@ -52,9 +52,20 @@ ios {
 
     QMAKE_ASSET_CATALOGS += ios/Images.xcassets
 
-DISTFILES += \
-    ios/Images.xcassets \
-    ios/Info.plist
+    DISTFILES += \
+        ios/Images.xcassets \
+        ios/Info.plist
+
+    HEADERS += \
+        ios/QtAppDelegate.h \
+        ios/QtAppDelegate-C-Interface.h
+
+    OBJECTIVE_SOURCES += \
+        ios/QtAppDelegate.mm
+
+    # Please do not modify the following two lines. Required for deployment.
+    include(ios/qtquick2applicationviewer/qtquick2applicationviewer.pri)
+    qtcAddDeployment()
 
 
 #    HEADERS += ios/IntentHandler.h

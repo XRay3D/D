@@ -14,10 +14,19 @@
 #include "notificationclient.h"
 #include "vibrationclient.h"
 
+#if defined(Q_OS_IOS)
+#include "ios/QtAppDelegate-C-Interface.h"
+#include <qtquick2applicationviewer.h>
+#endif
+
 int main(int argc, char* argv[])
 {
     GuiApplication app(argc, argv);
-
+#if defined(Q_OS_IOS)
+    //QtAppDelegateInitialize();
+    //QtQuick2ApplicationViewer engine;
+#else
+#endif
     QQmlApplicationEngine engine;
 
     QFontDatabase::addApplicationFont("qrc:/fonts/HelveticaNeueCyr-Bold.ttf");
