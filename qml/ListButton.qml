@@ -85,6 +85,7 @@ T.ComboBox {
                         control.popup.close()
                         control.value = 10 * index
                     }
+                    onPressed: vibration.on(10)
                 }
             }
         }
@@ -144,5 +145,6 @@ T.ComboBox {
     MouseArea {
         anchors.fill: parent
         onClicked: popup.open()
+        onPressed: vibration.on(10)
     }
 }

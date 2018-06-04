@@ -19,6 +19,13 @@ Page {
         stack.push(contents)
     }
 
+    function deleteItem(index){
+        myModel.updateModel()
+        database.removeRecord(myModel.getId(index))
+        myModel.updateModel();  // Обновляем модель данных
+    }
+
+
     StackView{
         id: stack
         anchors.fill: parent
@@ -40,61 +47,93 @@ Page {
             ListView {
                 id: listView
                 anchors.fill: parent
-                //anchors.topMargin: 85 * sc
-                anchors.leftMargin: 103 * sc
-                anchors.rightMargin: 103 * sc
+                anchors.leftMargin: 100 * sc
+                anchors.rightMargin: 100 * sc
                 clip: true
                 model: myModel
-                delegate: Item {
-                    id: delegate
+                delegate: SwipeDelegate {
+                    id: swipeDelegate
+                    text: '№'+ myModel.getId(index) + date.toLocaleString(locale, ' — d.MM.yyyy — hh:mm')
                     height: 93 * sc
                     width: parent.width
-                    property var locale: Qt.locale()
-                    property date currentDate: date
-                    Label {
-                        anchors.fill: parent
+                    font.pixelSize: 28 * sc
+                    contentItem: Text {
+                        text: swipeDelegate.text
+                        font: swipeDelegate.font
+                        //color: swipeDelegate.enabled ? (control.down ? "#17a81a" : "#21be2b") : "#bdbebf"
                         color: 'white'
-                        font.pixelSize: 24 * sc
+                        elide: Text.ElideRight
                         verticalAlignment: Text.AlignVCenter
-                        text: '№'+ myModel.getId(index) + currentDate.toLocaleString(locale, ' — d.MM.yyyy — hh:mm')
+                        Behavior on x {
+                            enabled: !swipeDelegate.down
+                            NumberAnimation {
+                                easing.type: Easing.InOutCubic
+                                duration: 400
+                            }
+                        }
+                        Image {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.right: parent.right
+                            anchors.rightMargin: /*100*/10 * sc
+                            height: 58 * sc
+                            width: 97 * sc
+                            fillMode: Image.PreserveAspectFit
+                            source: type ? 'images/type2.png' : 'images/type1.png'
+                        }
                     }
-                    Image {
-                        anchors.verticalCenter: parent.verticalCenter
+                    background: Item {}
+                    ListView.onRemove: SequentialAnimation {
+                        PropertyAction {
+                            target: swipeDelegate
+                            property: "ListView.delayRemove"
+                            value: true
+                        }
+                        NumberAnimation {
+                            target: swipeDelegate
+                            property: "height"
+                            to: 0
+                            easing.type: Easing.InOutQuad
+                        }
+                        PropertyAction {
+                            target: swipeDelegate
+                            property: "ListView.delayRemove"
+                            value: false
+                        }
+                    }
+                    swipe.right: Label {
+                        opacity: -swipeDelegate.swipe.position
+                        id: deleteLabel
+                        text: qsTr("Удалить")
+                        color: "white"
+                        font: swipeDelegate.font
+                        verticalAlignment: Label.AlignVCenter
+                        padding: 12 * sc
+                        height: parent.height
                         anchors.right: parent.right
-                        anchors.rightMargin: /*100*/10 * sc
-                        height: 58 * sc
-                        width: 97 * sc
-                        fillMode: Image.PreserveAspectFit
-                        source: type ? 'images/type2.png' : 'images/type1.png'
-                    }
-                    MouseArea{
-                        id: area
-                        property bool skip: true
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: {
-                            if(area.skip){
-                                listView.currentIndex = index
-                                stack.push(contents)
-                            }
-                            area.skip = true
+                        //SwipeDelegate.onClicked: deleteItem(index)
+                        background: Rectangle {
+                            color: deleteLabel.SwipeDelegate.pressed ? Qt.darker("tomato", 1.1) : "tomato"
+                            radius: 10 * sc
                         }
-                        Timer{
-                            id: timer
-                            interval: 250; running: area.pressed; repeat: false
-                            onTriggered:{
-                                area.skip = false
-                                dialogDelete.open()
-                            }
+                        MouseArea{
+                            anchors.fill: parent
+                            enabled: -swipeDelegate.swipe.position > 0.9
+                            onClicked: deleteItem(index)
+                            onPressed: vibration.on(10)
                         }
                     }
-                    states: State {
-                        when: area.pressed
-                        PropertyChanges { target: delegate; scale: 0.9}
+                    onClicked: {
+                        listView.currentIndex = index
+                        stack.push(contents)
                     }
-                    transitions: Transition {
-                        NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 }
-                    }
+                    onPressed: vibration.on(10)
+//                    states: State {
+//                        when: pressed
+//                        PropertyChanges { target: swipeDelegate; scale: 0.9}
+//                    }
+//                    transitions: Transition {
+//                        NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 }
+//                    }
                 }
                 ScrollBar.vertical: ScrollBar {}
                 remove: Transition {

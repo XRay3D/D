@@ -12,6 +12,7 @@
 #include "guiapplication.h"
 #include "networkcontroller.h"
 #include "notificationclient.h"
+#include "vibrationclient.h"
 
 int main(int argc, char* argv[])
 {
@@ -50,12 +51,15 @@ int main(int argc, char* argv[])
     //    NotificationClient notificationClient;
 
     NotificationClient* notificationClient = new NotificationClient(&engine);
+    Q_UNUSED(notificationClient)
+    VibrationClient* vibrationClient = new VibrationClient(&engine);
 
     app.connect(&training, &Training::addToDataBase, &database, &DataBase::inserIntoTable, Qt::DirectConnection);
     app.connect(&training, &Training::addToDataBase, [&]() { model.updateModel(); });
 
     QQmlContext* rootContext = engine.rootContext();
     rootContext->setContextProperty("GUI", &app);
+    rootContext->setContextProperty("vibration", vibrationClient);
     // Обеспечиваем доступ к модели и классу для работы с базой данных из QML
     rootContext->setContextProperty("myModel", &model);
     rootContext->setContextProperty("database", &database);

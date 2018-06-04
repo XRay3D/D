@@ -115,6 +115,7 @@ Control {
         onValueChanged: {
             parent.value = value
             arc.update()
+            vibration.on(5)
         }
     }
 

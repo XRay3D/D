@@ -20,6 +20,7 @@ SOURCES += main.cpp \
     guiapplication.cpp \
     networkcontroller.cpp \
     notificationclient.cpp \
+    vibrationclient.cpp
 
 
 HEADERS += \
@@ -34,6 +35,7 @@ HEADERS += \
     guiapplication.h \
     networkcontroller.h \
     notificationclient.h \
+    vibrationclient.h
 
 RESOURCES += qml.qrc
 
@@ -64,21 +66,21 @@ android {
     QT += androidextras
 
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+    OTHER_FILES += \
+        android/src/ru/roc/dems/DemsApp.java \
 
     DISTFILES += \
         android/AndroidManifest.xml \
-        android/build.gradle \
         android/gradle/wrapper/gradle-wrapper.jar \
-        android/gradle/wrapper/gradle-wrapper.properties \
         android/gradlew \
-        android/gradlew.bat \
         android/res/values/libs.xml \
-
-    OTHER_FILES += \
-        android/src/ru/roc/dems/NotificationClient.java \
-
-
+        android/build.gradle \
+        android/gradle/wrapper/gradle-wrapper.properties \
+        android/gradlew.bat \
+        android/src/ru/roc/dems/DemsApp.java
 }
 
 OTHER_FILES += \
     qml/*.qml \
+
+

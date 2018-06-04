@@ -92,6 +92,6 @@ void NotificationClient::updateAndroidNotification()
 
 #elif defined(Q_OS_ANDROID)
     QAndroidJniObject javaNotification = QAndroidJniObject::fromString(m_notification);
-    QAndroidJniObject::callStaticMethod<void>("ru/roc/dems/NotificationClient", "notify", "(Ljava/lang/String;)V", javaNotification.object<jstring>());
+    QAndroidJniObject::callStaticMethod<void>("ru/roc/dems/DemsApp", "notify", "(Ljava/lang/String;)V", javaNotification.object<jstring>());
 #endif
 }

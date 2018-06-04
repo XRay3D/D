@@ -8,8 +8,9 @@ ApplicationWindow {
     visible: true
     id: window
     objectName: 'window'
-//    width: 750 * 0.7
-//    height: (1334 - 36) * 0.7
+
+    width: 750 * 0.7
+    height: (1334 - 36) * 0.7
 
 
     signal powerChanged(int value)
@@ -276,6 +277,7 @@ ApplicationWindow {
                         console.log(modelData.deviceAddress)
                         btDialog.accept()
                     }
+                    onPressed: vibration.on(10)
                 }
                 Label {
                     text: modelData.deviceName
@@ -340,6 +342,7 @@ ApplicationWindow {
                 enabled: !deviceFinder.scanning
                 onClicked: dialogDelete.accept()
                 text: qsTr('Да')
+                onPressed: vibration.on(10)
             }
         }
         onAccepted: {

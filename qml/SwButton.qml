@@ -57,4 +57,5 @@ T.Switch {
             }
         }
     }
+    onPressed: vibration.on(10)
 }

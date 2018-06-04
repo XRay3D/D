@@ -65,6 +65,7 @@ ToolBar{
                 if(b1.checked)
                     pageIndex = 0
             }
+            onPressed: vibration.on(10)
             states: State { when: b1.pressed; PropertyChanges { target: b1.indicator; scale: 0.8} }
             transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 } }
         }
@@ -104,8 +105,8 @@ ToolBar{
                 if(b2.checked)
                     pageIndex = 1
             }
-            states: State { when: b2.pressed; PropertyChanges { target: b2.indicator; scale: 0.8}
-            }
+            onPressed: vibration.on(10)
+            states: State { when: b2.pressed; PropertyChanges { target: b2.indicator; scale: 0.8}}
             transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 } }
         }
         RadioButton{
@@ -144,6 +145,7 @@ ToolBar{
                 if(b3.checked)
                     pageIndex = 2
             }
+            onPressed: vibration.on(10)
             states: State { when: b3.pressed; PropertyChanges { target: b3.indicator; scale: 0.8} }
             transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 150 } }
         }

@@ -74,6 +74,7 @@ Page{
                 stackView.pop(initialItem)
             }
         }
+        onPressed: vibration.on(10)
     }
 
     Button {
@@ -90,7 +91,7 @@ Page{
         transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         onClicked: {
             if(trainingPage.state == 'Stopped'){
-                if(!deviceHandler.alive)//! return
+                if(!deviceHandler.alive && Qt.platform.os != "windows")//! return
                     btDialog.open()
                 else{
                     stackView.push(control)
@@ -104,6 +105,7 @@ Page{
                 resume()
             }
         }
+        onPressed: vibration.on(10)
     }
 
     states: [

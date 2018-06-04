@@ -1,9 +1,14 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import Qt.labs.settings 1.0
 
 Page {
     id: page
+
+    Settings{
+        property alias vbrch: vibro.checked
+    }
 
     background: Item{}
 
@@ -47,6 +52,7 @@ Page {
             MouseArea{
                 anchors.fill: parent
                 onClicked: btDialog.open()
+                onPressed: vibration.on(10)
             }
             enabled: trainingPage.state == 'Stopped' || !deviceHandler.alive
             opacity: enabled ? 1.0 : 0.3
@@ -72,7 +78,19 @@ Page {
             onValueChanged: delayChanged(value)
             //enabled: false
         }
-
+        Rectangle{
+            Layout.fillWidth: true
+            Layout.maximumHeight: 2
+            Layout.minimumHeight: 2
+            opacity: 0.3
+        }
+        SwButton{
+            id: vibro
+            text: 'Вибрация'
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            onCheckedChanged: vibration.enabled = checked
+        }
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2
@@ -85,8 +103,8 @@ Page {
             Layout.fillHeight: true
             enabled: false
             opacity: 0.0
-
         }
+
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2
@@ -100,19 +118,7 @@ Page {
             enabled: false
             opacity: 0.0
         }
-        Rectangle{
-            Layout.fillWidth: true
-            Layout.maximumHeight: 2
-            Layout.minimumHeight: 2
-            opacity: 0.0//0.3
-        }
-        SwButton{
-            text: 'Вибрация'
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            enabled: false
-            opacity: 0.0
-        }
+
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2

@@ -9,8 +9,21 @@ Page {
     background: Item{}
 
     MouseArea{
+        readonly property int h: contents.height / 10
         anchors.fill: parent
-        onClicked: { if(stack.depth > 1) stack.pop() }
+        drag.target: contents
+        drag.axis: Drag.YAxis
+        onMouseXChanged: contents.opacity = (h - Math.abs(contents.y)) / h
+        onPressed: vibration.on(10)
+        onReleased: {
+            if (Math.abs(contents.y) > h)
+                if(stack.depth > 1){
+                    contents.visible = false
+                    stack.pop()
+                }
+            contents.y = 0
+            contents.opacity = 1
+        }
     }
 
     GridLayout{
