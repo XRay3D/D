@@ -66,14 +66,20 @@ ios {
         ios/Info.plist
 
     HEADERS += \
+        ios/QtAppDelegate.h \
+        ios/QtAppDelegate-C-Interface.h \
         shareutils/ios/docviewcontroller.h \
         shareutils/ios/iosshareutils.h \
 
     OBJECTIVE_SOURCES += \
+        ios/QtAppDelegate.mm \
         ios/src/iosshareutils.mm \
         ios/src/docviewcontroller.mm
-#    HEADERS += ios/IntentHandler.h
-#    OBJECTIVE_SOURCES += ios/IntentHandler.m
+
+    # Please do not modify the following two lines. Required for deployment.
+    include(ios/qtquick2applicationviewer/qtquick2applicationviewer.pri)
+    qtcAddDeployment()
+
 }
 
 

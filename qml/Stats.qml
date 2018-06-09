@@ -9,7 +9,7 @@ Page {
     background: Item{}
 
     MouseArea{
-        readonly property int h: contents.height / 6
+        readonly property int h: contents.height / 5
         anchors.fill: parent
         drag.target: contents
         drag.axis: Drag.YAxis

@@ -28,7 +28,9 @@ void VibrationClient::on(long duration)
     if (!m_enabled)
         return;
 #if defined(Q_OS_IOS)
-
+    Q_UNUSED(duration)
+    //AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 #elif defined(Q_OS_ANDROID)
     jlong jl = duration;
     QAndroidJniObject::callStaticMethod<void>("ru/roc/dems/DemsApp", "vibro", "(J)V", jl);
