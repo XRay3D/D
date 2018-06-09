@@ -17,9 +17,10 @@ ApplicationWindow {
     signal durationChanged(int value)
     signal delayChanged(int value);
 
-    signal start()
     signal pause()
+    signal prepare()
     signal resume()
+    signal start()
     signal stop()
 
     signal impulse()

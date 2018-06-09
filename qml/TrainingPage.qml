@@ -67,6 +67,9 @@ Page{
             if(trainingPage.state == 'Running'){
                 impulse()
             }
+            else if(trainingPage.state == 'Prepare'){
+                impulse()
+            }
             else if(trainingPage.state == 'Paused'){
                 stop()
                 journal.showLastTraining()
@@ -95,8 +98,11 @@ Page{
                     btDialog.open()
                 else{
                     stackView.push(control)
-                    start()
+                    prepare()//start()
                 }
+            }
+            else if(trainingPage.state == 'Prepare'){
+                start()
             }
             else if(trainingPage.state == 'Running'){
                 pause()
@@ -113,6 +119,13 @@ Page{
             name: 'Stopped'
             PropertyChanges { target: btnStartPauseImage; source: 'images/play.png' }
             PropertyChanges { target: btnPulseStopImage; source: 'images/pulse.png' }
+        },
+        State {
+            name: 'Prepare'
+            PropertyChanges { target: btnStartPauseImage; source: 'images/play.png' }
+            PropertyChanges { target: btnPulseStopImage; source: 'images/pulse.png' }
+            PropertyChanges { target: btnStartPause; x: trainingPage.width / 2 - btnStartPause.width - k }
+            PropertyChanges { target: btnPulseStop; x: trainingPage.width / 2 + k }
         },
         State {
             name: 'Running'
@@ -132,7 +145,7 @@ Page{
 
     transitions: [
         Transition {
-            from: 'Stopped'; to: 'Running'
+            from: 'Stopped'; to: 'Prepare'
             NumberAnimation { target: btnPulseStop; properties: 'x'; easing.type: Easing.InOutQuad; duration: 150 }
             NumberAnimation { target: btnStartPause; properties: 'x'; easing.type: Easing.InOutQuad; duration: 150 }
             PropertyAnimation { target: btnPulseStop; property: 'opacity'; from: 0; to: 1; duration: 150 }

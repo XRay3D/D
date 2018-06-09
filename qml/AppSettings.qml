@@ -165,6 +165,7 @@ Page {
             MouseArea{
                 anchors.fill: parent
                 onClicked: aboutDialog.open()
+                onPressed: vibration.on(10)
             }
         }
     }

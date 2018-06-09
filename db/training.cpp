@@ -22,12 +22,9 @@ Training::Training(DeviceHandler* handler, QObject* parent)
 
 void Training::start()
 {
-    if (m_eState != State::Stopped)
+    if (m_eState != State::Prepare)
         return;
-    m_eState = State::Running;
-    m_state = QStringLiteral("Running");
-    stateChanged();
-
+    setState(State::Running);
     reset();
     m_trainingTimer.start();
 
@@ -42,14 +39,18 @@ void Training::start()
     m_geoSource->startUpdates();
 }
 
+void Training::prepare()
+{
+    if (m_eState != State::Stopped)
+        return;
+    setState(State::Prepare);
+}
+
 void Training::pause()
 {
     if (m_eState != State::Running)
         return;
-    m_eState = State::Paused;
-    m_state = QStringLiteral("Paused");
-    stateChanged();
-
+    setState(State::Paused);
     m_pausedTimer.start();
     m_deviceHandler->enableTraining(false);
 }
@@ -58,10 +59,7 @@ void Training::resume()
 {
     if (m_eState != State::Paused)
         return;
-    m_eState = State::Running;
-    m_state = QStringLiteral("Running");
-    stateChanged();
-
+    setState(State::Running);
     m_timeWithoutStimulation += m_pausedTimer.elapsed();
     m_deviceHandler->enableTraining(true);
 }
@@ -70,13 +68,9 @@ void Training::stop()
 {
     if (m_eState == State::Stopped)
         return;
-
     if (m_eState == State::Paused)
         m_timeWithoutStimulation += m_pausedTimer.elapsed();
-
-    m_eState = State::Stopped;
-    m_state = QStringLiteral("Stopped");
-    stateChanged();
+    setState(State::Stopped);
 
     m_geoSource->stopUpdates();
 
@@ -120,6 +114,26 @@ void Training::stop()
 
     addToDataBase(this);
     showTraining();
+}
+
+void Training::setState(Training::State state)
+{
+    m_eState = state;
+    switch (state) {
+    case State::Stopped:
+        m_state = QStringLiteral("Stopped");
+        break;
+    case State::Prepare:
+        m_state = QStringLiteral("Prepare");
+        break;
+    case State::Running:
+        m_state = QStringLiteral("Running");
+        break;
+    case State::Paused:
+        m_state = QStringLiteral("Paused");
+        break;
+    }
+    stateChanged();
 }
 
 int Training::type() const

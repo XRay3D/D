@@ -20,7 +20,11 @@ SOURCES += main.cpp \
     guiapplication.cpp \
     networkcontroller.cpp \
     notificationclient.cpp \
-    vibrationclient.cpp
+    vibrationclient.cpp \
+    shareutils/android/androidshareutils.cpp \
+    shareutils/applicationui.cpp \
+    shareutils/main.cpp \
+    shareutils/shareutils.cpp
 
 
 HEADERS += \
@@ -35,13 +39,18 @@ HEADERS += \
     guiapplication.h \
     networkcontroller.h \
     notificationclient.h \
-    vibrationclient.h
+    vibrationclient.h \
+    shareutils/android/androidshareutils.h \
+    shareutils/applicationui.h \
+    shareutils/shareutils.h
 
 RESOURCES += qml.qrc
 
 ios {
 
     QMAKE_INFO_PLIST = ios/Info.plist
+
+    QMAKE_IOS_DEPLOYMENT_TARGET = 10.0
 
     fontFiles.files = $$files(fonts/*.ttf)
     fontFiles.path = fonts
@@ -52,11 +61,17 @@ ios {
 
     QMAKE_ASSET_CATALOGS += ios/Images.xcassets
 
-DISTFILES += \
-    ios/Images.xcassets \
-    ios/Info.plist
+    DISTFILES += \
+        ios/Images.xcassets \
+        ios/Info.plist
 
+    HEADERS += \
+        shareutils/ios/docviewcontroller.h \
+        shareutils/ios/iosshareutils.h \
 
+    OBJECTIVE_SOURCES += \
+        ios/src/iosshareutils.mm \
+        ios/src/docviewcontroller.mm
 #    HEADERS += ios/IntentHandler.h
 #    OBJECTIVE_SOURCES += ios/IntentHandler.m
 }

@@ -77,9 +77,10 @@ int main(int argc, char* argv[])
             qDebug() << QObject::connect(object, SIGNAL(impulse()), &deviceHandler, SLOT(impulse()), Qt::QueuedConnection);
             qDebug() << QObject::connect(object, SIGNAL(delayChanged(int)), &deviceHandler, SLOT(setDelay(int)), Qt::QueuedConnection);
 
-            qDebug() << QObject::connect(object, SIGNAL(start()), &training, SLOT(start()), Qt::QueuedConnection);
             qDebug() << QObject::connect(object, SIGNAL(pause()), &training, SLOT(pause()), Qt::QueuedConnection);
+            qDebug() << QObject::connect(object, SIGNAL(prepare()), &training, SLOT(prepare()), Qt::QueuedConnection);
             qDebug() << QObject::connect(object, SIGNAL(resume()), &training, SLOT(resume()), Qt::QueuedConnection);
+            qDebug() << QObject::connect(object, SIGNAL(start()), &training, SLOT(start()), Qt::QueuedConnection);
             qDebug() << QObject::connect(object, SIGNAL(stop()), &training, SLOT(stop()), Qt::DirectConnection);
         }
     });

@@ -40,9 +40,10 @@ public:
     QString state() const;
 
 public slots:
-    void start();
     void pause();
+    void prepare();
     void resume();
+    void start();
     void stop();
 
 signals:
@@ -65,13 +66,15 @@ private:
 
     enum class State {
         Stopped,
+        Prepare,
         Running,
         Paused
     };
 
+    inline void setState(State state);
     inline void reset();
-
     void positionUpdated(const QGeoPositionInfo& info);
+
     QGeoPositionInfoSource* m_geoSource;
     QGeoCoordinate m_lastPoint;
     double m_distanceWithStimulation = 0;
