@@ -64,7 +64,9 @@ Page{
         states: State { when: btnPulseStop.pressed; PropertyChanges { target: btnPulseStop.background; scale: 0.8} }
         transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         onClicked: {
-            if(trainingPage.state == 'Running'){
+            if(!deviceHandler.alive && Qt.platform.os != "windows")//! return
+                btDialog.open()
+            else if(trainingPage.state == 'Running'){
                 impulse()
             }
             else if(trainingPage.state == 'Prepare'){
@@ -93,13 +95,11 @@ Page{
         states: State { when: btnStartPause.pressed; PropertyChanges { target: btnStartPause.background; scale: 0.8} }
         transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         onClicked: {
-            if(trainingPage.state == 'Stopped'){
-                if(!deviceHandler.alive && Qt.platform.os != "windows")//! return
-                    btDialog.open()
-                else{
-                    stackView.push(control)
-                    prepare()//start()
-                }
+            if(!deviceHandler.alive && Qt.platform.os != "windows")//! return
+                btDialog.open()
+            else if(trainingPage.state == 'Stopped'){
+                stackView.push(control)
+                prepare()//start()
             }
             else if(trainingPage.state == 'Prepare'){
                 start()

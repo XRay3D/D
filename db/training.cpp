@@ -32,9 +32,7 @@ void Training::start()
         killTimer(m_timerId);
     m_timerId = startTimer(100);
 
-    m_deviceHandler->selectTrainingType(m_type);
-    m_deviceHandler->resetStatistics();
-    m_deviceHandler->enableTraining(true);
+
 
     m_geoSource->startUpdates();
 }
@@ -44,6 +42,9 @@ void Training::prepare()
     if (m_eState != State::Stopped)
         return;
     setState(State::Prepare);
+    m_deviceHandler->selectTrainingType(m_type);
+    m_deviceHandler->resetStatistics();
+    m_deviceHandler->enableTraining(true);
 }
 
 void Training::pause()
@@ -125,6 +126,8 @@ void Training::setState(Training::State state)
         break;
     case State::Prepare:
         m_state = QStringLiteral("Prepare");
+        m_totalTime = "Настройка";
+        emit totalTimeChanged();
         break;
     case State::Running:
         m_state = QStringLiteral("Running");

@@ -21,9 +21,8 @@ SOURCES += main.cpp \
     networkcontroller.cpp \
     notificationclient.cpp \
     vibrationclient.cpp \
-    shareutils/android/androidshareutils.cpp \
     shareutils/applicationui.cpp \
-    shareutils/main.cpp \
+#    shareutils/main.cpp \
     shareutils/shareutils.cpp
 
 
@@ -40,7 +39,6 @@ HEADERS += \
     networkcontroller.h \
     notificationclient.h \
     vibrationclient.h \
-    shareutils/android/androidshareutils.h \
     shareutils/applicationui.h \
     shareutils/shareutils.h
 
@@ -85,10 +83,11 @@ ios {
 
 android {
     QT += androidextras
-
+    SOURCES += shareutils/android/androidshareutils.cpp
+    HEADERS += shareutils/android/androidshareutils.h
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
     OTHER_FILES += \
-        android/src/ru/roc/dems/DemsApp.java \
 
     DISTFILES += \
         android/AndroidManifest.xml \
@@ -97,11 +96,15 @@ android {
         android/res/values/libs.xml \
         android/build.gradle \
         android/gradle/wrapper/gradle-wrapper.properties \
-        android/gradlew.bat \
-        android/src/ru/roc/dems/DemsApp.java
+        android/gradlew.bat
 }
 
 OTHER_FILES += \
     qml/*.qml \
+
+DISTFILES += \
+    android/src/ru/roc/dems/DemsActivity.java \
+    android/src/ru/roc/dems/utils/QSharePathResolver.java \
+    android/src/ru/roc/dems/utils/QShareUtils.java
 
 

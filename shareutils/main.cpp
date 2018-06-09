@@ -25,9 +25,7 @@ int main(int argc, char *argv[])
     // some more context properties
     appui.addContextProperty(context);
 
-#if defined(Q_OS_ANDROID)
-    QObject::connect(&app, SIGNAL(applicationStateChanged(Qt::ApplicationState)), &appui, SLOT(onApplicationStateChanged(Qt::ApplicationState)));
-#endif
+
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

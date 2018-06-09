@@ -1,10 +1,5 @@
 #include "vibrationclient.h"
 
-#if defined(Q_OS_IOS)
-
-#elif defined(Q_OS_ANDROID)
-#include <QtAndroidExtras/QAndroidJniObject>
-#endif
 VibrationClient* VibrationClient::m_self = nullptr;
 
 VibrationClient::VibrationClient(QObject* parent)
@@ -33,7 +28,7 @@ void VibrationClient::on(long duration)
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 #elif defined(Q_OS_ANDROID)
     jlong jl = duration;
-    QAndroidJniObject::callStaticMethod<void>("ru/roc/dems/DemsApp", "vibro", "(J)V", jl);
+    QAndroidJniObject::callStaticMethod<void>("ru/roc/dems/DemsActivity", "vibro", "(J)V", jl);
 #endif
 }
 

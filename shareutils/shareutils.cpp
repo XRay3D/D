@@ -5,11 +5,11 @@
 #include "shareutils.h"
 
 #ifdef Q_OS_IOS
-#include "cpp/ios/iosshareutils.h"
+#include "shareutils/ios/iosshareutils.h"
 #endif
 
 #ifdef Q_OS_ANDROID
-#include "cpp/android/androidshareutils.h"
+#include "shareutils/android/androidshareutils.h"
 #endif
 
 ShareUtils::ShareUtils(QObject* parent)

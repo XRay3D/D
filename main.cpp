@@ -12,6 +12,7 @@
 #include "guiapplication.h"
 #include "networkcontroller.h"
 #include "notificationclient.h"
+#include "shareutils/applicationui.h"
 #include "vibrationclient.h"
 
 #if defined(Q_OS_IOS)
@@ -21,6 +22,7 @@
 
 int main(int argc, char* argv[])
 {
+    //QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     GuiApplication app(argc, argv);
 #if defined(Q_OS_IOS)
     //QtAppDelegateInitialize();
@@ -63,11 +65,18 @@ int main(int argc, char* argv[])
     Q_UNUSED(notificationClient)
     VibrationClient* vibrationClient = new VibrationClient(&engine);
 
-    app.connect(&training, &Training::addToDataBase, &database, &DataBase::inserIntoTable, Qt::DirectConnection);
-    app.connect(&training, &Training::addToDataBase, [&]() { model.updateModel(); });
+    QObject::connect(&training, &Training::addToDataBase, &database, &DataBase::inserIntoTable, Qt::DirectConnection);
+    QObject::connect(&training, &Training::addToDataBase, [&]() { model.updateModel(); });
+
+    ApplicationUI appui;
+
+    // from QML we have access to ApplicationUI as myApp
 
     QQmlContext* rootContext = engine.rootContext();
     rootContext->setContextProperty("GUI", &app);
+    rootContext->setContextProperty("myApp", &appui);
+    appui.addContextProperty(rootContext);
+
     rootContext->setContextProperty("vibration", vibrationClient);
     // Обеспечиваем доступ к модели и классу для работы с базой данных из QML
     rootContext->setContextProperty("myModel", &model);
@@ -93,7 +102,9 @@ int main(int argc, char* argv[])
             qDebug() << QObject::connect(object, SIGNAL(stop()), &training, SLOT(stop()), Qt::DirectConnection);
         }
     });
-
+#if defined(Q_OS_ANDROID)
+    QObject::connect(&app, SIGNAL(applicationStateChanged(Qt::ApplicationState)), &appui, SLOT(onApplicationStateChanged(Qt::ApplicationState)));
+#endif
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     //QTimer::singleShot(100,[&engine](){engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));});

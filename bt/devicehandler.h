@@ -8,6 +8,8 @@
 #include <QGuiApplication>
 #include <QLowEnergyController>
 #include <QLowEnergyService>
+#include <QSemaphore>
+#include <QThread>
 #include <QTimer>
 #include <QVector>
 
@@ -56,9 +58,13 @@ public slots:
     bool selectTrainingType(int enabled);
 
 private:
+    QThread m_thread;
+    QSemaphore m_semaphore;
     Ski::Statistics_t m_st;
     Ski::Statistics_t m_sp;
     Ski::Battery_t m_battery;
+
+    void checkService();
 
     //  QLowEnergyController
     void serviceDiscovered(const QBluetoothUuid& gatt);

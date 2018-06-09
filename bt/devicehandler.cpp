@@ -93,16 +93,17 @@ void DeviceHandler::disconnectService()
     } else {
         if (m_control)
             m_control->disconnectFromDevice();
-        delete m_service;
+        //delete m_service;
+        m_thread.quit();
+        m_thread.wait();
         m_service = nullptr;
     }
 }
 
 bool DeviceHandler::setVoltage(int voltage)
 {
-    m_success = false;
-    if (m_service == nullptr)
-        return m_success;
+    if (checkService())
+        return false;
     m_stimSettings.voltage = static_cast<quint8>(voltage);
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings)))
         return success();
@@ -111,9 +112,8 @@ bool DeviceHandler::setVoltage(int voltage)
 
 bool DeviceHandler::setDuration(int duration)
 {
-    m_success = false;
-    if (m_service == nullptr)
-        return m_success;
+    if (checkService())
+        return false;
     m_stimSettings.duration = static_cast<quint16>(duration);
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings)))
         return success();
@@ -122,9 +122,8 @@ bool DeviceHandler::setDuration(int duration)
 
 bool DeviceHandler::setDelay(int delay)
 {
-    m_success = false;
-    if (m_service == nullptr)
-        return m_success;
+    if (checkService())
+        return false;
     m_stimSettings.delay = static_cast<quint16>(delay);
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings)))
         return success();
@@ -133,9 +132,8 @@ bool DeviceHandler::setDelay(int delay)
 
 bool DeviceHandler::resetStatistics()
 {
-    m_success = false;
-    if (m_service == nullptr)
-        return m_success;
+    if (checkService())
+        return false;
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::RESET))))
         return success();
     return m_success;
@@ -143,9 +141,8 @@ bool DeviceHandler::resetStatistics()
 
 bool DeviceHandler::getTrainingStatistics(Ski::Statistics_t& s)
 {
-    m_success = false;
-    if (m_service == nullptr)
-        return m_success;
+    if (checkService())
+        return false;
     m_statisticsType = Ski::GET_TRAINING;
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::GET_TRAINING))))
         if (success())
@@ -155,9 +152,8 @@ bool DeviceHandler::getTrainingStatistics(Ski::Statistics_t& s)
 
 bool DeviceHandler::getPauseStatistics(Ski::Statistics_t& s)
 {
-    m_success = false;
-    if (m_service == nullptr)
-        return m_success;
+    if (checkService())
+        return false;
     m_statisticsType = Ski::GET_PAUSE;
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::GET_PAUSE))))
         if (success())
@@ -167,9 +163,8 @@ bool DeviceHandler::getPauseStatistics(Ski::Statistics_t& s)
 
 bool DeviceHandler::getBatteryCharge()
 {
-    m_success = false;
-    if (m_service == nullptr)
-        return m_success;
+    if (checkService())
+        return false;
     if (writeToSki(parcel(Ski::Cmmand::GET_BATTERY)))
         return success();
     return m_success;
@@ -177,9 +172,8 @@ bool DeviceHandler::getBatteryCharge()
 
 bool DeviceHandler::impulse()
 {
-    m_success = false;
-    if (m_service == nullptr)
-        return m_success;
+    if (checkService())
+        return false;
     if (writeToSki(parcel(Ski::Cmmand::IMPULSE)))
         return success();
     return m_success;
@@ -187,9 +181,8 @@ bool DeviceHandler::impulse()
 
 bool DeviceHandler::enableTraining(bool enabled)
 {
-    m_success = false;
-    if (m_service == nullptr)
-        return m_success;
+    if (checkService())
+        return false;
     if (writeToSki(parcel(Ski::Cmmand::ON_OFF, uint8_t(enabled))))
         return success();
     return m_success;
@@ -197,12 +190,19 @@ bool DeviceHandler::enableTraining(bool enabled)
 
 bool DeviceHandler::selectTrainingType(int type)
 {
-    m_success = false;
-    if (m_service == nullptr)
-        return m_success;
+    if (checkService())
+        return false;
     if (writeToSki(parcel(Ski::Cmmand::TRAINING_TYPE, uint8_t(type))))
         return success();
     return m_success;
+}
+
+void DeviceHandler::checkService()
+{
+    if (checkService())
+        return false;
+    m_semaphore.acquire(m_semaphore.available());
+    return true;
 }
 
 void DeviceHandler::serviceDiscovered(const QBluetoothUuid& gatt)
@@ -219,7 +219,9 @@ void DeviceHandler::serviceScanDone()
 
     // Удаление старого сервиса, если он доступен
     if (m_service) {
-        delete m_service;
+        //delete m_service;
+        m_thread.quit();
+        m_thread.wait();
         m_service = nullptr;
     }
 
@@ -228,9 +230,14 @@ void DeviceHandler::serviceScanDone()
         m_service = m_control->createServiceObject(QBluetoothUuid(m_service_uuid), this);
     if (m_service) {
         connect(m_service, &QLowEnergyService::stateChanged, this, &DeviceHandler::serviceStateChanged);
-        connect(m_service, &QLowEnergyService::characteristicChanged, this, &DeviceHandler::updateValue);
+        connect(m_service, &QLowEnergyService::characteristicChanged, this, &DeviceHandler::updateValue, Qt::DirectConnection);
         connect(m_service, &QLowEnergyService::descriptorWritten, this, &DeviceHandler::confirmedDescriptorWrite);
         m_service->discoverDetails();
+
+        connect(&m_thread, &QThread::finished, m_service, &QObject::deleteLater);
+        m_service->moveToThread(&m_thread);
+
+        m_thread.start();
     } else {
         setError("Служба не найдена.");
     }
@@ -279,6 +286,7 @@ void DeviceHandler::updateValue(const QLowEnergyCharacteristic& characteristic, 
     if (checkParcel(data)) {
         (this->*m_func[data[3]])(data);
         m_retData.clear();
+        m_semaphore.release();
     }
     //    else
     //        cbCrcError(data); /////////////?????????????????????
@@ -289,7 +297,9 @@ void DeviceHandler::confirmedDescriptorWrite(const QLowEnergyDescriptor& d, cons
     if (d.isValid() && d == m_notificationDesc && value == QByteArray::fromHex("0000")) {
         // отключенные уведомления -> предполагать отключение
         m_control->disconnectFromDevice();
-        delete m_service;
+        //delete m_service;
+        m_thread.quit();
+        m_thread.wait();
         m_service = nullptr;
     }
 }

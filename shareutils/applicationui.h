@@ -7,51 +7,45 @@
 
 #include <QObject>
 
+#include "shareutils/shareutils.h"
 #include <QtQml>
-#include "cpp/shareutils.h"
 
-class ApplicationUI : public QObject
-{
+class ApplicationUI : public QObject {
     Q_OBJECT
 
 public:
-     ApplicationUI(QObject *parent = 0);
+    ApplicationUI(QObject* parent = 0);
 
-     void addContextProperty(QQmlContext* context);
+    void addContextProperty(QQmlContext* context);
 
-     Q_INVOKABLE
-     void copyAssetsToAPPData();
+    Q_INVOKABLE void copyAssetsToAPPData();
 
-     Q_INVOKABLE
-     QString filePathDocumentsLocation(const int requestId);
+    Q_INVOKABLE QString filePathDocumentsLocation(const int requestId);
 
-     Q_INVOKABLE
-     bool deleteFromDocumentsLocation(const int requestId);
+    Q_INVOKABLE bool deleteFromDocumentsLocation(const int requestId);
 
-     Q_INVOKABLE
-     bool updateFileFromDocumentsLocation(const int requestId);
+    Q_INVOKABLE bool updateFileFromDocumentsLocation(const int requestId);
 
 #if defined(Q_OS_ANDROID)
-     Q_INVOKABLE
-     bool checkPermission();
+    Q_INVOKABLE bool checkPermission();
 #endif
 
 signals:
-     void noDocumentsWorkLocation();
+    void noDocumentsWorkLocation();
 
 public slots:
 #if defined(Q_OS_ANDROID)
-     void onApplicationStateChanged(Qt::ApplicationState applicationState);
+    void onApplicationStateChanged(Qt::ApplicationState applicationState);
 #endif
 
 private:
-     ShareUtils* mShareUtils;
-     bool mPendingIntentsChecked;
+    ShareUtils* mShareUtils;
+    bool mPendingIntentsChecked;
 
-     QString mAppDataFilesPath;
-     QString mDocumentsWorkPath;
+    QString mAppDataFilesPath;
+    QString mDocumentsWorkPath;
 
-     bool copyAssetFile(const QString sourceFilePath, const QString destinationFilePath);
+    bool copyAssetFile(const QString sourceFilePath, const QString destinationFilePath);
 };
 
 #endif // APPLICATIONUI_HPP

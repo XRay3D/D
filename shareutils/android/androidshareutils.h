@@ -8,7 +8,7 @@
 #include <QAndroidActivityResultReceiver>
 #include <QtAndroid>
 
-#include "cpp/shareutils.h"
+#include "shareutils/shareutils.h"
 
 class AndroidShareUtils : public PlatformShareUtils, public QAndroidActivityResultReceiver {
 public:
