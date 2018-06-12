@@ -12,13 +12,23 @@ Control {
     property string suffix: ''
     property string name: ''
 
+    readonly property double w: width - height / 3.5
+    readonly property double h: height / 5
+    readonly property double b: Math.sqrt(h * h + w * w / 4)
+    readonly property double radius: (w * b * b) / (2 * h * w)
+    readonly property double a1: -Math.PI / 2 - Math.acos((radius - h) / radius)
+    readonly property double a2: Math.PI - a1
+    readonly property double a3: (Math.acos((radius - h) / radius) * 2) / 10
+    readonly property double a4: a1 + (Math.acos((radius - h) / radius) * 2) / 10 * value
+    readonly property double cx: width / 2
+    readonly property double cy: radius + height / 5
+
     Component.onCompleted: update()
     font.family: 'HelveticaNeueCyr'
     font.pixelSize: 26 * sc
 
     Label {
         id: max
-        //font.family: 'HelveticaNeueCyr'
         anchors.right: arc.right
         anchors.top: arc.top
         color: 'white'
@@ -63,6 +73,28 @@ Control {
         verticalAlignment: Text.AlignBottom
     }
 
+    function update(){
+        mycanvas.requestPaint()
+        vt.text = (value * maxValue) / 10 + suffix
+    }
+
+    Slider{
+        id: slider
+        opacity: 0.0
+
+        width: w * 1.1
+        height: parent.height //h * 1.6
+        x: (parent.width - width) / 2
+        y: 0 //h * 0.7
+
+        from: 0
+        to: 10
+        onValueChanged: {
+            parent.value = value
+            arc.update()
+            //feedback.on(5)
+        }
+    }
     Rb{
         anchors.right: arc.right
         y: arc.height / 1.7
@@ -82,46 +114,12 @@ Control {
         }
     }
 
-    function update(){
-        mycanvas.requestPaint()
-        vt.text = (value * maxValue) / 10 + suffix
-    }
 
-    property double w: width - height / 3.5
-    property double h: height / 5
-    property double a: w
-    property double b: Math.sqrt(h * h + w * w / 4)
-    property double radius: (a * b * b) / (2 * h * w)
-    property double a1: -Math.PI / 2 - Math.acos((radius - h) / radius)
-    property double a2: Math.PI - a1
-    property double a3: (Math.acos((radius - h) / radius) * 2) / 10
-    property double a4: a1 + (Math.acos((radius - h) / radius) * 2) / 10 * value
-    property double l: 0
-    property double cx: width / 2
-    property double cy: radius + height / 5
-
-    Slider{
-        id: slider
-        opacity: 0.0
-
-        width: w * 1.1
-        height: h * 1.6
-        x: (parent.width - width) / 2
-        y: h * 0.7
-
-        from: 0
-        to: 10
-
-        onValueChanged: {
-            parent.value = value
-            arc.update()
-            feedback.on(5)
-        }
-    }
 
     Canvas {
         anchors.fill: arc
         property int i: 0
+        property double l: 0
         onPaint: {
             var ctx = getContext('2d');
             ctx.clearRect(0, 0, width, height)
@@ -193,8 +191,6 @@ Control {
             when: slider.pressed
             PropertyChanges { target: handle; scale: 0.8}
         }
-        transitions: Transition {
-            NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad }
-        }
+        transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50  } }
     }
 }

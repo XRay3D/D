@@ -73,6 +73,7 @@ Page {
                     height: 93 * sc
                     width: parent.width
                     font.pixelSize: 28 * sc
+                    background: Item {}
                     contentItem: Text {
                         text: swipeDelegate.text
                         font: swipeDelegate.font
@@ -97,25 +98,24 @@ Page {
                             source: type ? 'images/type2.png' : 'images/type1.png'
                         }
                     }
-                    background: Item {}
-                    ListView.onRemove: SequentialAnimation {
-                        PropertyAction {
-                            target: swipeDelegate
-                            property: "ListView.delayRemove"
-                            value: true
-                        }
-                        NumberAnimation {
-                            target: swipeDelegate
-                            property: "height"
-                            to: 0
-                            easing.type: Easing.InOutQuad
-                        }
-                        PropertyAction {
-                            target: swipeDelegate
-                            property: "ListView.delayRemove"
-                            value: false
-                        }
-                    }
+//                    ListView.onRemove: SequentialAnimation {
+//                        PropertyAction {
+//                            target: swipeDelegate
+//                            property: "ListView.delayRemove"
+//                            value: true
+//                        }
+//                        NumberAnimation {
+//                            target: swipeDelegate
+//                            property: "height"
+//                            to: 0
+//                            easing.type: Easing.InOutQuad
+//                        }
+//                        PropertyAction {
+//                            target: swipeDelegate
+//                            property: "ListView.delayRemove"
+//                            value: false
+//                        }
+//                    }
                     swipe.right: Label {
                         id: deleteLabel
                         opacity: -swipeDelegate.swipe.position
