@@ -10,5 +10,5 @@ Button {
         color: enabled ? (control.pressed ? 'darkgray' : 'red') : 'gray'
         radius: 10 * sc
     }
-    onPressed: vibration.on(10)
+    onPressed: feedback.on(20)
 }

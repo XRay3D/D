@@ -278,7 +278,7 @@ ApplicationWindow {
                         console.log(modelData.deviceAddress)
                         btDialog.accept()
                     }
-                    onPressed: vibration.on(10)
+                    onPressed: feedback.on(20)
                 }
                 Label {
                     text: modelData.deviceName
@@ -314,43 +314,5 @@ ApplicationWindow {
         //                font.pixelSize: 40 * sc
         //            }
         //        }
-    }
-    // Диалог подтверждения удаления тренировки из базы данных
-    MyDialog {
-        id: dialogDelete
-        caption: 'Удаление'
-        Label{
-            anchors.fill: parent
-            anchors.margins: 50 * sc
-            height: 110 * sc
-            width: parent.width
-            color: 'white'
-            font.capitalization: Font.AllUppercase
-            font.pixelSize: 36 * sc
-            font.weight: Font.Black
-            wrapMode: Text.WordWrap
-            text: qsTr('Вы действительно хотите удалить тренировку?')
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-        }
-        footer: Item{
-            width: parent.width;
-            height: 100 * sc
-            Button {
-                anchors.fill: parent
-                anchors.margins: 20 * sc
-                height: 50 * sc
-                enabled: !deviceFinder.scanning
-                onClicked: dialogDelete.accept()
-                text: qsTr('Да')
-                onPressed: vibration.on(10)
-            }
-        }
-        onAccepted: {
-            console.log('Ok clicked')
-            myModel.updateModel()
-            database.removeRecord(myModel.getId(journal.listView.currentIndex))
-            myModel.updateModel();  // Обновляем модель данных
-        }
     }
 }

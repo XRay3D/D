@@ -4,6 +4,7 @@
 #include "bluetoothbaseclass.h"
 #include "skiprotokol.h"
 
+#include <QByteArray>
 #include <QDateTime>
 #include <QGuiApplication>
 #include <QLowEnergyController>
@@ -14,13 +15,14 @@
 #include <QVector>
 
 class DeviceInfo;
-
 class DeviceHandler : public BluetoothBaseClass, private Ski::Protokol {
     Q_OBJECT
 
     Q_PROPERTY(bool alive READ alive NOTIFY aliveChanged)
     Q_PROPERTY(int batteryLeft READ batteryLeft NOTIFY batteryChanged)
     Q_PROPERTY(int batteryRight READ batteryRight NOTIFY batteryChanged)
+
+    friend class DataHandler;
 
 public:
     enum class AddressType {
@@ -30,6 +32,7 @@ public:
     Q_ENUM(AddressType)
 
     DeviceHandler(QObject* parent = nullptr);
+    //~DeviceHandler();
 
     void setDevice(DeviceInfo* device);
     void setAddressType(AddressType type);
@@ -58,13 +61,12 @@ public slots:
     bool selectTrainingType(int enabled);
 
 private:
-    QThread m_thread;
     QSemaphore m_semaphore;
     Ski::Statistics_t m_st;
     Ski::Statistics_t m_sp;
     Ski::Battery_t m_battery;
 
-    void checkService();
+    bool checkService();
 
     //  QLowEnergyController
     void serviceDiscovered(const QBluetoothUuid& gatt);

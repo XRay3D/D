@@ -1,6 +1,6 @@
 # 1.0 - 1.4
 
-QT += quick location positioning bluetooth sql network
+QT += quick location positioning bluetooth sql network multimedia
 
 CONFIG += c++11
 
@@ -20,10 +20,10 @@ SOURCES += main.cpp \
     guiapplication.cpp \
     networkcontroller.cpp \
     notificationclient.cpp \
-    vibrationclient.cpp \
     shareutils/applicationui.cpp \
 #    shareutils/main.cpp \
-    shareutils/shareutils.cpp
+    shareutils/shareutils.cpp \
+    feedbackclient.cpp
 
 
 HEADERS += \
@@ -38,9 +38,9 @@ HEADERS += \
     guiapplication.h \
     networkcontroller.h \
     notificationclient.h \
-    vibrationclient.h \
     shareutils/applicationui.h \
-    shareutils/shareutils.h
+    shareutils/shareutils.h \
+    feedbackclient.h
 
 RESOURCES += qml.qrc
 
@@ -53,6 +53,10 @@ ios {
     fontFiles.files = $$files(fonts/*.ttf)
     fontFiles.path = fonts
     QMAKE_BUNDLE_DATA += fontFiles
+
+    soundFiles.files = $$files(sound/*.wav)
+    soundFiles.path = sound
+    QMAKE_BUNDLE_DATA += soundFiles
 
     app_launch_images.files = $$files($$PWD/ios/LaunchImages/LaunchImage*.png)
     QMAKE_BUNDLE_DATA += app_launch_images

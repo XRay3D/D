@@ -9,11 +9,11 @@
 #include <db/database.h>
 #include <db/listmodel.h>
 
+#include "feedbackclient.h"
 #include "guiapplication.h"
 #include "networkcontroller.h"
 #include "notificationclient.h"
 #include "shareutils/applicationui.h"
-#include "vibrationclient.h"
 
 #if defined(Q_OS_IOS)
 #include "ios/QtAppDelegate-C-Interface.h"
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 
     NotificationClient* notificationClient = new NotificationClient(&engine);
     Q_UNUSED(notificationClient)
-    VibrationClient* vibrationClient = new VibrationClient(&engine);
+    FeedbackClient feedback(&engine);
 
     QObject::connect(&training, &Training::addToDataBase, &database, &DataBase::inserIntoTable, Qt::DirectConnection);
     QObject::connect(&training, &Training::addToDataBase, [&]() { model.updateModel(); });
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
     rootContext->setContextProperty("myApp", &appui);
     appui.addContextProperty(rootContext);
 
-    rootContext->setContextProperty("vibration", vibrationClient);
+    rootContext->setContextProperty("feedback", &feedback);
     // Обеспечиваем доступ к модели и классу для работы с базой данных из QML
     rootContext->setContextProperty("myModel", &model);
     rootContext->setContextProperty("database", &database);

@@ -4,6 +4,9 @@
 #include <QtEndian>
 #include <notificationclient.h>
 
+int id101 = qRegisterMetaType<QLowEnergyDescriptor>("QLowEnergyDescriptor");
+int id102 = qRegisterMetaType<QLowEnergyCharacteristic>("QLowEnergyCharacteristic");
+
 DeviceHandler::DeviceHandler(QObject* parent)
     : BluetoothBaseClass(parent)
     , m_func(QVector<DeviceHandler::func>(0x100, &DeviceHandler::cbWrongCommand))
@@ -43,7 +46,7 @@ void DeviceHandler::setDevice(DeviceInfo* device)
     // Создайте новый контроллер и подключение его, если доступно устройство.
     if (m_currentDevice) {
         // Выполнение соединения
-        m_control = new QLowEnergyController(m_currentDevice->getDevice(), this);
+        m_control = new QLowEnergyController(m_currentDevice->getDevice() /*, this*/);
         m_control->setRemoteAddressType(QLowEnergyController::PublicAddress);
         connect(m_control, &QLowEnergyController::serviceDiscovered, this, &DeviceHandler::serviceDiscovered);
         connect(m_control, &QLowEnergyController::discoveryFinished, this, &DeviceHandler::serviceScanDone);
@@ -93,16 +96,14 @@ void DeviceHandler::disconnectService()
     } else {
         if (m_control)
             m_control->disconnectFromDevice();
-        //delete m_service;
-        m_thread.quit();
-        m_thread.wait();
+        delete m_service;
         m_service = nullptr;
     }
 }
 
 bool DeviceHandler::setVoltage(int voltage)
 {
-    if (checkService())
+    if (!checkService())
         return false;
     m_stimSettings.voltage = static_cast<quint8>(voltage);
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings)))
@@ -112,7 +113,7 @@ bool DeviceHandler::setVoltage(int voltage)
 
 bool DeviceHandler::setDuration(int duration)
 {
-    if (checkService())
+    if (!checkService())
         return false;
     m_stimSettings.duration = static_cast<quint16>(duration);
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings)))
@@ -122,7 +123,7 @@ bool DeviceHandler::setDuration(int duration)
 
 bool DeviceHandler::setDelay(int delay)
 {
-    if (checkService())
+    if (!checkService())
         return false;
     m_stimSettings.delay = static_cast<quint16>(delay);
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STIMULATION_SETTINGS, m_stimSettings)))
@@ -132,7 +133,7 @@ bool DeviceHandler::setDelay(int delay)
 
 bool DeviceHandler::resetStatistics()
 {
-    if (checkService())
+    if (!checkService())
         return false;
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::RESET))))
         return success();
@@ -141,7 +142,7 @@ bool DeviceHandler::resetStatistics()
 
 bool DeviceHandler::getTrainingStatistics(Ski::Statistics_t& s)
 {
-    if (checkService())
+    if (!checkService())
         return false;
     m_statisticsType = Ski::GET_TRAINING;
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::GET_TRAINING))))
@@ -152,7 +153,7 @@ bool DeviceHandler::getTrainingStatistics(Ski::Statistics_t& s)
 
 bool DeviceHandler::getPauseStatistics(Ski::Statistics_t& s)
 {
-    if (checkService())
+    if (!checkService())
         return false;
     m_statisticsType = Ski::GET_PAUSE;
     if (writeToSki(parcel(Ski::Cmmand::SET_GET_STATISTICS, uint8_t(Ski::GET_PAUSE))))
@@ -163,7 +164,7 @@ bool DeviceHandler::getPauseStatistics(Ski::Statistics_t& s)
 
 bool DeviceHandler::getBatteryCharge()
 {
-    if (checkService())
+    if (!checkService())
         return false;
     if (writeToSki(parcel(Ski::Cmmand::GET_BATTERY)))
         return success();
@@ -172,16 +173,18 @@ bool DeviceHandler::getBatteryCharge()
 
 bool DeviceHandler::impulse()
 {
-    if (checkService())
+    if (!checkService())
         return false;
+    qDebug() << "22222222222222222222222";
     if (writeToSki(parcel(Ski::Cmmand::IMPULSE)))
         return success();
+    qDebug() << "33333333333333333333333";
     return m_success;
 }
 
 bool DeviceHandler::enableTraining(bool enabled)
 {
-    if (checkService())
+    if (!checkService())
         return false;
     if (writeToSki(parcel(Ski::Cmmand::ON_OFF, uint8_t(enabled))))
         return success();
@@ -190,16 +193,16 @@ bool DeviceHandler::enableTraining(bool enabled)
 
 bool DeviceHandler::selectTrainingType(int type)
 {
-    if (checkService())
+    if (!checkService())
         return false;
     if (writeToSki(parcel(Ski::Cmmand::TRAINING_TYPE, uint8_t(type))))
         return success();
     return m_success;
 }
 
-void DeviceHandler::checkService()
+bool DeviceHandler::checkService()
 {
-    if (checkService())
+    if (m_service == nullptr)
         return false;
     m_semaphore.acquire(m_semaphore.available());
     return true;
@@ -219,25 +222,23 @@ void DeviceHandler::serviceScanDone()
 
     // Удаление старого сервиса, если он доступен
     if (m_service) {
-        //delete m_service;
-        m_thread.quit();
-        m_thread.wait();
+        delete m_service;
         m_service = nullptr;
     }
 
     // Если обнаружено свойство Ski, создать новый сервис
     if (m_foundService)
-        m_service = m_control->createServiceObject(QBluetoothUuid(m_service_uuid), this);
+        m_service = m_control->createServiceObject(QBluetoothUuid(m_service_uuid) /*, this*/);
     if (m_service) {
         connect(m_service, &QLowEnergyService::stateChanged, this, &DeviceHandler::serviceStateChanged);
-        connect(m_service, &QLowEnergyService::characteristicChanged, this, &DeviceHandler::updateValue, Qt::DirectConnection);
+        qDebug() << connect(m_service, &QLowEnergyService::characteristicChanged, this, &DeviceHandler::updateValue, Qt::DirectConnection);
+        //        connect(m_service, &QLowEnergyService::characteristicChanged, [this](const QLowEnergyCharacteristic& info, const QByteArray& value) // this, &DeviceHandler::updateValue);
+        //            {
+        //                qDebug() << info.uuid() << value.toHex().toUpper();
+        //                m_semaphore.release();
+        //            });
         connect(m_service, &QLowEnergyService::descriptorWritten, this, &DeviceHandler::confirmedDescriptorWrite);
         m_service->discoverDetails();
-
-        connect(&m_thread, &QThread::finished, m_service, &QObject::deleteLater);
-        m_service->moveToThread(&m_thread);
-
-        m_thread.start();
     } else {
         setError("Служба не найдена.");
     }
@@ -287,6 +288,7 @@ void DeviceHandler::updateValue(const QLowEnergyCharacteristic& characteristic, 
         (this->*m_func[data[3]])(data);
         m_retData.clear();
         m_semaphore.release();
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////m_semaphore.release();
     }
     //    else
     //        cbCrcError(data); /////////////?????????????????????
@@ -297,9 +299,7 @@ void DeviceHandler::confirmedDescriptorWrite(const QLowEnergyDescriptor& d, cons
     if (d.isValid() && d == m_notificationDesc && value == QByteArray::fromHex("0000")) {
         // отключенные уведомления -> предполагать отключение
         m_control->disconnectFromDevice();
-        //delete m_service;
-        m_thread.quit();
-        m_thread.wait();
+        delete m_service;
         m_service = nullptr;
     }
 }
@@ -346,7 +346,7 @@ void DeviceHandler::cbGetBattery(const QByteArray& data)
 {
     m_battery = value<Ski::Battery_t>(data);
     if (m_battery.right < 20 || m_battery.left < 20)
-        NotificationClient::self()->setNotification("Критический заряд батареи!\n" + QString::number(m_battery.right) + QString::number(m_battery.left));
+        NotificationClient::self()->setNotification("Критический заряд батареи!\n" + QString::number(m_battery.right).append("% ") + QString::number(m_battery.left).append('%'));
 
     batteryChanged();
     qDebug("cbGetBattery");
@@ -409,10 +409,13 @@ bool DeviceHandler::success()
     while (!m_success && timer.elapsed() < 1000)
         qApp->processEvents();
 
+    //m_success = m_semaphore.tryAcquire(1, 1000);
     if (m_success)
         setInfo("Ok!");
     else
         setError("Timeout!");
+
+    qDebug() << "++++++++++++++++++++++" << timer.elapsed();
 
     return m_success;
 }

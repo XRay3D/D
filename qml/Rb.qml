@@ -20,5 +20,5 @@ AbstractButton{//+
     states: State { when: pressed; PropertyChanges { target: background; scale: 0.8} }
     transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
     contentItem: Item{}
-    onPressed: vibration.on(10)
+    onPressed: feedback.on(20)
 }

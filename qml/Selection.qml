@@ -74,7 +74,7 @@ Page {
             //            transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         }
         onClicked: training.type = !training.type
-        onPressed: vibration.on(10)
+        onPressed: feedback.on(20)
     }
 
     Button {
@@ -94,6 +94,6 @@ Page {
             //            transitions: Transition { NumberAnimation { properties: 'scale'; easing.type: Easing.InOutQuad; duration: 50 } }
         }
         onClicked: training.type = !training.type
-        onPressed: vibration.on(10)
+        onPressed: feedback.on(20)
     }
 }

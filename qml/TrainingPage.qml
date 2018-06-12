@@ -79,7 +79,7 @@ Page{
                 stackView.pop(initialItem)
             }
         }
-        onPressed: vibration.on(10)
+        onPressed: feedback.on(20)
     }
 
     Button {
@@ -111,7 +111,7 @@ Page{
                 resume()
             }
         }
-        onPressed: vibration.on(10)
+        onPressed: feedback.on(20)
     }
 
     states: [

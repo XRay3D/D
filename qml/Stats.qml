@@ -14,7 +14,7 @@ Page {
         drag.target: contents
         drag.axis: Drag.YAxis
         onMouseXChanged: contents.opacity = (h - Math.abs(contents.y)) / h
-        onPressed: vibration.on(10)
+        onPressed: feedback.on(20)
         onReleased: {
             if (Math.abs(contents.y) > h)
                 if(stack.depth > 1){

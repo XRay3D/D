@@ -8,6 +8,7 @@ Page {
 
     Settings{
         property alias vbrch: vibro.checked
+        property alias sndch: sound.checked
     }
 
     background: Item{}
@@ -52,7 +53,7 @@ Page {
             MouseArea{
                 anchors.fill: parent
                 onClicked: btDialog.open()
-                onPressed: vibration.on(10)
+                onPressed: feedback.on(20)
             }
             enabled: trainingPage.state == 'Stopped' || !deviceHandler.alive
             opacity: enabled ? 1.0 : 0.3
@@ -89,13 +90,20 @@ Page {
             text: 'Вибрация'
             Layout.fillWidth: true
             Layout.fillHeight: true
-            onCheckedChanged: vibration.enabled = checked
+            onCheckedChanged: feedback.vibration = checked
         }
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2
             Layout.minimumHeight: 2
-            opacity: 0.0//0.3
+            opacity: 0.3
+        }
+        SwButton{
+            id: sound
+            text: 'Звук'
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            onCheckedChanged: feedback.sound = checked
         }
         SwButton{
             text: 'Пуш-уведомления'
@@ -104,21 +112,12 @@ Page {
             enabled: false
             opacity: 0.0
         }
-
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2
             Layout.minimumHeight: 2
             opacity: 0.0//0.3
         }
-        SwButton{
-            text: 'Звук'
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            enabled: false
-            opacity: 0.0
-        }
-
         Rectangle{
             Layout.fillWidth: true
             Layout.maximumHeight: 2
@@ -165,7 +164,7 @@ Page {
             MouseArea{
                 anchors.fill: parent
                 onClicked: aboutDialog.open()
-                onPressed: vibration.on(10)
+                onPressed: feedback.on(20)
             }
         }
     }

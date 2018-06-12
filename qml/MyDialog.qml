@@ -10,8 +10,8 @@ Dialog{
 
     x: 120 * sc
     y: 120 * sc
-    width: window.width - 240 * sc
-    height:window.height - 240 * sc
+    width: parent.width - 240 * sc
+    height:parent.height - 240 * sc
 
     modal: true
     padding: 0
