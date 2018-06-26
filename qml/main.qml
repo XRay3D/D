@@ -76,7 +76,7 @@ ApplicationWindow {
             case "delay":
                 break
             case "start":
-                if(trainingPage.state == 'Stopped')
+                if(trainingPage.state == 'Prepare' || trainingPage.state == 'Stopped')
                     trainingPage.tStart()
                 break
             case "pause":

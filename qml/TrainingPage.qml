@@ -145,6 +145,12 @@ Page{
 
     transitions: [
         Transition {
+            from: 'Stopped'; to: 'Running'
+            NumberAnimation { target: btnPulseStop; properties: 'x'; easing.type: Easing.InOutQuad; duration: 150 }
+            NumberAnimation { target: btnStartPause; properties: 'x'; easing.type: Easing.InOutQuad; duration: 150 }
+            PropertyAnimation { target: btnPulseStop; property: 'opacity'; from: 0; to: 1; duration: 150 }
+        },
+        Transition {
             from: 'Stopped'; to: 'Prepare'
             NumberAnimation { target: btnPulseStop; properties: 'x'; easing.type: Easing.InOutQuad; duration: 150 }
             NumberAnimation { target: btnStartPause; properties: 'x'; easing.type: Easing.InOutQuad; duration: 150 }

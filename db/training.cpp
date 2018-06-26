@@ -22,7 +22,7 @@ Training::Training(DeviceHandler* handler, QObject* parent)
 
 void Training::start()
 {
-    if (m_eState != State::Prepare)
+    if (m_eState != State::Prepare && m_eState != State::Stopped)
         return;
     setState(State::Running);
     reset();
@@ -31,9 +31,6 @@ void Training::start()
     if (m_timerId)
         killTimer(m_timerId);
     m_timerId = startTimer(100);
-
-
-
     m_geoSource->startUpdates();
 }
 
