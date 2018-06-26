@@ -75,8 +75,8 @@ ios {
 
     OBJECTIVE_SOURCES += \
         ios/QtAppDelegate.mm \
-        ios/src/iosshareutils.mm \
-        ios/src/docviewcontroller.mm
+        ios/iosshareutils.mm \
+        ios/docviewcontroller.mm
 
     # Please do not modify the following two lines. Required for deployment.
     include(ios/qtquick2applicationviewer/qtquick2applicationviewer.pri)
