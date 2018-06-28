@@ -60,10 +60,8 @@ ApplicationWindow {
 
         onCommandAccepted: {
             var focusedItem = window.activeFocusItem
-            if (focusedItem && focusedItem.panningEnabled) {
+            if (focusedItem && focusedItem.panningEnabled)
                 focusedItem.panningEnabled = false
-            }
-
             switch (command) {
             case "power":
                 demsControl.setPower(value);
@@ -76,7 +74,7 @@ ApplicationWindow {
             case "delay":
                 break
             case "start":
-                if(trainingPage.state == 'Prepare' || trainingPage.state == 'Stopped')
+                if(trainingPage.state === 'Prepare' || trainingPage.state === 'Stopped')
                     trainingPage.tStart()
                 break
             case "pause":
@@ -86,13 +84,14 @@ ApplicationWindow {
                 resume()
                 break
             case "stop":
-                if(trainingPage.state == 'Paused' || trainingPage.state == 'Running')
+                if(trainingPage.state === 'Paused' || trainingPage.state === 'Running')
                     trainingPage.tStop()
                 break
             case "impulse":
                 impulse()
                 break
             }
+            feedback.on(20)
         }
     }
 
@@ -292,27 +291,5 @@ ApplicationWindow {
             if(!deviceFinder.scanning)
                 deviceFinder.startSearch()
         }
-        //        Rectangle {
-        //            id: startSearch
-        //            visible: !devices.model.count && !deviceFinder.scanning
-        //            height: 100 * sc
-        //            width: parent.width
-        //            anchors.margins: 50 * sc
-        //            anchors.centerIn: parent
-        //            color: transparent
-        //            border.color: 'gray'
-        //            border.width: sc < 1 ? 1 : sc
-        //            radius: 20 * sc
-        //            MouseArea {
-        //                anchors.fill: parent
-        //                onClicked: deviceFinder.startSearch()
-        //            }
-        //            Label {
-        //                text: 'Повторить поиск'
-        //                anchors.centerIn: parent
-        //                color: 'white'
-        //                font.pixelSize: 40 * sc
-        //            }
-        //        }
     }
 }
